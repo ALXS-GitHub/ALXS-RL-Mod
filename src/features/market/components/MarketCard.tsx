@@ -28,6 +28,8 @@ export function MarketCard({ item, installing, onInstall, onOpenLibrary }: Marke
             src={item.thumbnail}
             alt=""
             loading="lazy"
+            // AlphaConsole's image bucket refuses foreign referrers.
+            referrerPolicy="no-referrer"
             className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
         ) : null}
