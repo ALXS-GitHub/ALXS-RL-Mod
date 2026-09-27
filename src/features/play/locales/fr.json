@@ -18,9 +18,9 @@
       "direct": "Démarre directement la version EAC du jeu.",
       "p1": "Classé, occasionnel, tournois",
       "p2": "Swaps d'items, palette et decals visibles par toi seul",
-      "p3": "Les maps custom doivent d'abord être retirées",
+      "p3": "Les maps custom peuvent rester installées : elles remplacent seulement une arène Labs sur ton PC",
       "cta": "Lancer en ligne",
-      "mapActive": "La map custom « {{name}} » est installée — remets l'arène d'origine d'abord (Maps)"
+      "mapNote": "La map custom « {{name}} » reste installée : elle remplace seulement une arène Labs sur ton PC."
     },
     "offline": {
       "badge": "EAC désactivé",

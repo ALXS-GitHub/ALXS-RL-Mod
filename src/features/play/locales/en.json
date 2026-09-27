@@ -18,9 +18,9 @@
       "direct": "Starts the EAC build of the game directly.",
       "p1": "Ranked, casual, tournaments",
       "p2": "Item swaps, palette and decals stay visible to you only",
-      "p3": "Custom maps must be restored first",
+      "p3": "Custom maps can stay installed: they only replace a Labs arena on your PC",
       "cta": "Launch online",
-      "mapActive": "Custom map \"{{name}}\" is installed — restore the stock arena first (Maps)"
+      "mapNote": "Custom map \"{{name}}\" stays installed: it only replaces a Labs arena on your PC."
     },
     "offline": {
       "badge": "EAC off",

@@ -16,6 +16,8 @@ interface LaunchCardProps {
   points: string[];
   cta: string;
   disabledReason: string | null;
+  /** Neutral information under the button (never blocks the launch). */
+  note?: string | null;
   loading: boolean;
   onLaunch: () => void;
   badge: string;
@@ -29,6 +31,7 @@ function LaunchCard({
   points,
   cta,
   disabledReason,
+  note,
   loading,
   onLaunch,
   badge,
@@ -64,7 +67,11 @@ function LaunchCard({
             <Rocket />
             {cta}
           </Button>
-          {disabledReason ? <p className="text-center text-xs text-warning">{disabledReason}</p> : null}
+          {disabledReason ? (
+            <p className="text-center text-xs text-warning">{disabledReason}</p>
+          ) : note ? (
+            <p className="text-center text-xs text-fg-subtle">{note}</p>
+          ) : null}
         </div>
       </div>
     </GlassCard>
@@ -107,7 +114,8 @@ export function LaunchCards() {
         }
         points={[t("launch.eac.p1"), t("launch.eac.p2"), t("launch.eac.p3")]}
         cta={t("launch.eac.cta")}
-        disabledReason={common ?? (session ? t("launch.eac.mapActive", { name: session.mapName }) : null)}
+        disabledReason={common}
+        note={session ? t("launch.eac.mapNote", { name: session.mapName }) : null}
         loading={launch.isPending && launch.variables === true}
         onLaunch={() => start(true)}
       />
