@@ -77,7 +77,7 @@ fn script(request_id: &str, api_url: &str) -> String {
   const tick = async () => {{
     attempt += 1;
     try {{
-      const r = await fetch({api}, {{ credentials: "include", headers: {{ Accept: "application/json" }} }});
+      const r = await fetch({api}, {{ credentials: "include", cache: "no-store", headers: {{ Accept: "application/json" }} }});
       if (r.status === 404) return report(false, "404");
       if (r.ok) return report(true, JSON.stringify(trim(await r.json())));
       if (attempt >= 12) return report(false, String(r.status));

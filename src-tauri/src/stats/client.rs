@@ -28,7 +28,10 @@ const LIVE_EMIT_INTERVAL: Duration = Duration::from_millis(250);
 const RAW_UPDATE_INTERVAL: Duration = Duration::from_secs(1);
 const CONNECT_TIMEOUT: Duration = Duration::from_secs(4);
 /// tracker.gg needs a moment to register a finished match.
-const MMR_REFRESH_DELAY: Duration = Duration::from_secs(60);
+/// MMR lookups after a match: tracker.gg takes a few minutes to pick a
+/// match up, so a single early lookup can keep a stale rating until the
+/// next match.
+const MMR_REFRESH_DELAYS: [Duration; 2] = [Duration::from_secs(60), Duration::from_secs(240)];
 
 pub type Shared = Arc<Mutex<Tracker>>;
 
@@ -121,6 +124,10 @@ pub fn schedule_mmr_refresh(app: &AppHandle, shared: &Shared, delay: Duration) {
                     .into_iter()
                     .filter_map(|p| Some((p.playlist, p.rating?, p.tier_icon)))
                     .collect();
+                tracing::debug!(
+                    ratings = ?lines.iter().map(|(p, r, _)| format!("{p}={r}")).collect::<Vec<_>>(),
+                    "MMR refreshed"
+                );
                 if let Ok(mut t) = shared.lock() {
                     t.merge_mmr(&lines);
                     persist(&t.state);
@@ -327,7 +334,9 @@ async fn read_loop<S>(
                 pending_live = false;
                 last_live_emit = Instant::now();
                 emit_session(app, shared);
-                schedule_mmr_refresh(app, shared, MMR_REFRESH_DELAY);
+                for delay in MMR_REFRESH_DELAYS {
+                    schedule_mmr_refresh(app, shared, delay);
+                }
             }
             Change::Live => {
                 if last_live_emit.elapsed() >= LIVE_EMIT_INTERVAL {
