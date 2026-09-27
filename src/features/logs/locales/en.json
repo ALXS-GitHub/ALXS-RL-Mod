@@ -1,0 +1,34 @@
+{
+  "back": "Settings",
+  "title": "Logs",
+  "subtitle": "What the app did (files written, swaps, errors) and Rocket League's own log. Read-only, nothing leaves your computer.",
+  "source": {
+    "app": "App",
+    "game": "Rocket League"
+  },
+  "noFile": "No log file",
+  "level": {
+    "all": "All",
+    "warn_one": "Warnings ({{count}})",
+    "warn_other": "Warnings ({{count}})",
+    "error_one": "Errors ({{count}})",
+    "error_other": "Errors ({{count}})"
+  },
+  "search": "Search the log",
+  "follow": "Follow",
+  "shown": "{{count}} of {{total}} lines",
+  "truncated": "older lines not shown",
+  "noMatch": "No line matches",
+  "empty": {
+    "title": "No log yet",
+    "description": "This folder has no log file for now."
+  },
+  "clean": {
+    "action": "Clear logs",
+    "title": "Clear the app logs?",
+    "body": "Every app log file is deleted, except today's.",
+    "retention": "Logs older than 30 days are already removed automatically. Rocket League's own logs are never touched.",
+    "done_one": "{{count}} log file deleted",
+    "done_other": "{{count}} log files deleted"
+  }
+}

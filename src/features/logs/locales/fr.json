@@ -1,0 +1,34 @@
+{
+  "back": "Réglages",
+  "title": "Logs",
+  "subtitle": "Ce que l'app a fait (fichiers écrits, swaps, erreurs) et le log de Rocket League. Lecture seule, rien ne quitte ton ordinateur.",
+  "source": {
+    "app": "App",
+    "game": "Rocket League"
+  },
+  "noFile": "Aucun fichier de log",
+  "level": {
+    "all": "Tout",
+    "warn_one": "Avertissements ({{count}})",
+    "warn_other": "Avertissements ({{count}})",
+    "error_one": "Erreurs ({{count}})",
+    "error_other": "Erreurs ({{count}})"
+  },
+  "search": "Rechercher dans le log",
+  "follow": "Suivre",
+  "shown": "{{count}} lignes sur {{total}}",
+  "truncated": "les plus anciennes ne sont pas affichées",
+  "noMatch": "Aucune ligne ne correspond",
+  "empty": {
+    "title": "Pas encore de log",
+    "description": "Ce dossier ne contient aucun fichier de log pour l'instant."
+  },
+  "clean": {
+    "action": "Vider les logs",
+    "title": "Vider les logs de l'app ?",
+    "body": "Tous les fichiers de log de l'app sont supprimés, sauf celui du jour.",
+    "retention": "Les logs de plus de 30 jours sont déjà supprimés automatiquement. Les logs de Rocket League ne sont jamais touchés.",
+    "done_one": "{{count}} fichier de log supprimé",
+    "done_other": "{{count}} fichiers de log supprimés"
+  }
+}

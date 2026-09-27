@@ -11,7 +11,7 @@ src-tauri/target/
 src-tauri/gen/schemas/
 
 # Logs
-logs
+/logs/
 *.log
 
 # Editor
