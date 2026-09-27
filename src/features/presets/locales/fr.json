@@ -1,0 +1,83 @@
+{
+  "eyebrow": "Garage",
+  "title": "Presets",
+  "subtitle": "Enregistre un loadout complet — swaps, palette, decal custom et map — et passe dessus en un clic : tout le reste est d'abord restauré. Partage-le avec un code.",
+  "nameLabel": "Nom",
+  "capture": {
+    "open": "Enregistrer la config actuelle",
+    "title": "Enregistrer la config actuelle",
+    "description": "Les swaps actifs, la palette, le decal custom et la map sont enregistrés dans un nouveau preset.",
+    "confirm": "Enregistrer le preset"
+  },
+  "empty": {
+    "title": "Aucun preset pour l'instant",
+    "description": "Configure ta voiture, puis enregistre-la ici pour y revenir quand tu veux."
+  },
+  "card": {
+    "updated": "Modifié {{when}}",
+    "share": "Partager",
+    "delete": "Supprimer",
+    "confirmDelete": "Clique encore pour supprimer",
+    "noSwaps": "Aucun swap d'item",
+    "swaps_one": "{{count}} swap",
+    "swaps_other": "{{count}} swaps",
+    "apply": "Appliquer le preset",
+    "edit": "Modifier",
+    "closeGame": "Ferme le jeu pour appliquer un preset"
+  },
+  "parts": {
+    "swaps": "Swaps d'items",
+    "palette": "Palette",
+    "decal": "Decal custom",
+    "map": "Map"
+  },
+  "share": {
+    "title": "Partager « {{name}} »",
+    "description": "Toute personne ayant ALXS-RL-Mod peut importer ce code.",
+    "copy": "Copier le code",
+    "note": "Le code contient les identifiants des items et les couleurs de ta palette. Les maps sont des fichiers locaux : la personne garde les siennes."
+  },
+  "import": {
+    "open": "Importer",
+    "title": "Importer un preset",
+    "description": "Colle un code qui commence par ALXS1:",
+    "paste": "Coller",
+    "confirm": "Importer le preset",
+    "invalid": "Ça ne ressemble pas à un code ALXS-RL-Mod."
+  },
+  "random": {
+    "open": "Aléatoire",
+    "title": "Loadout aléatoire",
+    "description": "Choisis les emplacements à mélanger. Les decals vont toujours avec la voiture qui sera affichée.",
+    "roll": "Tirer",
+    "reroll": "Retirer",
+    "save": "Enregistrer en preset",
+    "hint": "Utilise comme items équipés ceux à partir desquels tu as swappé en dernier.",
+    "skipped": "Ignorés (aucun item équipé connu pour l'instant) : {{slots}}",
+    "defaultName": "Loadout aléatoire"
+  },
+  "report": {
+    "okTitle": "Preset appliqué",
+    "partialTitle": "Preset appliqué en partie",
+    "description": "Chaque partie est appliquée séparément — voici ce qui s'est passé.",
+    "applied_one": "{{count}} appliqué",
+    "applied_other": "{{count}} appliqués"
+  },
+  "toast": {
+    "saved": "Preset enregistré",
+    "captured": "Config actuelle enregistrée",
+    "imported": "« {{name}} » importé",
+    "applied": "« {{name}} » appliqué — relance le jeu pour le voir",
+    "updated": "« {{name}} » mis à jour"
+  },
+  "edit": {
+    "title": "Modifier le preset",
+    "description": "Renomme-le ou retire des éléments. Pour changer un item : applique le preset, modifie tes swaps, puis enregistre la config actuelle dedans.",
+    "remove": "Retirer du preset",
+    "replaces": "remplace {{name}}",
+    "empty": "Ce preset est vide.",
+    "fromCurrent": "Remplacer par la config actuelle",
+    "fromCurrentHint": "Garde le nom ; swaps, palette, decal et map deviennent ce qui est appliqué maintenant",
+    "workflow": "Astuce : le panneau des modifications actives propose « Enregistrer la config actuelle dans ce preset » dès que tu modifies un preset appliqué."
+  }
+}

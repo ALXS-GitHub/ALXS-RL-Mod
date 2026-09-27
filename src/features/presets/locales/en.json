@@ -1,0 +1,83 @@
+{
+  "eyebrow": "Garage",
+  "title": "Presets",
+  "subtitle": "Save a whole loadout — swaps, palette, custom decal and map — and switch to it in one click: everything else is restored first. Share it with a code.",
+  "nameLabel": "Name",
+  "capture": {
+    "open": "Save current setup",
+    "title": "Save the current setup",
+    "description": "Active swaps, palette, custom decal and map are stored in a new preset.",
+    "confirm": "Save preset"
+  },
+  "empty": {
+    "title": "No preset yet",
+    "description": "Set up your car, then save it here to switch back to it anytime."
+  },
+  "card": {
+    "updated": "Updated {{when}}",
+    "share": "Share",
+    "delete": "Delete",
+    "confirmDelete": "Click again to delete",
+    "noSwaps": "No item swap",
+    "swaps_one": "{{count}} swap",
+    "swaps_other": "{{count}} swaps",
+    "apply": "Apply preset",
+    "edit": "Edit",
+    "closeGame": "Close the game to apply a preset"
+  },
+  "parts": {
+    "swaps": "Item swaps",
+    "palette": "Palette",
+    "decal": "Custom decal",
+    "map": "Map"
+  },
+  "share": {
+    "title": "Share “{{name}}”",
+    "description": "Anyone with ALXS-RL-Mod can import this code.",
+    "copy": "Copy code",
+    "note": "The code contains item ids and your palette colours. Maps are local files: the receiver keeps their own."
+  },
+  "import": {
+    "open": "Import",
+    "title": "Import a preset",
+    "description": "Paste a code starting with ALXS1:",
+    "paste": "Paste",
+    "confirm": "Import preset",
+    "invalid": "This doesn't look like an ALXS-RL-Mod code."
+  },
+  "random": {
+    "open": "Random",
+    "title": "Random loadout",
+    "description": "Pick the slots to shuffle. Decals always fit the car that will be displayed.",
+    "roll": "Roll",
+    "reroll": "Roll again",
+    "save": "Save as preset",
+    "hint": "Uses the items you last swapped from as your equipped items.",
+    "skipped": "Skipped (no equipped item known yet): {{slots}}",
+    "defaultName": "Random loadout"
+  },
+  "report": {
+    "okTitle": "Preset applied",
+    "partialTitle": "Preset partly applied",
+    "description": "Each part is applied on its own — here is what happened.",
+    "applied_one": "{{count}} applied",
+    "applied_other": "{{count}} applied"
+  },
+  "toast": {
+    "saved": "Preset saved",
+    "captured": "Current setup saved",
+    "imported": "“{{name}}” imported",
+    "applied": "“{{name}}” applied — restart the game to see it",
+    "updated": "“{{name}}” updated"
+  },
+  "edit": {
+    "title": "Edit preset",
+    "description": "Rename it or remove parts. To change an item, apply the preset, edit your swaps, then save the current setup into it.",
+    "remove": "Remove from the preset",
+    "replaces": "replaces {{name}}",
+    "empty": "This preset is empty.",
+    "fromCurrent": "Replace with current setup",
+    "fromCurrentHint": "Keeps the name; swaps, palette, decal and map become what is applied now",
+    "workflow": "Tip: the active mods panel offers “Save the current setup into this preset” as soon as you change an applied preset."
+  }
+}

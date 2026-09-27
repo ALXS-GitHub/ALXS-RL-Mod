@@ -1,0 +1,31 @@
+{
+  "eyebrow": "Garage",
+  "title": "Balle",
+  "experimental": "Expérimental",
+  "subtitle": "Mets une image sur la balle standard — sans injection. Toi seul la vois.",
+  "notice": "Pas encore testé en jeu. Ça remplace l'image de la balle standard (modes soccar) ; les autres balles (Hoops, Snow Day…) ne changent pas.",
+  "rescan": "Réanalyser",
+  "importBanner_one": "{{count}} pack de balle AlphaConsole n'est pas encore dans la bibliothèque de l'app.",
+  "importBanner_other": "{{count}} packs de balle AlphaConsole ne sont pas encore dans la bibliothèque de l'app.",
+  "import": "Importer",
+  "inGame": "En jeu",
+  "stale": "Jeu mis à jour — sera reconstruite",
+  "remove": "Retirer",
+  "apply": "Appliquer",
+  "applied": "« {{name}} » appliquée",
+  "appliedHint": "Lance un match pour la voir.",
+  "otherBall": "Balle {{ball}} : non prise en charge",
+  "openFolder": "Ouvrir le dossier de la bibliothèque",
+  "blocked": {
+    "game": "Rocket League est introuvable — indique son dossier dans les Réglages.",
+    "keys": "Les clés des packages (keys.txt) sont absentes — voir Réglages › Fichiers du jeu.",
+    "running": "Ferme Rocket League pour changer la balle."
+  },
+  "library": {
+    "title": "Tes balles",
+    "count_one": "{{count}} pack",
+    "count_other": "{{count}} packs",
+    "empty": "Aucun pack de balle",
+    "emptyHint": "Importe tes balles AlphaConsole (Extras › BakkesMod), ou ajoute <Pack>/Default/Template.json + une image dans le dossier de la bibliothèque."
+  }
+}

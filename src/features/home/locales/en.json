@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "safe": "No injection · no interception · reversible",
+    "title": "Your car. Your colours. Your arena.",
+    "subtitle": "Swap cosmetics, paint your own palette, wear custom decals and play community maps — straight from your game files.",
+    "playOnline": "Play online",
+    "playOffline": "Play offline (mods)"
+  },
+  "setup": {
+    "gameTitle": "Rocket League not found",
+    "gameBody": "Pick your game folder so the app can read your cosmetics.",
+    "keysTitle": "Package keys missing",
+    "keysBody": "Add keys.txt to enable item swaps and custom decals.",
+    "cta": "Open settings"
+  },
+  "loadout": {
+    "title": "Current loadout",
+    "items": "Items",
+    "palette": "Palette",
+    "decal": "Custom decal",
+    "map": "Map",
+    "swaps_one": "{{count}} swap",
+    "swaps_other": "{{count}} swaps",
+    "stock": "Stock",
+    "stockPalette": "Stock palette",
+    "stale": "Needs re-apply after a game update",
+    "applied": "Applied",
+    "none": "None",
+    "mapTarget": "Replaces {{target}}",
+    "stockMaps": "Stock maps"
+  },
+  "session": {
+    "title": "This session",
+    "open": "Open tracker",
+    "wins": "Wins",
+    "losses": "Losses",
+    "streak": "Streak",
+    "goals": "Goals",
+    "mvps": "MVPs"
+  }
+}

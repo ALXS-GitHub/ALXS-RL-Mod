@@ -1,0 +1,109 @@
+{
+  "eyebrow": "Arena",
+  "title": "Maps",
+  "subtitle": "Your custom map library. A map replaces a Labs arena; the original is backed up and comes back in one click. Works while the game runs, from the main menu.",
+  "tabs": {
+    "library": "Library",
+    "browse": "Browse"
+  },
+  "actions": {
+    "import": "Import files",
+    "importFolder": "Import folder"
+  },
+  "import": {
+    "filesTitle": "Import maps (.upk, .udk, .zip)",
+    "folderTitle": "Import a folder of maps (e.g. a BakkesMod Workshop folder)",
+    "filter": "Rocket League maps",
+    "dropTitle": "Drop to import",
+    "dropHint": ".upk, .udk, .zip or folders"
+  },
+  "session": {
+    "active": "Installed in game",
+    "offline": "Offline session",
+    "details": "Replaces {{target}} · since {{when}}",
+    "autoRestore": "the stock arena comes back when the game closes",
+    "restore": "Restore stock arena"
+  },
+  "library": {
+    "search": "Search by name, author or tag",
+    "all": "All ({{count}})",
+    "favorites": "Favorites",
+    "dropHint": "Tip: drag & drop files or folders anywhere",
+    "noMatch": "No map matches",
+    "emptyTitle": "Your library is empty",
+    "emptyDescription": "Import .upk/.zip files, a Workshop folder, or download maps from the Browse tab."
+  },
+  "origin": {
+    "imported": "Imported",
+    "bakkesMod": "Workshop folder",
+    "bakkesPlugins": "BakkesPlugins",
+    "lethamyr": "Lethamyr",
+    "other": "Other"
+  },
+  "card": {
+    "installed": "Installed",
+    "favorite": "Favorite",
+    "playOffline": "Play offline",
+    "installHint": "Replace the Labs arena with this map (Underpass by default)",
+    "edit": "Edit",
+    "reveal": "Show in folder",
+    "delete": "Delete",
+    "lastPlayed": "played {{when}}",
+    "added": "added {{when}}",
+    "installHintLive": "Swap now — go back to the main menu first if you are on this arena",
+    "swap": "Swap",
+    "swapped": "Swapped",
+    "playOfflineHint": "Swap and start the game offline, without EAC",
+    "playOfflineRunning": "The game is already running",
+    "replacesHint": "Labs arena this map replaces (change it in Edit)"
+  },
+  "edit": {
+    "title": "Edit map",
+    "name": "Name",
+    "tags": "Tags",
+    "tagsPlaceholder": "rings, training, 1v1…",
+    "target": "Labs arena to replace",
+    "defaultTarget": "Default ({{target}})",
+    "targetHint": "Pick the Labs map you will load from Free Play → Custom training. Underpass works for most maps."
+  },
+  "delete": {
+    "title": "Delete this map?",
+    "description": "{{name}} will be removed from your library.",
+    "warning": "The map files are deleted from the app's library folder. This cannot be undone."
+  },
+  "browse": {
+    "search": "Search BakkesPlugins",
+    "searchPage": "Filter this page",
+    "previous": "Previous page",
+    "next": "Next page",
+    "page": "Page {{page}}",
+    "pageOf": "Page {{page}} / {{total}}",
+    "download": "Download",
+    "openPage": "Open page",
+    "inLibrary": "In library",
+    "showInLibrary": "Show in library",
+    "unknownAuthor": "Unknown author",
+    "externalHint": "Download in your browser, then drop the file here.",
+    "lethamyrNote": "Lethamyr hosts its files on Google Drive, which this app does not download from. Open a map page, download it in your browser, then drag the file into this window.",
+    "empty": "No maps found",
+    "phase": {
+      "download": "Downloading",
+      "verify": "Verifying checksum",
+      "extract": "Extracting",
+      "done": "Done",
+      "failed": "Failed"
+    }
+  },
+  "toast": {
+    "imported_one": "{{count}} map imported",
+    "imported_other": "{{count}} maps imported",
+    "nothingImported": "No map found in what you dropped",
+    "installed": "{{name}} installed — load it from Free Play in the Labs arena",
+    "launched": "{{name}} is ready",
+    "launchedHint": "The game is starting without EAC. The stock arena comes back when you close it.",
+    "downloaded": "{{name}} added to your library",
+    "installedLive": "{{name}} is in place",
+    "restoredLive": "Stock arena is back",
+    "liveHint": "Load the Labs arena from Free Play to play it."
+  }
+}

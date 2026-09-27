@@ -1,0 +1,114 @@
+{
+  "eyebrow": "Garage",
+  "title": "Swaps d'items",
+  "subtitle": "Équipe en jeu un item que tu possèdes et vois n'importe quel autre à sa place. Construit à partir de tes propres fichiers du jeu — rien n'est téléchargé.",
+  "refresh": "Rescanner le jeu",
+  "refreshHint": "Reconstruire le catalogue depuis ton dossier Rocket League",
+  "catalogStats": "{{items}} items trouvés dans ton install · {{missing}} absents du disque",
+  "steps": {
+    "label": "Étape de sélection",
+    "owned": "1 · Item que tu possèdes",
+    "wanted": "2 · Item que tu veux"
+  },
+  "searchPlaceholder": "Rechercher dans {{slot}}…",
+  "resultCount_one": "{{count}} item",
+  "resultCount_other": "{{count}} items",
+  "filters": {
+    "bodyAuto": "Compatible avec ma voiture",
+    "bodyAll": "Toutes les voitures",
+    "bodyUniversal": "Universels uniquement"
+  },
+  "empty": {
+    "title": "Aucun item ne correspond",
+    "description": "Essaie une autre recherche ou un autre filtre de voiture."
+  },
+  "slots": {
+    "title": "Emplacements",
+    "body": "Carrosseries",
+    "decal": "Decals",
+    "wheels": "Roues",
+    "boost": "Boosts",
+    "topper": "Chapeaux",
+    "antenna": "Antennes",
+    "goalExplosion": "Explosions de but",
+    "trail": "Traînées",
+    "paintFinish": "Finitions de peinture"
+  },
+  "composer": {
+    "owned": "Tu équipes",
+    "wanted": "Tu vois",
+    "ownedEmpty": "Choisis un item que tu possèdes",
+    "wantedEmpty": "Choisis l'item que tu veux",
+    "ownedHint": "Équipe celui-ci en jeu",
+    "wantedHint": "Affiché à sa place",
+    "apply": "Appliquer le swap",
+    "update": "Mettre à jour le swap",
+    "unchanged": "Déjà appliqué",
+    "editingNote": "Modification de ton swap actif : choisis un autre item pour le remplacer."
+  },
+  "paint": {
+    "title": "Peinture",
+    "none": "Sans peinture",
+    "crimson": "Cramoisi",
+    "lime": "Citron vert",
+    "black": "Noir",
+    "orange": "Orange",
+    "skyBlue": "Bleu ciel",
+    "cobalt": "Cobalt",
+    "saffron": "Safran",
+    "grey": "Gris",
+    "pink": "Rose",
+    "forestGreen": "Vert forêt",
+    "purple": "Violet",
+    "titaniumWhite": "Blanc titane",
+    "keptNote": "L'item swappé garde la peinture de l'item que tu possèdes — la peinture est appliquée par le jeu, pas stockée dans les fichiers."
+  },
+  "grid": {
+    "swapped": "Swappé",
+    "sharedHint": "Partage son fichier de jeu avec d'autres variantes : le swapper les affecte aussi.",
+    "lockedHint": "Chiffré avec une clé absente de keys.txt : il peut être remplacé, mais pas affiché à la place d'un autre item.",
+    "locked": "Clé manquante"
+  },
+  "history": {
+    "open": "Historique",
+    "title": "Historique des swaps",
+    "description": "Tout ce qui a été appliqué, restauré ou reconstruit après une mise à jour du jeu.",
+    "empty": "Rien pour l'instant",
+    "on": "sur {{owned}}",
+    "kind": {
+      "applied": "Appliqué",
+      "restored": "Restauré",
+      "reapplied": "Reconstruit",
+      "dropped": "Abandonné"
+    }
+  },
+  "integrity": {
+    "updatedTitle": "Rocket League a été mis à jour",
+    "revertedTitle": "Le jeu a remis certains fichiers d'origine",
+    "description_one": "{{count}} fichier modifié a été remis d'origine. Concerné : {{features}}.",
+    "description_other": "{{count}} fichiers modifiés ont été remis d'origine. Concernés : {{features}}.",
+    "reapply": "Réappliquer maintenant",
+    "done": "Tout est de nouveau en place",
+    "feature": {
+      "swap": "swaps d'items",
+      "palette": "palette",
+      "decals": "decals custom",
+      "maps": "maps",
+      "stats": "API de stats"
+    },
+    "updatedDescription": "Tes mods doivent être reconstruits pour la nouvelle version. Concernés : {{features}}."
+  },
+  "toast": {
+    "applied": "Swap appliqué — relance le jeu pour le voir",
+    "restored": "Item d'origine restauré"
+  },
+  "catalogFromGame": "Liste des produits lue dans ton jeu — les nouvelles saisons apparaissent automatiquement.",
+  "catalogBundled": "Liste des produits : copie intégrée (celle du jeu n'a pas pu être lue).",
+  "locked": {
+    "bannerTitle_one": "{{count}} item de cette catégorie est verrouillé.",
+    "bannerTitle_other": "{{count}} items de cette catégorie sont verrouillés.",
+    "bannerBody": "Leur fichier est chiffré avec une clé absente de keys.txt : tu peux les remplacer par un autre item, mais pas les afficher à la place d'un autre. Ils se débloquent dès que la clé est ajoutée (Réglages › Fichiers du jeu).",
+    "pickTitle": "Item verrouillé",
+    "pickBody": "{{name}} est chiffré avec une clé absente de keys.txt : il ne peut pas être l'item affiché. Ajoute la clé dans Réglages › Fichiers du jeu pour le débloquer."
+  }
+}

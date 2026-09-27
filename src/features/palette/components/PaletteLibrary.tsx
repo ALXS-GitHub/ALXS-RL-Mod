@@ -1,0 +1,150 @@
+import { Copy, Plus, Trash2 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useTranslation } from "react-i18next";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/feedback";
+import { GlassCard } from "@/components/ui/glass";
+import { Tooltip } from "@/components/ui/tooltip";
+import { formatRelative } from "@/lib/format";
+import { type Palette, STOCK_ID } from "../api";
+import { toHex } from "../colors";
+
+interface PaletteLibraryProps {
+  palettes: readonly Palette[] | undefined;
+  stock: Palette | undefined;
+  selectedId: string | null;
+  activeId: string | null;
+  onSelect: (p: Palette) => void;
+  onNew: () => void;
+  onDuplicate: (p: Palette) => void;
+  onDelete: (p: Palette) => void;
+}
+
+/** Tiny 3-band preview: blue primary · orange primary · accent. */
+function Strip({ p }: { p: Palette }) {
+  const pick = (arr: Palette["accent"], n: number) =>
+    Array.from({ length: n }, (_, i) => arr[Math.floor((i * arr.length) / n)] ?? { r: 0, g: 0, b: 0 });
+  const bands = [
+    pick(p.primaryBlue, 10),
+    pick(p.primaryOrange.length ? p.primaryOrange : p.primaryBlue, 10),
+    pick(p.accent, 15),
+  ];
+  return (
+    <div className="flex flex-col gap-[3px] overflow-hidden rounded-md">
+      {bands.map((band, bi) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: fixed bands
+        <div key={bi} className="flex h-2.5">
+          {band.map((c, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: positional swatches
+            <span key={i} className="flex-1" style={{ background: toHex(c) }} />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function PaletteLibrary({
+  palettes,
+  stock,
+  selectedId,
+  activeId,
+  onSelect,
+  onNew,
+  onDuplicate,
+  onDelete,
+}: PaletteLibraryProps) {
+  const { t } = useTranslation("palette");
+  const items = [...(stock ? [stock] : []), ...(palettes ?? [])];
+
+  return (
+    <div className="flex flex-col gap-3">
+      <Button variant="outline" onClick={onNew} className="w-full border-dashed">
+        <Plus />
+        {t("actions.new")}
+      </Button>
+      {!palettes || !stock ? (
+        <>
+          <Skeleton className="h-24" />
+          <Skeleton className="h-24" />
+        </>
+      ) : null}
+      <AnimatePresence initial={false}>
+        {items.map((p, i) => {
+          const isStock = p.id === STOCK_ID;
+          const active = activeId === p.id || (isStock && !activeId);
+          return (
+            <motion.div
+              key={p.id}
+              layout
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0, transition: { delay: i * 0.035 } }}
+              exit={{ opacity: 0, x: -12 }}
+            >
+              <GlassCard
+                selected={selectedId === p.id}
+                className="cursor-pointer p-3.5"
+                onClick={() => onSelect(p)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") onSelect(p);
+                }}
+              >
+                <div className="mb-2.5 flex items-center justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold">{isStock ? t("library.stock") : p.name}</p>
+                    <p className="text-[11px] text-fg-subtle">
+                      {isStock ? t("library.stockHint") : formatRelative(p.updatedAt)}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-1">
+                    {active ? (
+                      <Badge tone="success" dot pulse={!isStock}>
+                        {t("library.inGame")}
+                      </Badge>
+                    ) : null}
+                    <Tooltip content={t("actions.duplicate")}>
+                      <Button
+                        size="icon-sm"
+                        variant="ghost"
+                        aria-label={t("actions.duplicate")}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDuplicate(p);
+                        }}
+                      >
+                        <Copy />
+                      </Button>
+                    </Tooltip>
+                    {!isStock ? (
+                      <Tooltip content={t("actions.delete")}>
+                        <Button
+                          size="icon-sm"
+                          variant="ghost"
+                          aria-label={t("actions.delete")}
+                          className="hover:text-danger"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete(p);
+                          }}
+                        >
+                          <Trash2 />
+                        </Button>
+                      </Tooltip>
+                    ) : null}
+                  </div>
+                </div>
+                <Strip p={p} />
+              </GlassCard>
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
+      {palettes && palettes.length === 0 ? (
+        <p className="px-1 text-xs text-fg-subtle">{t("library.empty")}</p>
+      ) : null}
+    </div>
+  );
+}

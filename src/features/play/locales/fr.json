@@ -1,0 +1,35 @@
+{
+  "eyebrow": "Arène",
+  "title": "Jouer",
+  "subtitle": "Lance Rocket League en ligne avec Easy Anti-Cheat, ou hors ligne avec tes mods et tes maps custom.",
+  "launch": {
+    "notInstalled": "Rocket League introuvable — indique son dossier dans les Réglages",
+    "alreadyRunning": "Le jeu est déjà lancé",
+    "started": "Rocket League démarre",
+    "viaLauncher": "Lancement demandé à ton launcher",
+    "eacHint": "En ligne, avec Easy Anti-Cheat.",
+    "offlineHint": "Hors ligne, sans EAC : mods et maps custom actifs.",
+    "footnote": "Cette app n'injecte jamais rien dans le jeu et ne touche jamais à son trafic réseau.",
+    "eac": {
+      "badge": "EAC activé",
+      "title": "Jouer en ligne",
+      "viaEpic": "Démarre via le launcher Epic Games, avec Easy Anti-Cheat et ton compte en ligne.",
+      "viaSteam": "Démarre via Steam, avec Easy Anti-Cheat et ton compte en ligne.",
+      "direct": "Démarre directement la version EAC du jeu.",
+      "p1": "Classé, occasionnel, tournois",
+      "p2": "Swaps d'items, palette et decals visibles par toi seul",
+      "p3": "Les maps custom doivent d'abord être retirées",
+      "cta": "Lancer en ligne",
+      "mapActive": "La map custom « {{name}} » est installée — remets l'arène d'origine d'abord (Maps)"
+    },
+    "offline": {
+      "badge": "EAC désactivé",
+      "title": "Hors ligne & modding",
+      "description": "Démarre le jeu sans Easy Anti-Cheat : maps custom, entraînement libre et outils hors ligne.",
+      "p1": "Maps custom dans l'arène Labs",
+      "p2": "BakkesMod ne fonctionne que dans ce mode",
+      "p3": "Pas de matchmaking en ligne",
+      "cta": "Lancer hors ligne"
+    }
+  }
+}

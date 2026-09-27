@@ -1,0 +1,158 @@
+{
+  "Body_All_Mat_matches": [],
+  "Body_Paintable_Mat_matches": [],
+  "startup_mics": [
+    {
+      "name": "MIC_Body_Octane",
+      "export_idx": 786,
+      "parent": null,
+      "texture_params": [],
+      "vector_params": [],
+      "scalar_params": [],
+      "tagged_block_shift": 1136
+    },
+    {
+      "name": "OctaneChassis_MIC",
+      "export_idx": 787,
+      "parent": null,
+      "texture_params": [],
+      "vector_params": [],
+      "scalar_params": [],
+      "tagged_block_shift": null
+    },
+    {
+      "name": "Body_All_MIC",
+      "export_idx": 831,
+      "parent": {
+        "idx": 227,
+        "resolved": "export[226]:Frame_01_Mat(Material)"
+      },
+      "texture_params": [
+        {
+          "index": 0,
+          "ParameterName": "ColorLookup",
+          "ParameterValue_idx": -373,
+          "ParameterValue_resolved": "import[372]:Team1_ColorLookup/TeamColorScriptedTexture_TA (top_pkg='CustomColors')",
+          "ExpressionGUID_hex": "A8B514195518D94FA67DBF20AE5F03DF"
+        }
+      ],
+      "vector_params": [],
+      "scalar_params": [],
+      "tagged_block_shift": 940
+    },
+    {
+      "name": "MIC_Body_Paintable_All",
+      "export_idx": 832,
+      "parent": null,
+      "texture_params": [],
+      "vector_params": [],
+      "scalar_params": [],
+      "tagged_block_shift": 24
+    }
+  ],
+  "diffuse_guid_hits_startup": [],
+  "diffuse_guid_hits_body_octane": [],
+  "body_diffuse_textures": [
+    {
+      "export": 2498,
+      "name": "Import_Body_BlankSkin",
+      "tfc": null,
+      "num_mips": 269419010,
+      "first_mip": null
+    },
+    {
+      "export": 2501,
+      "name": "Octane_Body_D",
+      "tfc": "Textures3",
+      "num_mips": -1,
+      "first_mip": null
+    },
+    {
+      "export": 2502,
+      "name": "Pepe_Body_BlankSkin",
+      "tfc": "Textures6",
+      "num_mips": -1886740229,
+      "first_mip": null
+    },
+    {
+      "export": 2503,
+      "name": "Pepe_Body_D",
+      "tfc": "Textures2",
+      "num_mips": 33686088,
+      "first_mip": null
+    },
+    {
+      "export": 2504,
+      "name": "Chasis_Pepe_D",
+      "tfc": "Textures2",
+      "num_mips": -1439779736,
+      "first_mip": null
+    },
+    {
+      "export": 2505,
+      "name": "Chasis_Pepe_N",
+      "tfc": "Textures2",
+      "num_mips": -2146017024,
+      "first_mip": null
+    }
+  ],
+  "chain_trace": [
+    {
+      "depth": 1,
+      "upk": "Skin_Octane_Stars_SF.upk",
+      "export": 67,
+      "name": "Octane_Stars_MIC",
+      "class": "MaterialInstanceConstant",
+      "info": {
+        "name": "Octane_Stars_MIC",
+        "export_idx": 67,
+        "parent": {
+          "idx": -21,
+          "resolved": "import[20]:MIC_Body_Paintable_All/MaterialInstanceConstant (top_pkg='Vehicle_Parent_Materials')"
+        },
+        "texture_params": [
+          {
+            "index": 0,
+            "ParameterName": "CurvaturePack",
+            "ParameterValue_idx": 95,
+            "ParameterValue_resolved": "export[94]:Body_Force_Curvature(Texture2D)",
+            "ExpressionGUID_hex": "5397B3369A17F541BE6CCF84CC974D50"
+          },
+          {
+            "index": 1,
+            "ParameterName": "Diffuse",
+            "ParameterValue_idx": 97,
+            "ParameterValue_resolved": "export[96]:Force_Body_D(Texture2D)",
+            "ExpressionGUID_hex": "71B786375FAD894A889CA31EEC008A34"
+          },
+          {
+            "index": 2,
+            "ParameterName": "Skin",
+            "ParameterValue_idx": 96,
+            "ParameterValue_resolved": "export[95]:Force_Body_BlankSkin(Texture2D)",
+            "ExpressionGUID_hex": "F6B52F2542ABBD49AA455F91F981F5C9"
+          }
+        ],
+        "vector_params": [],
+        "scalar_params": [],
+        "tagged_block_shift": 320
+      }
+    },
+    {
+      "depth": 2,
+      "upk": "Startup.upk",
+      "export": 832,
+      "name": "MIC_Body_Paintable_All",
+      "class": "MaterialInstanceConstant",
+      "info": {
+        "name": "MIC_Body_Paintable_All",
+        "export_idx": 832,
+        "parent": null,
+        "texture_params": [],
+        "vector_params": [],
+        "scalar_params": [],
+        "tagged_block_shift": 24
+      }
+    }
+  ]
+}

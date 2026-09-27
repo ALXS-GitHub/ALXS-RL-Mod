@@ -1,0 +1,76 @@
+{
+  "eyebrow": "Garage",
+  "title": "Colour palette",
+  "subtitle": "Replace the game's primary and accent colour pickers. Your palette loads through the mods folder — the game file itself is never modified.",
+  "actions": {
+    "new": "New palette",
+    "duplicate": "Duplicate",
+    "delete": "Delete",
+    "save": "Save",
+    "apply": "Apply in game",
+    "applyHint": "Saves and loads this palette in Rocket League (restart the game to see it)",
+    "restore": "Back to stock"
+  },
+  "status": {
+    "gameMissing": "Rocket League was not found — set its folder in Settings to edit the palette.",
+    "unsupported": "The colour pickers could not be located in this game build.",
+    "gameRunning": "Rocket League is running — close it to apply or restore a palette.",
+    "stale": "The game was updated since \"{{name}}\" was applied — it will be rebuilt automatically, or apply it again.",
+    "active": "\"{{name}}\" is loaded in game · applied {{when}}",
+    "stockInGame": "The game uses its stock colours."
+  },
+  "library": {
+    "stock": "Stock colours",
+    "stockHint": "The game's own pickers",
+    "inGame": "In game",
+    "empty": "Your palettes will appear here. Start from the stock colours or a generator."
+  },
+  "editor": {
+    "newName": "My palette",
+    "copyName": "{{name}} (copy)",
+    "namePlaceholder": "Palette name",
+    "unsaved": "Unsaved",
+    "link": "Same primaries for both teams",
+    "linkHint": "Edit blue and orange primaries together",
+    "teamLabel": "Picker",
+    "teams": {
+      "blue": "Blue primary",
+      "orange": "Orange primary",
+      "accent": "Accent"
+    },
+    "slot": "Slot {{index}} · {{hex}}",
+    "selectHint": "Select a swatch to edit it.",
+    "pick": "Pick a colour",
+    "hex": "Hex colour",
+    "position": "Row {{row}} · Column {{col}}",
+    "fillRow": "Fill row",
+    "fillColumn": "Fill column",
+    "resetSlot": "Reset to stock",
+    "preview": "Blue · Orange · Accent",
+    "note": "Rows are shades, columns are hues — the same layout as the in-game picker. A small dot marks slots changed from stock."
+  },
+  "generators": {
+    "rainbow": "Rainbow",
+    "rainbowHint": "One hue per column, light to dark",
+    "harmony": "Harmony",
+    "harmonyHint": "Random harmonious set",
+    "gradient": "Gradient",
+    "from": "Gradient start",
+    "to": "Gradient end",
+    "hueShift": "Rotate hues",
+    "resetStock": "Reset picker"
+  },
+  "toast": {
+    "saved": "\"{{name}}\" saved",
+    "applied": "\"{{name}}\" applied",
+    "restartHint": "Start (or restart) Rocket League to see it."
+  },
+  "dialogs": {
+    "discardTitle": "Discard your changes?",
+    "discardBody": "The palette you are editing has unsaved changes.",
+    "discard": "Discard",
+    "deleteTitle": "Delete \"{{name}}\"?",
+    "deleteBody": "This palette will be removed from your library.",
+    "deleteActiveBody": "This palette is in game: the stock colours will be restored first."
+  }
+}

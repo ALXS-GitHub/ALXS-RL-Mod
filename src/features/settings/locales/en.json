@@ -1,0 +1,84 @@
+{
+  "eyebrow": "System",
+  "title": "Settings",
+  "subtitle": "Game location, appearance, automation and privacy.",
+  "game": {
+    "title": "Rocket League",
+    "source": {
+      "epic": "Epic Games",
+      "steam": "Steam",
+      "manual": "Custom folder"
+    },
+    "folder": "Game folder",
+    "folderHint": "Detected automatically for Epic and Steam. Pick it manually if needed.",
+    "autoDetect": "Auto-detect",
+    "pickTitle": "Select the Rocket League folder",
+    "pickSuccess": "Game folder updated"
+  },
+  "keys": {
+    "title": "Game files",
+    "status": "Package keys",
+    "present": "Available",
+    "missing": "Missing",
+    "presentHint_one": "{{count}} key loaded — item swaps and custom decals are enabled.",
+    "presentHint_other": "{{count}} keys loaded — item swaps and custom decals are enabled.",
+    "missingHint": "Without keys.txt, item swaps and custom decals are disabled. Maps, palette and tracker still work.",
+    "dropIn": "Add keys.txt",
+    "dropInHint": "Pick your keys.txt (it is copied into the app data folder), or drop it there yourself.",
+    "import": "Import keys.txt"
+  },
+  "appearance": {
+    "title": "Appearance",
+    "language": "Language",
+    "languageHint": "Interface language.",
+    "fx": "Visual effects",
+    "fxHint": "Animated aurora background. Low halves the GPU cost.",
+    "fxOff": "Off",
+    "fxLow": "Low",
+    "fxHigh": "High",
+    "pauseInGame": "Pause effects while playing",
+    "pauseInGameHint": "Stops all animation when Rocket League is in the foreground."
+  },
+  "automation": {
+    "title": "Automation",
+    "reapply": "Re-apply after game updates",
+    "reapplyHint": "Rebuilds your swaps, palette and decals from the new game files automatically.",
+    "restoreMaps": "Restore maps when the game closes",
+    "restoreMapsHint": "After an offline session, the stock map is put back so online play stays clean."
+  },
+  "privacy": {
+    "title": "Privacy & safety",
+    "local": "Everything runs locally: your catalog comes from your own game files.",
+    "noInjection": "Nothing is injected into the game process.",
+    "noInterception": "Game traffic is never intercepted: no certificates, no proxy, no hosts file.",
+    "reversible": "Every file change is recorded with a verified backup and can be undone.",
+    "diagnostics": "Diagnostics bundle",
+    "diagnosticsHint": "Creates a local zip (logs + settings) you can share if you need help. Nothing is uploaded.",
+    "diagnosticsDone": "Diagnostics saved"
+  },
+  "about": {
+    "title": "About",
+    "version": "Version",
+    "data": "App data",
+    "logs": "Logs",
+    "showLogs": "Show logs",
+    "logsHint": "Kept 30 days.",
+    "checkUpdates": "Check for updates"
+  },
+  "stock": {
+    "title": "Restore the stock game",
+    "hint": "Removes every change the app made to the game files. Useful if something looks wrong.",
+    "gameRunning": "Close Rocket League first.",
+    "action": "Restore stock",
+    "confirmTitle": "Restore the stock game?",
+    "confirmBody": "The game goes back to its original files.",
+    "listSwaps": "All item swaps are undone",
+    "listPalette": "The colour palette goes back to stock",
+    "listDecal": "The custom decal is removed",
+    "listMap": "The active custom map is removed",
+    "kept": "Your presets, palettes, decal packs and map library are kept — you can re-apply them anytime.",
+    "done": "Game restored to stock",
+    "doneDetail_one": "{{count}} file restored.",
+    "doneDetail_other": "{{count}} files restored."
+  }
+}

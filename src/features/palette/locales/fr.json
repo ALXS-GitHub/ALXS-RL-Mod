@@ -1,0 +1,76 @@
+{
+  "eyebrow": "Garage",
+  "title": "Palette de couleurs",
+  "subtitle": "Remplace les nuanciers de couleur principale et d'accent du jeu. Ta palette est chargée via le dossier mods — le fichier du jeu n'est jamais modifié.",
+  "actions": {
+    "new": "Nouvelle palette",
+    "duplicate": "Dupliquer",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "apply": "Appliquer en jeu",
+    "applyHint": "Enregistre et charge cette palette dans Rocket League (relance le jeu pour la voir)",
+    "restore": "Revenir d'origine"
+  },
+  "status": {
+    "gameMissing": "Rocket League est introuvable — indique son dossier dans les Réglages pour modifier la palette.",
+    "unsupported": "Les nuanciers n'ont pas pu être localisés dans cette version du jeu.",
+    "gameRunning": "Rocket League est lancé — ferme-le pour appliquer ou restaurer une palette.",
+    "stale": "Le jeu a été mis à jour depuis l'application de « {{name}} » — elle sera reconstruite automatiquement, ou applique-la à nouveau.",
+    "active": "« {{name}} » est chargée en jeu · appliquée {{when}}",
+    "stockInGame": "Le jeu utilise ses couleurs d'origine."
+  },
+  "library": {
+    "stock": "Couleurs d'origine",
+    "stockHint": "Les nuanciers du jeu",
+    "inGame": "En jeu",
+    "empty": "Tes palettes apparaîtront ici. Pars des couleurs d'origine ou d'un générateur."
+  },
+  "editor": {
+    "newName": "Ma palette",
+    "copyName": "{{name}} (copie)",
+    "namePlaceholder": "Nom de la palette",
+    "unsaved": "Non enregistrée",
+    "link": "Mêmes couleurs principales pour les deux équipes",
+    "linkHint": "Modifie les couleurs principales bleue et orange ensemble",
+    "teamLabel": "Nuancier",
+    "teams": {
+      "blue": "Principale bleue",
+      "orange": "Principale orange",
+      "accent": "Accent"
+    },
+    "slot": "Case {{index}} · {{hex}}",
+    "selectHint": "Sélectionne une case pour la modifier.",
+    "pick": "Choisir une couleur",
+    "hex": "Couleur hexadécimale",
+    "position": "Ligne {{row}} · Colonne {{col}}",
+    "fillRow": "Remplir la ligne",
+    "fillColumn": "Remplir la colonne",
+    "resetSlot": "Remettre d'origine",
+    "preview": "Bleu · Orange · Accent",
+    "note": "Les lignes sont des nuances, les colonnes des teintes — la même disposition que le nuancier du jeu. Un petit point marque les cases modifiées."
+  },
+  "generators": {
+    "rainbow": "Arc-en-ciel",
+    "rainbowHint": "Une teinte par colonne, du clair au foncé",
+    "harmony": "Harmonie",
+    "harmonyHint": "Ensemble harmonieux aléatoire",
+    "gradient": "Dégradé",
+    "from": "Début du dégradé",
+    "to": "Fin du dégradé",
+    "hueShift": "Faire tourner les teintes",
+    "resetStock": "Réinitialiser le nuancier"
+  },
+  "toast": {
+    "saved": "« {{name}} » enregistrée",
+    "applied": "« {{name}} » appliquée",
+    "restartHint": "Lance (ou relance) Rocket League pour la voir."
+  },
+  "dialogs": {
+    "discardTitle": "Abandonner tes modifications ?",
+    "discardBody": "La palette en cours d'édition a des modifications non enregistrées.",
+    "discard": "Abandonner",
+    "deleteTitle": "Supprimer « {{name}} » ?",
+    "deleteBody": "Cette palette sera retirée de ta bibliothèque.",
+    "deleteActiveBody": "Cette palette est en jeu : les couleurs d'origine seront d'abord restaurées."
+  }
+}

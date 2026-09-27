@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ALXS-RL-Mod — Rocket League item swaps, custom decals &amp; maps (no injection)</title>
+  <meta name="description" content="Free open-source app for Rocket League on PC (Epic Games): item swaps, AlphaConsole-style custom decals in real colors, custom ball, team color palettes, Workshop maps, presets and a match tracker. File-based, no DLL injection." />
+  <meta name="keywords" content="Rocket League, Rocket League mod, item swap, custom decals, AlphaConsole alternative, BakkesMod alternative, Rocket League custom ball, Rocket League workshop maps, Rocket League palette, Epic Games" />
+  <link rel="canonical" href="https://alxs-github.github.io/ALXS-RL-Mod/" />
+  <link rel="alternate" hreflang="en" href="https://alxs-github.github.io/ALXS-RL-Mod/" />
+  <link rel="alternate" hreflang="fr" href="https://alxs-github.github.io/ALXS-RL-Mod/fr/" />
+  <link rel="alternate" hreflang="x-default" href="https://alxs-github.github.io/ALXS-RL-Mod/" />
+  <meta name="theme-color" content="#06070c" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ALXS-RL-Mod" />
+  <meta property="og:title" content="ALXS-RL-Mod — Rocket League item swaps, custom decals &amp; maps (no injection)" />
+  <meta property="og:description" content="Free open-source app for Rocket League on PC (Epic Games): item swaps, AlphaConsole-style custom decals in real colors, custom ball, team color palettes, Workshop maps, presets and a match tracker. File-based, no DLL injection." />
+  <meta property="og:url" content="https://alxs-github.github.io/ALXS-RL-Mod/" />
+  <meta property="og:image" content="https://alxs-github.github.io/ALXS-RL-Mod/assets/og-image.png" />
+  <meta property="og:image:width" content="1280" />
+  <meta property="og:image:height" content="640" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ALXS-RL-Mod — Rocket League item swaps, custom decals &amp; maps (no injection)" />
+  <meta name="twitter:description" content="Free open-source app for Rocket League on PC (Epic Games): item swaps, AlphaConsole-style custom decals in real colors, custom ball, team color palettes, Workshop maps, presets and a match tracker. File-based, no DLL injection." />
+  <meta name="twitter:image" content="https://alxs-github.github.io/ALXS-RL-Mod/assets/og-image.png" />
+  <!-- Google Search Console: paste the verification meta tag here. -->
+  <link rel="stylesheet" href="styles.css" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "ALXS-RL-Mod", "applicationCategory": "GameApplication", "applicationSubCategory": "Game modding tool", "operatingSystem": "Windows 10, Windows 11", "description": "Free open-source app for Rocket League on PC (Epic Games): item swaps, AlphaConsole-style custom decals in real colors, custom ball, team color palettes, Workshop maps, presets and a match tracker. File-based, no DLL injection.", "url": "https://alxs-github.github.io/ALXS-RL-Mod/", "downloadUrl": "https://github.com/ALXS-GitHub/ALXS-RL-Mod/releases/latest", "softwareHelp": "https://github.com/ALXS-GitHub/ALXS-RL-Mod", "license": "https://www.gnu.org/licenses/gpl-3.0.html", "image": "https://alxs-github.github.io/ALXS-RL-Mod/assets/og-image.png", "screenshot": "https://alxs-github.github.io/ALXS-RL-Mod/assets/hybrid-paint.jpg", "inLanguage": ["en", "fr"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "author": {"@type": "Person", "name": "ALXS", "url": "https://github.com/ALXS-GitHub"}}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is ALXS-RL-Mod free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. It is free and open source under the GPL-3.0 license. The code is on GitHub."}}, {"@type": "Question", "name": "Does it inject into the game like BakkesMod?", "acceptedAnswer": {"@type": "Answer", "text": "No. It never injects code and never touches network traffic: it only edits local game files, like a manual file mod, with a backup of each one."}}, {"@type": "Question", "name": "Can other players see my items?", "acceptedAnswer": {"@type": "Answer", "text": "No. Swaps, decals, palettes and the ball are local: only you see them. Other players see your real items."}}, {"@type": "Question", "name": "Can I get banned?", "acceptedAnswer": {"@type": "Answer", "text": "The app works on local files only. Modifying game files still goes against the game's terms of use, so use it at your own risk."}}, {"@type": "Question", "name": "Where do I get keys.txt?", "acceptedAnswer": {"@type": "Answer", "text": "The Rocket League modding community shares an up-to-date list of package keys (for example alongside package tools such as RLUPKTool). The app does not ship them; import the file from the welcome screen or the settings."}}, {"@type": "Question", "name": "Does it work on Steam, Mac or console?", "acceptedAnswer": {"@type": "Answer", "text": "Windows with the Epic Games version of Rocket League only, for now."}}, {"@type": "Question", "name": "How do I remove everything?", "acceptedAnswer": {"@type": "Answer", "text": "Settings → Restore the stock game, or uninstall the app: the uninstaller puts the original files back first."}}]}</script>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="https://alxs-github.github.io/ALXS-RL-Mod/"><img src="assets/logo.png" alt="" width="30" height="30" />ALXS-RL-Mod</a>
+      <nav class="links">
+        <a class="hide-sm" href="#features">Features</a>
+        <a class="hide-sm" href="#how">How it works</a>
+        <a class="hide-sm" href="#faq">FAQ</a>
+        <a href="fr/" hreflang="fr">Français</a>
+        <a class="btn small" href="https://github.com/ALXS-GitHub/ALXS-RL-Mod" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.6 18.3 5 18.3 5c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <div>
+        <span class="pill"><span class="dot"></span>Free · Open source · Windows</span>
+        <h1>Customize <span class="accent">Rocket League</span> without injection</h1>
+        <p class="lead">Item swaps, custom decals in real colors, your own ball, team color palettes and Workshop maps — straight from your game files. Every change is backed up and undone in one click.</p>
+        <div class="cta">
+          <a class="btn primary" href="https://github.com/ALXS-GitHub/ALXS-RL-Mod/releases/latest" data-download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Download for Windows</a>
+          <a class="btn" href="https://github.com/ALXS-GitHub/ALXS-RL-Mod" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.6 18.3 5 18.3 5c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>View on GitHub</a>
+          <span class="meta">Latest version: <span data-version>see releases</span> · Rocket League on PC, Epic Games version</span>
+        </div>
+      </div>
+      <div class="shot"><img src="assets/hybrid-paint.jpg" alt="Rocket League Octane with a custom full-color decal whose painted zones follow the player&#x27;s colors" width="1600" height="900" fetchpriority="high" /></div>
+    </div>
+
+    <section id="features">
+      <div class="wrap">
+        <h2>Everything AlphaConsole and BakkesMod plugins did — file-based</h2>
+        <p class="sub">ALXS-RL-Mod edits only your local game files. Nothing is injected into the game and its network traffic is never touched. Only you see the result.</p>
+        <div class="grid">
+        <article class="card"><span class="icon "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></span><h3>Item swaps</h3><p>Equip an item you own, see any other one instead: wheels, boosts, decals, toppers, antennas, goal explosions and more.</p></article>
+        <article class="card"><span class="icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg></span><h3>Custom decals in real colors</h3><p>AlphaConsole-style packs where the image keeps its own colors and chosen zones take your primary and accent colors. Universal decals too.</p></article>
+        <article class="card"><span class="icon "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20"/><path d="M2 12h20"/></svg></span><h3>Custom ball</h3><p>Put your own image on the standard ball.</p></article>
+        <article class="card"><span class="icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.65-.75 1.65-1.69 0-.44-.18-.84-.44-1.13-.29-.29-.44-.65-.44-1.13a1.64 1.64 0 0 1 1.67-1.67h2c3.05 0 5.55-2.5 5.55-5.55C21.97 6.01 17.46 2 12 2z"/></svg></span><h3>Color palettes</h3><p>Replace the game&#x27;s primary and accent color pickers with your own palette.</p></article>
+        <article class="card"><span class="icon "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.1 5.55a2 2 0 0 0 1.8 0l3.65-1.83A1 1 0 0 1 21 4.62v12.76a1 1 0 0 1-.55.9l-4.56 2.27a2 2 0 0 1-1.78 0l-4.22-2.1a2 2 0 0 0-1.78 0l-3.66 1.83A1 1 0 0 1 3 19.38V6.62a1 1 0 0 1 .55-.9l4.56-2.27a2 2 0 0 1 1.78 0z"/><path d="M15 5.76v15"/><path d="M9 3.24v15"/></svg></span><h3>Workshop maps</h3><p>Community maps from bakkesplugins, Lethamyr or your own files, swapped in even while the game runs.</p></article>
+        <article class="card"><span class="icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></span><h3>Presets</h3><p>Save a whole loadout and switch to it in one click. Share it with a code.</p></article>
+        <article class="card"><span class="icon "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><h3>Match tracker</h3><p>Session record, live match and in-game overlay from the game&#x27;s official Stats API. Optional MMR from tracker.gg.</p></article>
+        <article class="card"><span class="icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M8 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/></svg></span><h3>BakkesMod import</h3><p>Bring your Workshop maps, AlphaConsole decal packs and balls into the app in one step.</p></article>
+        <article class="card"><span class="icon "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><h3>Safe by design</h3><p>Backups for every file, one-click restore, automatic rebuild after game updates and auto-updates.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="wrap split">
+        <div>
+          <h2>How it works</h2>
+          <p class="sub">Three steps, no configuration file to edit.</p>
+          <ol class="steps">
+          <li><strong>Install the app</strong>Download the installer and run it. The app finds your Epic Games install of Rocket League and updates itself.</li>
+          <li><strong>Import your keys.txt</strong>Rocket League encrypts part of its packages. Import a community <code>keys.txt</code> to enable swaps, decals and the ball — the app cannot ship these keys.</li>
+          <li><strong>Customize and play</strong>Pick swaps, a decal pack, a ball or a map. The app rebuilds the few files it needs; one click puts the originals back.</li>
+          </ol>
+        </div>
+        <div class="shot"><img src="assets/hybrid-sticker.jpg" alt="A custom decal previewed in Rocket League&#x27;s garage" width="1600" height="900" loading="lazy" /></div>
+      </div>
+    </section>
+
+    <section id="faq" class="faq">
+      <div class="wrap">
+        <h2>Frequently asked questions</h2>
+        <details><summary>Is ALXS-RL-Mod free?</summary><p>Yes. It is free and open source under the GPL-3.0 license. The code is on GitHub.</p></details>
+        <details><summary>Does it inject into the game like BakkesMod?</summary><p>No. It never injects code and never touches network traffic: it only edits local game files, like a manual file mod, with a backup of each one.</p></details>
+        <details><summary>Can other players see my items?</summary><p>No. Swaps, decals, palettes and the ball are local: only you see them. Other players see your real items.</p></details>
+        <details><summary>Can I get banned?</summary><p>The app works on local files only. Modifying game files still goes against the game&#x27;s terms of use, so use it at your own risk.</p></details>
+        <details><summary>Where do I get keys.txt?</summary><p>The Rocket League modding community shares an up-to-date list of package keys (for example alongside package tools such as RLUPKTool). The app does not ship them; import the file from the welcome screen or the settings.</p></details>
+        <details><summary>Does it work on Steam, Mac or console?</summary><p>Windows with the Epic Games version of Rocket League only, for now.</p></details>
+        <details><summary>How do I remove everything?</summary><p>Settings → Restore the stock game, or uninstall the app: the uninstaller puts the original files back first.</p></details>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap band">
+        <h2>Ready to customize your car?</h2>
+        <p>Free download for Windows. Open source on GitHub.</p>
+        <div class="cta">
+          <a class="btn primary" href="https://github.com/ALXS-GitHub/ALXS-RL-Mod/releases/latest" data-download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Download for Windows</a>
+          <a class="btn" href="https://github.com/ALXS-GitHub/ALXS-RL-Mod" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.6 18.3 5 18.3 5c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>ALXS-RL-Mod is a fan-made project, not affiliated with or endorsed by Psyonix or Epic Games. Rocket League is a trademark of Psyonix LLC. No game file or encryption key is distributed.</p>
+      <p>© <span data-year></span> ALXS · <a href="https://github.com/ALXS-GitHub/ALXS-RL-Mod/blob/main/LICENSE">GPL-3.0 license</a> · <a href="https://github.com/ALXS-GitHub/ALXS-RL-Mod">GitHub</a></p>
+    </div>
+  </footer>
+  <script src="app.js" defer></script>
+</body>
+</html>

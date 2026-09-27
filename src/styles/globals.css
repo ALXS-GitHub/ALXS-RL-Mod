@@ -1,0 +1,212 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+/* ────────────────────────────────────────────────────────────────────────
+   Design tokens.
+   Quiet, dense desktop UI on top of the WebGL aurora: flat surfaces, 1px
+   hairlines, small radii, one typeface. Colour comes from the accent only
+   (a CSS variable the FX store re-tints at runtime) — no glows, no
+   gradient text, no decorative shadows.
+   ──────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --font-sans: "Inter Variable", "Segoe UI Variable", system-ui, sans-serif;
+  --font-display: "Inter Variable", "Segoe UI Variable", system-ui, sans-serif;
+  --font-mono: "Cascadia Code", "JetBrains Mono", ui-monospace, monospace;
+
+  --color-bg: #08090d;
+  --color-bg-elevated: #101117;
+  --color-surface: rgb(17 18 24 / 0.66);
+  --color-surface-strong: rgb(19 20 27 / 0.94);
+  --color-fg: #ededf0;
+  --color-fg-muted: #a1a1aa;
+  --color-fg-subtle: #6b6b76;
+  --color-line: rgb(255 255 255 / 0.07);
+  --color-line-strong: rgb(255 255 255 / 0.13);
+
+  --color-accent: var(--accent, #7c6cff);
+  --color-accent-2: var(--accent-2, #2f7bff);
+  --color-accent-3: var(--accent-3, #ff7a1a);
+  --color-team-blue: #2f7bff;
+  --color-team-orange: #ff7a1a;
+
+  --color-success: #3ddc97;
+  --color-warning: #ffc53d;
+  --color-danger: #ff5d73;
+  --color-info: #5cc8ff;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+
+  /* Elevation is carried by the hairline border; shadows only separate overlays. */
+  --shadow-glass: 0 1px 2px rgb(0 0 0 / 0.25);
+  --shadow-overlay: 0 16px 48px -12px rgb(0 0 0 / 0.7), 0 0 0 1px rgb(255 255 255 / 0.08);
+  /* Selection = crisp accent ring, never a glow. */
+  --shadow-glow: 0 0 0 1px var(--color-accent);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-shimmer: shimmer 2.2s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+
+  @keyframes shimmer {
+    from {
+      background-position: -200% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.45;
+    }
+  }
+}
+
+:root {
+  --accent: #7c6cff;
+  --accent-2: #2f7bff;
+  --accent-3: #ff7a1a;
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  letter-spacing: -0.006em;
+  font-feature-settings: "cv11", "ss01", "ss03", "cv05";
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Text the user may want to copy stays selectable. */
+input,
+textarea,
+[data-selectable] {
+  user-select: text;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-accent) 40%, transparent);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.12) transparent;
+}
+
+:focus-visible {
+  outline: 1.5px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   Glass surfaces
+   ──────────────────────────────────────────────────────────────────────── */
+
+@utility glass {
+  background: var(--color-surface);
+  backdrop-filter: blur(20px) saturate(120%);
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-glass);
+}
+
+@utility glass-strong {
+  background: var(--color-surface-strong);
+  backdrop-filter: blur(24px) saturate(120%);
+  border: 1px solid var(--color-line-strong);
+  box-shadow: var(--shadow-overlay);
+}
+
+@utility glass-inset {
+  background: rgb(0 0 0 / 0.28);
+  border: 1px solid var(--color-line);
+}
+
+/* Interactive surface: the hairline brightens on hover. (Kept under the old
+   name so existing call sites stay valid; no cursor light anymore.) */
+@utility spotlight {
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+  &:hover {
+    border-color: var(--color-line-strong);
+  }
+}
+
+/* Former gradient headline: plain text now, kept so call sites keep working. */
+@utility text-gradient {
+  color: var(--color-fg);
+}
+
+@utility shimmer {
+  background: linear-gradient(
+    90deg,
+    rgb(255 255 255 / 0.03) 0%,
+    rgb(255 255 255 / 0.06) 50%,
+    rgb(255 255 255 / 0.03) 100%
+  );
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+/* Window drag region for the custom title bar. */
+@utility drag {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+@utility no-drag {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+/* Film grain on top of everything — breaks gradient banding. */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion must override every animation */
+    animation-duration: 0.001ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion must override every transition */
+    transition-duration: 0.001ms !important;
+  }
+}

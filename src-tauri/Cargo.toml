@@ -1,0 +1,94 @@
+[package]
+name = "alxs-rl-mod"
+version = "0.2.0"
+description = "Rocket League customisation — file-based, injection-free, local-first"
+authors = ["ALXS"]
+license = "GPL-3.0-or-later"
+repository = "https://github.com/ALXS-GitHub/ALXS-RL-Mod"
+homepage = "https://alxs-github.github.io/ALXS-RL-Mod/"
+edition = "2021"
+rust-version = "1.85"
+
+[lib]
+name = "alxs_rl_mod_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# App framework
+tauri = { version = "2", features = ["protocol-asset"] }
+tauri-plugin-dialog = "2"
+tauri-plugin-opener = "2"
+tauri-plugin-os = "2"
+tauri-plugin-process = "2"
+tauri-plugin-single-instance = "2"
+tauri-plugin-updater = "2"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Errors + logging
+thiserror = "2"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+tracing-appender = "0.2"
+
+# Async
+tokio = { version = "1", features = ["fs", "process", "macros", "rt-multi-thread", "sync", "time"] }
+futures-util = "0.3"
+
+# Paths / fs
+directories = "6"
+dunce = "1"
+walkdir = "2"
+
+# Hashing / ids / time
+sha2 = "0.10"
+hex = "0.4"
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+base64 = "0.22"
+
+# Cooked package engine (AES-256-ECB header tables, chunked zlib bodies)
+aes = "0.8"
+flate2 = { version = "1", features = ["zlib-rs"], default-features = false }
+zopfli = { version = "0.8", default-features = false, features = ["std", "zlib"] }
+
+# Textures: PNG decode/encode + BC1/BC3 (DXT1/DXT5) encode/decode
+image = { version = "0.25", default-features = false, features = ["png"] }
+image_dds = "0.7"
+
+# Process / window detection
+sysinfo = "0.32"
+
+# Network — only allowlisted hosts, see core::security
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json", "stream"] }
+url = "2"
+tokio-tungstenite = "0.24"
+
+# Archives (map zips, diagnostics export)
+zip = { version = "2", default-features = false, features = ["deflate"] }
+
+# Steam libraryfolders.vdf parsing
+keyvalues-parser = "0.2"
+
+[target.'cfg(windows)'.dependencies]
+winreg = "0.52"
+windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging"] }
+
+[dev-dependencies]
+tempfile = "3"
+
+# Dependencies optimised in dev builds too: texture encoding (BC1/BC3) and
+# zopfli recompression are 10-50x slower unoptimised.
+[profile.dev.package."*"]
+opt-level = 2
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+strip = true

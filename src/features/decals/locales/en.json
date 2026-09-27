@@ -1,0 +1,85 @@
+{
+  "eyebrow": "Garage",
+  "title": "Custom decals",
+  "subtitle": "Use your AlphaConsole-style decal packs again — without injection. Your files stay where they are.",
+  "actions": {
+    "rescan": "Rescan",
+    "remove": "Remove"
+  },
+  "how": {
+    "title": "How it works",
+    "mode": "Paintable mode",
+    "step1": "Pick a pack that ships a colour-zone mask (the \"Skin\" PNG).",
+    "step2": "Choose which of your decals it replaces — you must own that decal.",
+    "step3": "Equip that decal in game: the pack's shapes take your primary and accent colours.",
+    "limit": "Packs with an image show it in its own colours outside the colour zones (AlphaConsole packs can be converted). Octane only for now."
+  },
+  "blocked": {
+    "game": "Rocket League was not found — set its folder in Settings.",
+    "keys": "The package keys (keys.txt) are missing — see Settings › Game files.",
+    "running": "Close Rocket League to apply or remove a decal."
+  },
+  "active": {
+    "inGame": "In game",
+    "stale": "Game updated — will be rebuilt"
+  },
+  "library": {
+    "title": "Your packs",
+    "count_one": "{{count}} pack · {{supported}} usable",
+    "count_other": "{{count}} packs · {{supported}} usable",
+    "search": "Search packs…",
+    "filterSupported": "Usable",
+    "filterAll": "All",
+    "empty": "No decal pack found",
+    "emptyHint": "Add the folder that holds your packs below (each pack: <Pack>/<Body>/Template.json).",
+    "noMatch": "No pack matches your filters"
+  },
+  "pack": {
+    "mask": "Colour-zone mask",
+    "inGame": "In game",
+    "bodyUnsupported": "Body not supported",
+    "noMask": "No mask",
+    "hybrid": "Hybrid",
+    "universal": "Universal"
+  },
+  "panel": {
+    "viewMask": "Zones",
+    "viewArt": "Art",
+    "artNote": "The art is shown for reference — in game, the zones are painted with your colours.",
+    "hybridNote": "The mask's colour zones take your primary and accent colours; everywhere else the image keeps its own colours.",
+    "universalNote": "The art covers the whole car and follows every body. Colours are the pack's own (the pickers don't apply). You need to own the universal decal it replaces.",
+    "slot": "Replaces your decal",
+    "equipHint": "Equip \"{{decal}}\" on {{body}} in game to see it.",
+    "noMask": "This pack has no colour-zone mask (Skin PNG), so it can't be used in paintable mode.",
+    "bodyUnsupported": "The {{body}} body is not supported yet — Octane only for now.",
+    "apply": "Apply",
+    "openFolder": "Show in Explorer"
+  },
+  "folders": {
+    "title": "Library folders",
+    "description": "The app's library (imported packs) and any folder you add. Nothing is moved.",
+    "add": "Add folder",
+    "pick": "Choose a decal library folder",
+    "useDefault": "Keep only the app's library",
+    "default": "Default",
+    "notFound": "Not found",
+    "missing": "Folder not found",
+    "packs_one": "{{count}} pack folder",
+    "packs_other": "{{count}} pack folders",
+    "reveal": "Show in Explorer",
+    "remove": "Remove folder",
+    "none": "No folder configured."
+  },
+  "toast": {
+    "applied": "\"{{name}}\" applied"
+  },
+  "stage": {
+    "badge": "Experimental",
+    "notice": "Validated in game on the Octane. Dominus and Fennec use their own donors and are not tested in game yet."
+  },
+  "import": {
+    "banner_one": "{{count}} AlphaConsole pack isn't in the app's library yet.",
+    "banner_other": "{{count}} AlphaConsole packs aren't in the app's library yet.",
+    "action": "Import"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "eyebrow": "Garage",
+  "title": "Decals custom",
+  "subtitle": "Réutilise tes packs de decals façon AlphaConsole — sans injection. Tes fichiers restent où ils sont.",
+  "actions": {
+    "rescan": "Réanalyser",
+    "remove": "Retirer"
+  },
+  "how": {
+    "title": "Comment ça marche",
+    "mode": "Mode peignable",
+    "step1": "Choisis un pack qui fournit un masque de zones de couleur (le PNG « Skin »).",
+    "step2": "Choisis lequel de tes decals il remplace — tu dois posséder ce decal.",
+    "step3": "Équipe ce decal en jeu : les formes du pack prennent tes couleurs principale et d'accent.",
+    "limit": "Les packs avec une image l'affichent en vraies couleurs hors des zones de couleur (les packs AlphaConsole peuvent être convertis). Octane uniquement pour l'instant."
+  },
+  "blocked": {
+    "game": "Rocket League est introuvable — indique son dossier dans les Réglages.",
+    "keys": "Les clés des packages (keys.txt) sont absentes — voir Réglages › Fichiers du jeu.",
+    "running": "Ferme Rocket League pour appliquer ou retirer un decal."
+  },
+  "active": {
+    "inGame": "En jeu",
+    "stale": "Jeu mis à jour — sera reconstruit"
+  },
+  "library": {
+    "title": "Tes packs",
+    "count_one": "{{count}} pack · {{supported}} utilisable(s)",
+    "count_other": "{{count}} packs · {{supported}} utilisable(s)",
+    "search": "Rechercher un pack…",
+    "filterSupported": "Utilisables",
+    "filterAll": "Tous",
+    "empty": "Aucun pack de decals trouvé",
+    "emptyHint": "Ajoute ci-dessous le dossier qui contient tes packs (chaque pack : <Pack>/<Carrosserie>/Template.json).",
+    "noMatch": "Aucun pack ne correspond à tes filtres"
+  },
+  "pack": {
+    "mask": "Masque des zones de couleur",
+    "inGame": "En jeu",
+    "bodyUnsupported": "Carrosserie non prise en charge",
+    "noMask": "Pas de masque",
+    "hybrid": "Hybride",
+    "universal": "Universel"
+  },
+  "panel": {
+    "viewMask": "Zones",
+    "viewArt": "Image",
+    "artNote": "L'image est affichée pour référence — en jeu, les zones sont peintes avec tes couleurs.",
+    "hybridNote": "Les zones de couleur du masque prennent tes couleurs principale et d'accent ; partout ailleurs l'image garde ses propres couleurs.",
+    "universalNote": "L'image couvre toute la voiture et s'adapte à chaque carrosserie. Les couleurs sont celles du pack (les sélecteurs ne s'appliquent pas). Tu dois posséder le sticker universel qu'il remplace.",
+    "slot": "Remplace ton decal",
+    "equipHint": "Équipe « {{decal}} » sur {{body}} en jeu pour le voir.",
+    "noMask": "Ce pack n'a pas de masque de zones (PNG Skin), il ne peut donc pas être utilisé en mode peignable.",
+    "bodyUnsupported": "La carrosserie {{body}} n'est pas encore prise en charge — Octane uniquement pour l'instant.",
+    "apply": "Appliquer",
+    "openFolder": "Afficher dans l'Explorateur"
+  },
+  "folders": {
+    "title": "Dossiers de bibliothèque",
+    "description": "La bibliothèque de l'app (packs importés) et les dossiers que tu ajoutes. Rien n'est déplacé.",
+    "add": "Ajouter un dossier",
+    "pick": "Choisis un dossier de bibliothèque de decals",
+    "useDefault": "Garder seulement la bibliothèque de l'app",
+    "default": "Par défaut",
+    "notFound": "Introuvable",
+    "missing": "Dossier introuvable",
+    "packs_one": "{{count}} dossier de pack",
+    "packs_other": "{{count}} dossiers de packs",
+    "reveal": "Afficher dans l'Explorateur",
+    "remove": "Retirer le dossier",
+    "none": "Aucun dossier configuré."
+  },
+  "toast": {
+    "applied": "« {{name}} » appliqué"
+  },
+  "stage": {
+    "badge": "Expérimental",
+    "notice": "Validé en jeu sur l'Octane. La Dominus et la Fennec utilisent leurs propres donneurs et ne sont pas encore testées en jeu."
+  },
+  "import": {
+    "banner_one": "{{count}} pack AlphaConsole n'est pas encore dans la bibliothèque de l'app.",
+    "banner_other": "{{count}} packs AlphaConsole ne sont pas encore dans la bibliothèque de l'app.",
+    "action": "Importer"
+  }
+}

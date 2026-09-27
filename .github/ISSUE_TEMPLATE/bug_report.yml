@@ -1,0 +1,33 @@
+name: Bug report
+description: Something doesn't work (app error, game crash, swap or decal not showing).
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: Settings → About.
+      placeholder: "0.2.0"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what you saw instead.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Diagnostics and logs
+      description: >
+        Attach the diagnostics bundle (Settings → Diagnostics bundle) and, if the game
+        crashed, its log (Settings → Logs → Game). Never attach keys.txt.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I use the Epic Games version of Rocket League on Windows.
+          required: true

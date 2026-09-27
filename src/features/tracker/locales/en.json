@@ -1,0 +1,110 @@
+{
+  "eyebrow": "Stats",
+  "title": "Tracker",
+  "subtitle": "Your session record, live match and lobby ranks, and MMR from tracker.gg. Uses the game's own Stats API: nothing is injected.",
+  "connection": {
+    "idle": "Game closed",
+    "connecting": "Connecting…",
+    "connected": "Live",
+    "unreachable": "Not answering",
+    "off": "Stats API off",
+    "waiting": "Waiting for the game"
+  },
+  "setup": {
+    "title": "Tracker setup",
+    "statsApi": "Stats API",
+    "statsOn": "Enabled in your game settings file. Restart the game if it was running.",
+    "statsOff": "The game's built-in match data feed (off by default).",
+    "noConfig": "Launch Rocket League once so it creates its user config folder.",
+    "overlay": "In-game overlay",
+    "overlayHint": "Small always-on-top window with your session and live score. Drag it anywhere.",
+    "restartGame": "The game does not answer: restart Rocket League so it reads the new setting.",
+    "iniPath": "File:"
+  },
+  "session": {
+    "title": "Session",
+    "reset": "New session",
+    "winRate": "{{rate}}% wins",
+    "noMatches": "No match yet",
+    "noStreak": "No streak",
+    "winStreak_one": "{{count}} win in a row",
+    "winStreak_other": "{{count}} wins in a row",
+    "lossStreak_one": "{{count}} loss in a row",
+    "lossStreak_other": "{{count}} losses in a row",
+    "timeline": "Matches",
+    "timelineEmpty": "Finished matches appear here while the tracker is connected.",
+    "since": "started {{when}}",
+    "unavailable": "Session unavailable",
+    "trackerOff": "The Stats API is off: matches are not recorded.",
+    "trackerOffAction": "Turn it on"
+  },
+  "live": {
+    "blue": "Blue",
+    "orange": "Orange",
+    "you": "You",
+    "live": "Live",
+    "replay": "Replay"
+  },
+  "result": {
+    "win": "Win",
+    "loss": "Loss",
+    "unknown": "Left"
+  },
+  "stats": {
+    "score": "Score",
+    "goals": "Goals",
+    "assists": "Assists",
+    "saves": "Saves",
+    "shots": "Shots",
+    "mvps": "MVP",
+    "bestStreak": "Best streak",
+    "avgScore": "Avg. score",
+    "mmr": "MMR (session)",
+    "mmrHint": "Set your profile in the MMR tab"
+  },
+  "mmr": {
+    "title": "MMR",
+    "placeholder": "Epic name, Steam ID…",
+    "lookup": "Look up",
+    "hint": "Public data from tracker.gg.",
+    "empty": "Enter your platform and ID to see your ranks.",
+    "unranked": "Unranked",
+    "session": "this session",
+    "openTracker": "Open on tracker.gg",
+    "platforms": {
+      "epic": "Epic",
+      "steam": "Steam",
+      "psn": "PlayStation",
+      "xbl": "Xbox",
+      "switch": "Switch"
+    },
+    "favorite": "Add to favorites",
+    "unfavorite": "Remove from favorites",
+    "setMine": "Set as my profile",
+    "off": {
+      "title": "Online ratings are off",
+      "body": "MMR, ranks and lobby ranks come from tracker.gg's public pages (read by the app like a browser would). This is not an official API: turn it on only if you're fine with that. Nothing is sent except the player ids you look up.",
+      "enable": "Turn on online ratings"
+    }
+  },
+  "overlay": {
+    "session": "Session",
+    "streak_one": "{{count}} in a row",
+    "streak_other": "{{count}} in a row",
+    "noStreak": "—",
+    "waiting": "Waiting for a match…",
+    "notConnected": "Tracker not connected"
+  },
+  "lobby": {
+    "title": "Players in this match",
+    "average": "avg {{value}}",
+    "loading": "Looking up",
+    "unavailable": "private / n.a.",
+    "source": "Ranks from tracker.gg public profiles, matched with the ids the Stats API gives for each player."
+  },
+  "tabs": {
+    "session": "Session",
+    "mmr": "MMR",
+    "settings": "Settings"
+  }
+}

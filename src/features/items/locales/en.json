@@ -1,0 +1,114 @@
+{
+  "eyebrow": "Garage",
+  "title": "Item swaps",
+  "subtitle": "Equip an item you own in game, see any other one instead. Built from your own game files — nothing is downloaded.",
+  "refresh": "Rescan game",
+  "refreshHint": "Rebuild the catalog from your Rocket League folder",
+  "catalogStats": "{{items}} items found in your install · {{missing}} not shipped on disk",
+  "steps": {
+    "label": "Selection step",
+    "owned": "1 · Item you own",
+    "wanted": "2 · Item you want"
+  },
+  "searchPlaceholder": "Search {{slot}}…",
+  "resultCount_one": "{{count}} item",
+  "resultCount_other": "{{count}} items",
+  "filters": {
+    "bodyAuto": "Fits my car",
+    "bodyAll": "All cars",
+    "bodyUniversal": "Universal only"
+  },
+  "empty": {
+    "title": "No item matches",
+    "description": "Try another search or another car filter."
+  },
+  "slots": {
+    "title": "Slots",
+    "body": "Car bodies",
+    "decal": "Decals",
+    "wheels": "Wheels",
+    "boost": "Boosts",
+    "topper": "Toppers",
+    "antenna": "Antennas",
+    "goalExplosion": "Goal explosions",
+    "trail": "Trails",
+    "paintFinish": "Paint finishes"
+  },
+  "composer": {
+    "owned": "You equip",
+    "wanted": "You see",
+    "ownedEmpty": "Pick an item you own",
+    "wantedEmpty": "Pick the item you want",
+    "ownedHint": "Equip this one in game",
+    "wantedHint": "Shown in place of it",
+    "apply": "Apply swap",
+    "update": "Update swap",
+    "unchanged": "Already applied",
+    "editingNote": "Editing your active swap: pick another item to replace it."
+  },
+  "paint": {
+    "title": "Paint",
+    "none": "Unpainted",
+    "crimson": "Crimson",
+    "lime": "Lime",
+    "black": "Black",
+    "orange": "Orange",
+    "skyBlue": "Sky Blue",
+    "cobalt": "Cobalt",
+    "saffron": "Saffron",
+    "grey": "Grey",
+    "pink": "Pink",
+    "forestGreen": "Forest Green",
+    "purple": "Purple",
+    "titaniumWhite": "Titanium White",
+    "keptNote": "The swapped item keeps the paint of the item you own — paint is applied by the game, not stored in the files."
+  },
+  "grid": {
+    "swapped": "Swapped",
+    "sharedHint": "Shares its game file with other variants: swapping it affects them too.",
+    "lockedHint": "Encrypted with a key that is missing from keys.txt: it can be replaced, but not shown in place of another item.",
+    "locked": "Missing key"
+  },
+  "history": {
+    "open": "History",
+    "title": "Swap history",
+    "description": "Everything applied, restored or rebuilt after a game update.",
+    "empty": "Nothing yet",
+    "on": "on {{owned}}",
+    "kind": {
+      "applied": "Applied",
+      "restored": "Restored",
+      "reapplied": "Rebuilt",
+      "dropped": "Dropped"
+    }
+  },
+  "integrity": {
+    "updatedTitle": "Rocket League was updated",
+    "revertedTitle": "The game restored some original files",
+    "description_one": "{{count}} modified file was reverted. Affected: {{features}}.",
+    "description_other": "{{count}} modified files were reverted. Affected: {{features}}.",
+    "reapply": "Re-apply now",
+    "done": "Everything is back in place",
+    "feature": {
+      "swap": "item swaps",
+      "palette": "palette",
+      "decals": "custom decals",
+      "maps": "maps",
+      "stats": "stats API"
+    },
+    "updatedDescription": "Your mods must be rebuilt for the new version. Affected: {{features}}."
+  },
+  "toast": {
+    "applied": "Swap applied — restart the game to see it",
+    "restored": "Original item restored"
+  },
+  "catalogFromGame": "Product list read from your game — new seasons appear automatically.",
+  "catalogBundled": "Product list: bundled copy (the game's list could not be read).",
+  "locked": {
+    "bannerTitle_one": "{{count}} item in this category is locked.",
+    "bannerTitle_other": "{{count}} items in this category are locked.",
+    "bannerBody": "Their game file is encrypted with a key missing from keys.txt: you can replace them with another item, but they can't be shown in place of one. They unlock as soon as the key is added (Settings › Game files).",
+    "pickTitle": "Locked item",
+    "pickBody": "{{name}} is encrypted with a key missing from keys.txt, so it can't be used as the item you see. Add the key in Settings › Game files to unlock it."
+  }
+}

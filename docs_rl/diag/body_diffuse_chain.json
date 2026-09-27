@@ -1,0 +1,1147 @@
+{
+  "Body_All_Mat": {
+    "export_idx": 260,
+    "sub_expressions": [
+      {
+        "export": 399,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter",
+        "ParameterName": "TrailSharpness"
+      },
+      {
+        "export": 400,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 401,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter",
+        "ParameterName": "Speed_02",
+        "ExpressionGUID_hex": "23C9DB0261DD054D8BD02A4B13D28A28"
+      },
+      {
+        "export": 402,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter",
+        "ParameterName": "CoreBrightness",
+        "ExpressionGUID_hex": "CCED45F0C9E8E043801587772C1C3C13"
+      },
+      {
+        "export": 513,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "Vertex Color",
+        "ExpressionGUID_hex": "6C1FBA2460029C4AA0C8351AF11517B5"
+      },
+      {
+        "export": 514,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ExpressionGUID_hex": "AD93776E6C8DA94F8C1315F4F7137AA5"
+      },
+      {
+        "export": 515,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "DistanceHeight",
+        "ExpressionGUID_hex": "70B0520D063D9A4EBAE6B56C9312341B"
+      },
+      {
+        "export": 516,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "Use_TireTrails",
+        "ExpressionGUID_hex": "F57E69966306374CAD8F43368F56BBFD"
+      },
+      {
+        "export": 517,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "FlipReflection",
+        "ExpressionGUID_hex": "B1B80FE56AE8E5459F9FD14EAFFE9F5E"
+      },
+      {
+        "export": 518,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "ColorLookup",
+        "ExpressionGUID_hex": "E6DB16ACA0752749A2ECEA2718D55E5D"
+      },
+      {
+        "export": 519,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "9Tall",
+        "ExpressionGUID_hex": "B36D7A6E025E3845BBA704F8776923A1"
+      },
+      {
+        "export": 520,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "Use_TireTrails",
+        "ExpressionGUID_hex": "EB0B28B197CCF947995F865755239DB3"
+      },
+      {
+        "export": 521,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "UseSpecular",
+        "ExpressionGUID_hex": "687523C163025E4DA7E21268250A4A9F"
+      },
+      {
+        "export": 522,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "TeamColorLines",
+        "ExpressionGUID_hex": "D3949DAA592DD0448D775A630644907F"
+      },
+      {
+        "export": 523,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "UseVertexColor",
+        "ExpressionGUID_hex": "A04A957D8FC4FF49B8DF28B7017C5527"
+      },
+      {
+        "export": 524,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "GrassMask",
+        "ExpressionGUID_hex": "C06C1CD2157C2D42BCB47AE1614A6FC1"
+      },
+      {
+        "export": 525,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "Tile4x",
+        "ExpressionGUID_hex": "8F8DE4503DA00441A010C1D7505106B1"
+      },
+      {
+        "export": 526,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "CubemapParalax",
+        "ExpressionGUID_hex": "8E30BFD0C925B74FB272C3166C037F5B"
+      },
+      {
+        "export": 527,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "FlipFieldSkinX",
+        "ExpressionGUID_hex": "5CC12F64E194AB458E7114C67F62C9B1"
+      },
+      {
+        "export": 528,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "WorldSpaceCoords",
+        "ExpressionGUID_hex": "6F23157034BE1C40A47B17174EC93911"
+      },
+      {
+        "export": 529,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "Tile16x",
+        "ExpressionGUID_hex": "6A878BE8C8A6B242A005E172943C1B55"
+      },
+      {
+        "export": 530,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "FlipCoords",
+        "ExpressionGUID_hex": "9CEF9E0F0C1FA749B9652919DBC8BEEB"
+      },
+      {
+        "export": 531,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "UseVertexColor",
+        "ExpressionGUID_hex": "691991D5E1C5624C96FA55C6A27BEB0F"
+      },
+      {
+        "export": 532,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter"
+      },
+      {
+        "export": 533,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ExpressionGUID_hex": "57E1195CEBDCE246BC5FEE7F964AD5B7"
+      },
+      {
+        "export": 534,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter"
+      },
+      {
+        "export": 535,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "LightMap",
+        "ExpressionGUID_hex": "FA134851CDE6D147AF98CB918E605D13"
+      },
+      {
+        "export": 536,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "MirrorYOnly",
+        "ExpressionGUID_hex": "584FC8E7427E4A4E9BE8F23C3D83A01C"
+      },
+      {
+        "export": 537,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "MirrorYOnly",
+        "ExpressionGUID_hex": "87A78DEAC9C6C249A72D920DC6C5CC99"
+      },
+      {
+        "export": 538,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "DiffuseMirrorRotate",
+        "ExpressionGUID_hex": "24C1A8F8754E9446BBAE7EA657C88FED"
+      },
+      {
+        "export": 539,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "DiffuseMirrorRotate",
+        "ExpressionGUID_hex": "34AB02CE28D5BF43A2D2354D4BF8C60E"
+      },
+      {
+        "export": 540,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "CustomFieldSkinScale",
+        "ExpressionGUID_hex": "0D5005D50A3BD248830E161EC31495F8"
+      },
+      {
+        "export": 671,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "UseCustomColor",
+        "ExpressionGUID_hex": "C2739C9FC78BA44FA0B1EEDBC5357051"
+      },
+      {
+        "export": 672,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "ColorIsReflective"
+      },
+      {
+        "export": 673,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ExpressionGUID_hex": "04DA95D71EF0164B8C9F6B49BC1D7993"
+      },
+      {
+        "export": 674,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "UseTireColor",
+        "ExpressionGUID_hex": "E9EEBA69C08C3645839B64484A4FB7E7"
+      },
+      {
+        "export": 675,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D"
+      },
+      {
+        "export": 676,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ExpressionGUID_hex": "0BEAABB9CDFC414987E61D053688FB2F"
+      },
+      {
+        "export": 677,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "RGBMasks",
+        "ExpressionGUID_hex": "3D19E6F1DBB014438F13FB1FABE3084E"
+      },
+      {
+        "export": 678,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "Sparkles"
+      },
+      {
+        "export": 679,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "TertiaryMaterial_Normal",
+        "ExpressionGUID_hex": "AC6081372246414398A15073BF0884E3"
+      },
+      {
+        "export": 680,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "BoundTexture_idx": 2508,
+        "BoundTexture_name": "export[2507]:CarbonFiber_Flipped_N(Texture2D)"
+      },
+      {
+        "export": 681,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "ColorLookup",
+        "ExpressionGUID_hex": "ED27A49A2D57624BA0B31D27D7DAD560",
+        "BoundTexture_idx": -373,
+        "BoundTexture_name": "import[372]:Team1_ColorLookup/TeamColorScriptedTexture_TA (pkg=TAGame)"
+      },
+      {
+        "export": 682,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "ColorLookup",
+        "ExpressionGUID_hex": "ED27A49A2D57624BA0B31D27D7DAD560",
+        "BoundTexture_idx": -373,
+        "BoundTexture_name": "import[372]:Team1_ColorLookup/TeamColorScriptedTexture_TA (pkg=TAGame)"
+      },
+      {
+        "export": 683,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "PortalRingTexture_02",
+        "BoundTexture_idx": 2569,
+        "BoundTexture_name": "export[2568]:UVDistort_02_T(Texture2D)"
+      },
+      {
+        "export": 757,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter"
+      },
+      {
+        "export": 758,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ExpressionGUID_hex": "EA173EC3DA316445A4D0530617766880",
+        "BoundTexture_idx": 2522,
+        "BoundTexture_name": "export[2521]:CS_FieldGrassPattern_D_Unfiltered(Texture2D)"
+      },
+      {
+        "export": 759,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "LightMap",
+        "ExpressionGUID_hex": "0F7C5DA8D7034C4C93FE4577948CD327",
+        "BoundTexture_idx": 3752,
+        "BoundTexture_name": "export[3751]:StadiumFloorLightMap(Texture2D)"
+      },
+      {
+        "export": 760,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "GrassMask",
+        "ExpressionGUID_hex": "498022B270FAB54190A2CEFE4BB1A0C6",
+        "BoundTexture_idx": 2573,
+        "BoundTexture_name": "export[2572]:Park_GrassMask_Low_M(Texture2D)"
+      },
+      {
+        "export": 761,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "FieldSkinUnfiltered",
+        "ExpressionGUID_hex": "4C8B2CC0B2063241AEE9E3AD7BF887F6",
+        "BoundTexture_idx": 2571,
+        "BoundTexture_name": "export[2570]:FieldSkin_FutureGrid_1x1_D(Texture2D)"
+      },
+      {
+        "export": 762,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "FieldSkinUnfiltered",
+        "ExpressionGUID_hex": "10806D82C219284D97B23FF7E3ED9247",
+        "BoundTexture_idx": 2571,
+        "BoundTexture_name": "export[2570]:FieldSkin_FutureGrid_1x1_D(Texture2D)"
+      },
+      {
+        "export": 763,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "Diffuse",
+        "ExpressionGUID_hex": "17F56E1BB134844EBE79118289F072F9",
+        "BoundTexture_idx": 2571,
+        "BoundTexture_name": "export[2570]:FieldSkin_FutureGrid_1x1_D(Texture2D)"
+      },
+      {
+        "export": 764,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "MaskTexture",
+        "BoundTexture_idx": 2571,
+        "BoundTexture_name": "export[2570]:FieldSkin_FutureGrid_1x1_D(Texture2D)"
+      },
+      {
+        "export": 765,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "MaskTexture",
+        "ExpressionGUID_hex": "F2F3F38E306FBD46A9184CFE8579960B",
+        "BoundTexture_idx": 3716,
+        "BoundTexture_name": "export[3715]:CausticsMask_RGB_T(Texture2D)"
+      }
+    ],
+    "matches": []
+  },
+  "Body_Paintable_Mat": {
+    "export_idx": 261,
+    "sub_expressions": [
+      {
+        "export": 403,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter",
+        "ParameterName": "StartOffset",
+        "ExpressionGUID_hex": "6AE165054BCD394F9A26DA455DFEEC68"
+      },
+      {
+        "export": 404,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter",
+        "ParameterName": "Sharpness",
+        "ExpressionGUID_hex": "98D3BF1AEE4D5E459A73D619D9840F7A"
+      },
+      {
+        "export": 405,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter",
+        "ParameterName": "DistortionAmount",
+        "ExpressionGUID_hex": "746E322DE96F6049A76BA9FF7AF5191B"
+      },
+      {
+        "export": 406,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter",
+        "ExpressionGUID_hex": "CE31769AC2927D40882FFBA16713162F"
+      },
+      {
+        "export": 541,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "DynamicWear",
+        "ExpressionGUID_hex": "BB9BF5D3A14B234BADB58ABB8CC6DCCA"
+      },
+      {
+        "export": 542,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "Reflections",
+        "ExpressionGUID_hex": "7C6782C0CA55564EA8A2AAA12FF07916"
+      },
+      {
+        "export": 543,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ExpressionGUID_hex": "5D5C7FA5DBEB434CABF80504697877BA"
+      },
+      {
+        "export": 544,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "ThickGrass",
+        "ExpressionGUID_hex": "B46DDC20D13F784B8D67047C2871486D"
+      },
+      {
+        "export": 545,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "TilingMask",
+        "ExpressionGUID_hex": "422103A2BE5CBE4382CC16B471B57767"
+      },
+      {
+        "export": 546,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "SolidTeamColor",
+        "ExpressionGUID_hex": "C0CA496EAFF9CF479F3EC60F4CBEA471"
+      },
+      {
+        "export": 547,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "TeamColorLines",
+        "ExpressionGUID_hex": "D3949DAA592DD0448D775A630644907F"
+      },
+      {
+        "export": 548,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "UseVertexColor",
+        "ExpressionGUID_hex": "A04A957D8FC4FF49B8DF28B7017C5527"
+      },
+      {
+        "export": 549,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "GrassMask",
+        "ExpressionGUID_hex": "C06C1CD2157C2D42BCB47AE1614A6FC1"
+      },
+      {
+        "export": 550,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "Tile4x",
+        "ExpressionGUID_hex": "8F8DE4503DA00441A010C1D7505106B1"
+      },
+      {
+        "export": 551,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "CubemapParalax",
+        "ExpressionGUID_hex": "8E30BFD0C925B74FB272C3166C037F5B"
+      },
+      {
+        "export": 552,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "FlipFieldSkinX",
+        "ExpressionGUID_hex": "5CC12F64E194AB458E7114C67F62C9B1"
+      },
+      {
+        "export": 553,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "WorldSpaceCoords",
+        "ExpressionGUID_hex": "6F23157034BE1C40A47B17174EC93911"
+      },
+      {
+        "export": 554,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "Tile16x",
+        "ExpressionGUID_hex": "6A878BE8C8A6B242A005E172943C1B55"
+      },
+      {
+        "export": 555,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ExpressionGUID_hex": "9CEF9E0F0C1FA749B9652919DBC8BEEB"
+      },
+      {
+        "export": 556,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "UseVertexColor",
+        "ExpressionGUID_hex": "691991D5E1C5624C96FA55C6A27BEB0F"
+      },
+      {
+        "export": 557,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter"
+      },
+      {
+        "export": 558,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "LightMap",
+        "ExpressionGUID_hex": "FA134851CDE6D147AF98CB918E605D13"
+      },
+      {
+        "export": 559,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "MirrorYOnly",
+        "ExpressionGUID_hex": "1017E1D12BDF4144A1154161D0E7A68F"
+      },
+      {
+        "export": 560,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "MirrorYOnly",
+        "ExpressionGUID_hex": "584FC8E7427E4A4E9BE8F23C3D83A01C"
+      },
+      {
+        "export": 561,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "MirrorYOnly",
+        "ExpressionGUID_hex": "87A78DEAC9C6C249A72D920DC6C5CC99"
+      },
+      {
+        "export": 562,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "DiffuseMirrorRotate",
+        "ExpressionGUID_hex": "24C1A8F8754E9446BBAE7EA657C88FED"
+      },
+      {
+        "export": 563,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "DiffuseMirrorRotate",
+        "ExpressionGUID_hex": "34AB02CE28D5BF43A2D2354D4BF8C60E"
+      },
+      {
+        "export": 564,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "SolidTeamColor",
+        "ExpressionGUID_hex": "DCE373247C9B1640BA8E26A42BA86A54"
+      },
+      {
+        "export": 565,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "CustomFieldSkinScale",
+        "ExpressionGUID_hex": "0D5005D50A3BD248830E161EC31495F8"
+      },
+      {
+        "export": 566,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "DynamicWear",
+        "ExpressionGUID_hex": "BB9BF5D3A14B234BADB58ABB8CC6DCCA"
+      },
+      {
+        "export": 567,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "ThickGrass",
+        "ExpressionGUID_hex": "56A25C03ECE8B44CBD7665378002A842"
+      },
+      {
+        "export": 568,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "Reflections",
+        "ExpressionGUID_hex": "7C6782C0CA55564EA8A2AAA12FF07916"
+      },
+      {
+        "export": 569,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "ThickGrass",
+        "ExpressionGUID_hex": "B46DDC20D13F784B8D67047C2871486D"
+      },
+      {
+        "export": 570,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "TilingMask",
+        "ExpressionGUID_hex": "422103A2BE5CBE4382CC16B471B57767"
+      },
+      {
+        "export": 571,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "SolidTeamColor",
+        "ExpressionGUID_hex": "C0CA496EAFF9CF479F3EC60F4CBEA471"
+      },
+      {
+        "export": 572,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "WPO",
+        "Group": "WPO",
+        "ExpressionGUID_hex": "72E2D3B1F0E5FF41A2125C8C1660807F"
+      },
+      {
+        "export": 573,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "UseSaturationOffset",
+        "ExpressionGUID_hex": "D7927F08C6A6334493866B96553BE2AC"
+      },
+      {
+        "export": 574,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter",
+        "ParameterName": "Distortion",
+        "ExpressionGUID_hex": "51DA95C11C2E304782970C0A5C3EE4F5"
+      },
+      {
+        "export": 575,
+        "name": "MaterialExpressionStaticSwitchParameter",
+        "class": "MaterialExpressionStaticSwitchParameter"
+      },
+      {
+        "export": 583,
+        "name": "MaterialExpressionTextureObjectParameter",
+        "class": "MaterialExpressionTextureObjectParameter",
+        "ParameterName": "Glass",
+        "ExpressionGUID_hex": "FA7E273ABE2C324D9AA2ADC017FCD8A7"
+      },
+      {
+        "export": 684,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "BoundTexture_idx": 2569,
+        "BoundTexture_name": "export[2568]:UVDistort_02_T(Texture2D)"
+      },
+      {
+        "export": 685,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "ColorLookup",
+        "ExpressionGUID_hex": "A93E2AC68C28864CA908CE93300A3422",
+        "BoundTexture_idx": -374,
+        "BoundTexture_name": "import[373]:Team2_ColorLookup/TeamColorScriptedTexture_TA (pkg=TAGame)"
+      },
+      {
+        "export": 686,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "PortalRingTexture",
+        "ExpressionGUID_hex": "9854D53919EB19449FE64BB308E3DBD4",
+        "BoundTexture_idx": 3769,
+        "BoundTexture_name": "export[3768]:Lightning_Noise_RGB_02_T(Texture2D)"
+      },
+      {
+        "export": 687,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "PortalRingTexture_02",
+        "ExpressionGUID_hex": "5A8D78E49124664493C1D3E6F747D327",
+        "BoundTexture_idx": 2569,
+        "BoundTexture_name": "export[2568]:UVDistort_02_T(Texture2D)"
+      },
+      {
+        "export": 688,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "ColorLookup",
+        "ExpressionGUID_hex": "AF262659C2D16640A7A681F61E5B5B04",
+        "BoundTexture_idx": 2569,
+        "BoundTexture_name": "export[2568]:UVDistort_02_T(Texture2D)"
+      },
+      {
+        "export": 689,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "BoundTexture_idx": -374,
+        "BoundTexture_name": "import[373]:Team2_ColorLookup/TeamColorScriptedTexture_TA (pkg=TAGame)"
+      },
+      {
+        "export": 690,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "PortalRingTexture_02",
+        "ExpressionGUID_hex": "AD8F8231A03D76499FC8697DD84EB1BC",
+        "BoundTexture_idx": 2569,
+        "BoundTexture_name": "export[2568]:UVDistort_02_T(Texture2D)"
+      },
+      {
+        "export": 691,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "PortalRingTexture",
+        "ExpressionGUID_hex": "9854D53919EB19449FE64BB308E3DBD4",
+        "BoundTexture_idx": 3769,
+        "BoundTexture_name": "export[3768]:Lightning_Noise_RGB_02_T(Texture2D)"
+      },
+      {
+        "export": 692,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "PortalRingTexture",
+        "ExpressionGUID_hex": "A0C779C68EDCAD4DB01D5E11C46A6E51",
+        "BoundTexture_idx": 3769,
+        "BoundTexture_name": "export[3768]:Lightning_Noise_RGB_02_T(Texture2D)"
+      },
+      {
+        "export": 693,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "ColorLookup",
+        "ExpressionGUID_hex": "8E97A39DF3F82547A0810B677F384B1E",
+        "BoundTexture_idx": -373,
+        "BoundTexture_name": "import[372]:Team1_ColorLookup/TeamColorScriptedTexture_TA (pkg=TAGame)"
+      },
+      {
+        "export": 694,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "BoundTexture_idx": -373,
+        "BoundTexture_name": "import[372]:Team1_ColorLookup/TeamColorScriptedTexture_TA (pkg=TAGame)"
+      },
+      {
+        "export": 695,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ExpressionGUID_hex": "041595AC35289C41B126178A756D9029",
+        "BoundTexture_idx": -373,
+        "BoundTexture_name": "import[372]:Team1_ColorLookup/TeamColorScriptedTexture_TA (pkg=TAGame)"
+      },
+      {
+        "export": 696,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "Group": "FlipBook",
+        "ExpressionGUID_hex": "D1DDDEEBCC90794A9FE9C6010EA5ECAD",
+        "BoundTexture_idx": 3755,
+        "BoundTexture_name": "export[3754]:Basic_Trail_FB_T(Texture2D)"
+      },
+      {
+        "export": 697,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "Masks",
+        "Group": "CarTextures",
+        "ExpressionGUID_hex": "4B7269E975F7BB46B72112793F1099E4",
+        "BoundTexture_idx": 2507,
+        "BoundTexture_name": "export[2506]:Pepe_Parts_RGB(Texture2D)"
+      },
+      {
+        "export": 698,
+        "name": "MaterialExpressionTextureSampleParameter2D",
+        "class": "MaterialExpressionTextureSampleParameter2D",
+        "ParameterName": "Diffuse",
+        "Group": "CarTextures",
+        "ExpressionGUID_hex": "D307E26FA3856D48A40912BA08DCEF07",
+        "BoundTexture_idx": 2505,
+        "BoundTexture_name": "export[2504]:Chasis_Pepe_D(Texture2D)"
+      },
+      {
+        "export": 766,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "Texture"
+      },
+      {
+        "export": 767,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "Diffuse",
+        "ExpressionGUID_hex": "40F2B4BDAF58BD4FB833A983BFEFADE5",
+        "BoundTexture_idx": 3720,
+        "BoundTexture_name": "export[3719]:CloudyFlare(Texture2D)"
+      },
+      {
+        "export": 768,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "Normal"
+      },
+      {
+        "export": 769,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "ColorLookup",
+        "BoundTexture_idx": 3749,
+        "BoundTexture_name": "export[3748]:Side_BPW_Normal(Texture2D)"
+      },
+      {
+        "export": 770,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "Diffuse",
+        "ExpressionGUID_hex": "442F42C5D201F54C87CC1F00AD603EA9",
+        "BoundTexture_idx": -374,
+        "BoundTexture_name": "import[373]:Team2_ColorLookup/TeamColorScriptedTexture_TA (pkg=TAGame)"
+      },
+      {
+        "export": 771,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "TertiaryMaterial_Normal",
+        "Group": "TertiaryMaterial",
+        "ExpressionGUID_hex": "51F3063DB08FB1419EF9C3F820753884",
+        "BoundTexture_idx": 2508,
+        "BoundTexture_name": "export[2507]:CarbonFiber_Flipped_N(Texture2D)"
+      },
+      {
+        "export": 772,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "BodyMasks"
+      },
+      {
+        "export": 773,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "Skin",
+        "Group": "BaseTextures",
+        "ExpressionGUID_hex": "618597CA2A2658409F0602F9659A9A4C",
+        "BoundTexture_idx": 2503,
+        "BoundTexture_name": "export[2502]:Pepe_Body_BlankSkin(Texture2D)"
+      },
+      {
+        "export": 774,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "ColorLookup",
+        "ExpressionGUID_hex": "68B6C9BB9DBAB24CB42D72569C9D0C8B",
+        "BoundTexture_idx": -374,
+        "BoundTexture_name": "import[373]:Team2_ColorLookup/TeamColorScriptedTexture_TA (pkg=TAGame)"
+      },
+      {
+        "export": 775,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "F2DetailNormal",
+        "ExpressionGUID_hex": "9E6FFC088C1B614A868C783963B82814",
+        "BoundTexture_idx": 2525,
+        "BoundTexture_name": "export[2524]:Fur_N(Texture2D)"
+      },
+      {
+        "export": 776,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter",
+        "ParameterName": "Normal",
+        "ExpressionGUID_hex": "EBE98682E994E748A494E645F2791540",
+        "BoundTexture_idx": 2498,
+        "BoundTexture_name": "export[2497]:Backfire_Parts_N(Texture2D)"
+      }
+    ],
+    "matches": []
+  },
+  "startup_body_mics": [
+    {
+      "name": "MIC_Body_Octane",
+      "export_idx": 786,
+      "parent": null,
+      "texture_params": [],
+      "vector_params": [],
+      "scalar_params": [],
+      "all_props": []
+    },
+    {
+      "name": "Body_All_MIC",
+      "export_idx": 831,
+      "parent": null,
+      "texture_params": [],
+      "vector_params": [],
+      "scalar_params": [],
+      "all_props": [
+        {
+          "name": "*Distortion",
+          "type": "*Distortion",
+          "val_size": 0
+        },
+        {
+          "name": "*Distortion",
+          "type": "*Distortion",
+          "val_size": 0
+        },
+        {
+          "name": "*Distortion",
+          "type": "*Distortion",
+          "val_size": 0
+        }
+      ]
+    },
+    {
+      "name": "MIC_Body_Paintable_All",
+      "export_idx": 832,
+      "parent": null,
+      "texture_params": [],
+      "vector_params": [],
+      "scalar_params": [],
+      "all_props": []
+    }
+  ],
+  "body_octane_materials": [
+    {
+      "name": "ConfRibbons_D_Mat",
+      "idx": 15
+    },
+    {
+      "name": "BoostCone_Flame_Grad_Mat",
+      "idx": 17
+    },
+    {
+      "name": "BoostCone_Flame_Mat",
+      "idx": 18
+    },
+    {
+      "name": "BoostFXMesh_Mat",
+      "idx": 22
+    }
+  ],
+  "body_octane_mics": [
+    {
+      "name": "ConfRibbons_MIC",
+      "export_idx": 147,
+      "parent": null,
+      "texture_params": [],
+      "vector_params": [],
+      "scalar_params": [],
+      "all_props": []
+    },
+    {
+      "name": "BoostCone_Flame_Grad_MIC",
+      "export_idx": 148,
+      "parent": null,
+      "texture_params": [],
+      "vector_params": [],
+      "scalar_params": [],
+      "all_props": [
+        {
+          "name": "__Render__Delegate",
+          "type": "None",
+          "val_size": 117
+        }
+      ]
+    },
+    {
+      "name": "BoostCone_Flame_MIC",
+      "export_idx": 149,
+      "parent": null,
+      "texture_params": [],
+      "vector_params": [],
+      "scalar_params": [],
+      "all_props": []
+    },
+    {
+      "name": "BoostFXMesh_Cone_MIC",
+      "export_idx": 151,
+      "parent": null,
+      "texture_params": [],
+      "vector_params": [],
+      "scalar_params": [],
+      "all_props": [
+        {
+          "name": "__Render__Delegate",
+          "type": "__Render__Delegate",
+          "val_size": 0
+        },
+        {
+          "name": "DrawY",
+          "type": "IntProperty",
+          "val_size": 4
+        }
+      ]
+    }
+  ],
+  "body_octane_mat_ConfRibbons_D_Mat": {
+    "export_idx": 15,
+    "sub_expressions": [
+      {
+        "export": 27,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      }
+    ],
+    "matches": []
+  },
+  "body_octane_mat_BoostCone_Flame_Grad_Mat": {
+    "export_idx": 17,
+    "sub_expressions": [
+      {
+        "export": 28,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 29,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 30,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 121,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter"
+      },
+      {
+        "export": 122,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter"
+      }
+    ],
+    "matches": []
+  },
+  "body_octane_mat_BoostCone_Flame_Mat": {
+    "export_idx": 18,
+    "sub_expressions": [
+      {
+        "export": 31,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 32,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 123,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter"
+      }
+    ],
+    "matches": []
+  },
+  "body_octane_mat_BoostFXMesh_Mat": {
+    "export_idx": 22,
+    "sub_expressions": [
+      {
+        "export": 38,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 39,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 40,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 41,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 42,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 43,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 44,
+        "name": "MaterialExpressionScalarParameter",
+        "class": "MaterialExpressionScalarParameter"
+      },
+      {
+        "export": 127,
+        "name": "MaterialExpressionVectorParameter",
+        "class": "MaterialExpressionVectorParameter"
+      }
+    ],
+    "matches": []
+  },
+  "startup_body_textures": [
+    {
+      "export": 2498,
+      "name": "Import_Body_BlankSkin",
+      "tfc": "Textures2",
+      "num_mips": 1431787520,
+      "first_mip": null
+    },
+    {
+      "export": 2501,
+      "name": "Octane_Body_D",
+      "tfc": "Textures2",
+      "num_mips": -233249536,
+      "first_mip": null
+    },
+    {
+      "export": 2502,
+      "name": "Pepe_Body_BlankSkin",
+      "tfc": "Textures2",
+      "num_mips": -2141556736,
+      "first_mip": null
+    },
+    {
+      "export": 2503,
+      "name": "Pepe_Body_D",
+      "tfc": "Textures6",
+      "num_mips": -2141556703,
+      "first_mip": null
+    }
+  ],
+  "body_octane_body_textures": []
+}

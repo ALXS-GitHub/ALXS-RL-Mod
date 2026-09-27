@@ -1,0 +1,1167 @@
+# Material Parent Candidates — Sampled Scan
+_Date: 2026-05-15. Sampled 53 UPKs; 42 contain at least one Material export._
+Legend:
+ - **plaintext** : header is not AES-encrypted (engine/system file)
+ - **paintable_pkg** : the UPK's name table includes team-color FNames (PaintMaskInRGB / TeamColor / Skin_M / Team1_ColorLookup / Team2_ColorLookup) — heuristic for 'this material participates in the paint system'
+ - **params** : name-table strings referenced inside the Material's serial body (actual parameter names need a full Material disassembler — names listed here only indicate which generic property names exist in the file's name table; presence is necessary but not sufficient)
+
+## `ARC_Darc_P.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 81
+  - `Advert_Strip_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_Beach_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CF_Tutorial_FogRing_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BuildingLight_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Collision_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_ForceField_HexGage_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CSNetFence_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `TeamColorGlow_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `StadiumFogRing_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Pointdot_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `TrimLight_Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Electricity_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CubeMap_HotSpot_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DigitalSpark_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FogSheet_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GlowTrail_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `LightCone_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Smoke_Explosion_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SmokeTrail_Explosion_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Hedge_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_Base_FakeLight_V3_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_OLD_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DustyFlare_Thick_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Halo_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `HexStarFlare_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_TeamEmissive` [PAINTABLE]  params: (none of the watched names)
+  - `BoostOrb_2D_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_LightCone_03_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `LightConeSprite_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostOrb_Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Scoreboard_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DarkNebula_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Planet_EarthLike_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_DepthBlackout_Space` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Metal_Basic` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Metal_Master_NonPBR` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MetalPaintable_Master` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_OOB_Landscape` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SpaceMetal4` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SpaceMetal4_TeamColor` [PAINTABLE]  params: (none of the watched names)
+  - `AsteroidDebri01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `dARC_DirtyGlass_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `dARC_GlowyBits_White_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Floor_02_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_EmissiveWindow_dARC` [PAINTABLE]  params: (none of the watched names)
+  - `Matte_Floor_01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DistantGalaxy_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `NebulaSprite_01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `NebulaStrip_01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Field_SupportGratings_TeamColor` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FieldMetal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `TEMP_ARC_GlowyBits` [PAINTABLE]  params: (none of the watched names)
+  - `FlippyRefl_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `PlanetAurora_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `PlanetRing_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SpaceHedge_2Tiled_Opaque` [PAINTABLE]  params: (none of the watched names)
+  - `ConcreteFloor_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_V3_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `HandRail_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Stairs_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Field_SupportGratings_TeamColor_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FieldMetal_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Metal_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MetalPaintable_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `TEMP_ARC_GlowyBits_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `TeamColorGlow_Master_MAT_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `BBall_DarkMetal_Mat_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `UND_copper_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Dusty_Flare_01_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BigBannerLogo_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_WastelandMetal` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_WastelandVertPaint` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Glowing_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Scrolling_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Warm_PS` [PAINTABLE]  params: (none of the watched names)
+
+## `ARC_Darc_Sky.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 21
+  - `DustyFlare_Thick_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `HexStarFlare_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Rainbow_PartHalo_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `VerticalStreak_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DarkNebula_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Planet_Alt_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BlackHoleFlare_01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BlackHoleSprite_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BlackHole_AccretionDisk_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BlackHole_MagneticTorus_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BlackHole_MagneticTorus_Small_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BlackHole_ParticleJet_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BlackHole_ParticleJet_Outer_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BlackHole_StripFlare_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BlackHole_Surface_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `NebulaSprite_01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `NebulaStrip_01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SpaceVertColor_01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `PlanetAurora_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `PlanetRing_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Nebula_V1_Mat` [PAINTABLE]  params: (none of the watched names)
+
+## `ARC_Field.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 19
+  - `LightCone_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_Space_Base_V1_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_Space_LOD_V1_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_Space_V1_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Scoreboard_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_EmissiveWindow2` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Metal_Master_NonPBR` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MetalPaintable_Master` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FieldGlass` [PAINTABLE]  params: (none of the watched names)
+  - `ARC_BorderGlow_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Field_SupportGratings_TeamColor` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FieldMetal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `TEMP_ARC_GlowyBits` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_EmissiveWindow2_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Field_SupportGratings_TeamColor_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FieldMetal_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Metal_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MetalPaintable_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `TEMP_ARC_GlowyBits_IVTK` [PAINTABLE]  params: (none of the watched names)
+
+## `ARC_FX.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 16
+  - `MAT_MetalPaintable_Master` [PAINTABLE]  params: (none of the watched names)
+  - `SpaceSun_Parent` [PAINTABLE]  params: (none of the watched names)
+  - `SunFlare_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `CapsuleMask_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `CloudAtmo_Sprite_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `RingAtmo_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `DockingLights_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SolarPanel_TwoSided` [PAINTABLE]  params: (none of the watched names)
+  - `PlanetAurora_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `PlanetRing_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Fighter_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `ShipSprite_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `SpaceFogVolume_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Turret_Flash_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Planet_Alt_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CSNetFence_MAT` [PAINTABLE]  params: (none of the watched names)
+
+## `ARC_P.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 58
+  - `Advert_Strip_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Basic_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BuildingLight_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Collision_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CSNetFence_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Electricity_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CubeMap_HotSpot_Additive_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CubeMap_HotSpot_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DigitalSpark_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FogSheet_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GlowTrail_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Smoke_Explosion_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SmokeTrail_Explosion_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Hedge_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GrassBurn_Fade_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GrassBurn_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_Space_V1_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostOrb_2D_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_LightCone_03_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `LightConeSprite_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostOrb_Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Scoreboard_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `ForceField_Cage_BugFix_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SkyBoxFilter_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SpaceDust_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_DepthBlackout_Space` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_EmissiveWindow` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_EmissiveWindow2` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Metal_Basic` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Metal_Master_NonPBR` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MetalPaintable_Master` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_OOB_Landscape` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SolarPanel` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SpaceMetal4` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SpaceMetal4_TeamColor` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FieldMetal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `TEMP_ARC_GlowyBits` [PAINTABLE]  params: (none of the watched names)
+  - `FlippyRefl_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_ARC_OOB_Parent` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_DepthBlackout_TeamColor` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_OOB_Landscape` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_OOBMetal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SpaceHedge` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SpaceHedge_2Tiled` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_V3_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `HandRail_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Stairs_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FieldMetal_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `BigBannerLogo_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Glowing_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Scrolling_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Warm_PS` [PAINTABLE]  params: (none of the watched names)
+
+## `ARC_Sky.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 10
+  - `FogCylinder_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FogSheet_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_Space_Base_V1_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_Space_V1_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DarkNebula_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Moon_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Nebula_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SpaceSky_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `ARC_FogRing_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `PlanetRings_03_Mat` [PAINTABLE]  params: (none of the watched names)
+
+## `ARC_Standard_Field.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 15
+  - `LightCone_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_Space_V1_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Scoreboard_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MetalPaintable_Master` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Field_SupportGratings_TeamColor` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FieldMetal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `TEMP_ARC_GlowyBits` [PAINTABLE]  params: (none of the watched names)
+  - `Planet_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `PlanetAurora_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `PlanetRing_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Field_SupportGratings_TeamColor_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FieldMetal_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Metal_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MetalPaintable_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `TEMP_ARC_GlowyBits_IVTK` [PAINTABLE]  params: (none of the watched names)
+
+## `ARC_Standard_FX.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 15
+  - `Planet_Alt_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MetalPaintable_Master` [PAINTABLE]  params: (none of the watched names)
+  - `SpaceSun_Parent` [PAINTABLE]  params: (none of the watched names)
+  - `SunFlare_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `CapsuleMask_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `CloudAtmo_Sprite_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `RingAtmo_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `DockingLights_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SolarPanel_TwoSided` [PAINTABLE]  params: (none of the watched names)
+  - `PlanetAurora_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `PlanetRing_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Fighter_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `ShipSprite_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `SpaceFogVolume_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Turret_Flash_MAT` [PAINTABLE]  params: (none of the watched names)
+
+## `ARC_Standard_P.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 64
+  - `Advert_Strip_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Basic_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BuildingLight_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Collision_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CSNetFence_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Electricity_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CubeMap_HotSpot_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DigitalSpark_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FogCylinder_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FogSheet_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GlowTrail_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Smoke_Explosion_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SmokeTrail_Explosion_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Hedge_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GrassBurn_Fade_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GrassBurn_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_Space_Base_V1_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_Space_LOD_V1_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostOrb_2D_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_LightCone_03_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `LightConeSprite_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostOrb_Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Scoreboard_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DarkNebula_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `ForceField_Cage_BugFix_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Moon_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Nebula_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_DepthBlackout_Space` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_EmissiveWindow` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_EmissiveWindow2` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Metal_Basic` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Metal_Master_NonPBR` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MetalPaintable_Master` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_OOB_Landscape` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SolarPanel` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SpaceMetal4` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SpaceMetal4_TeamColor` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FieldGlass` [PAINTABLE]  params: (none of the watched names)
+  - `ARC_FogRing_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FieldMetal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `TEMP_ARC_GlowyBits` [PAINTABLE]  params: (none of the watched names)
+  - `FlippyRefl_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_ARC_OOB_Parent` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_DepthBlackout_TeamColor` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_OOB_Landscape` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_OOBMetal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SpaceHedge_2Tiled_Opaque` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_V3_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `HandRail_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Stairs_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_EmissiveWindow2_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FieldMetal_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Metal_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MetalPaintable_Master_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `BigBannerLogo_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Glowing_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Scrolling_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Warm_PS` [PAINTABLE]  params: (none of the watched names)
+
+## `ARC_Standard_Sky.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 5
+  - `CubeMap_HotSpot_Additive_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CubeMap_HotSpot_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SpaceSky_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SkyBoxFilter_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `PlanetRings_03_Mat` [PAINTABLE]  params: (none of the watched names)
+
+## `BB_Field.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 18
+  - `BB_GroomedGrass_3D_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BB_NetFence_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_LOD_FakeLight_BOUCHER_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_ForceField_HexGage_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `grey_flat_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `NetGlow_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `HexGlass_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `TeamColorGlow_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_CS_Metal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `HexGlass_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Scoreboard_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_LCD_glow_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `CS_StadiumFogRing_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_StadiumLights_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `StadiumGlass_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_LCD_glow_MAT_GOAL_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `Dgrey_flat_MAT_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `TeamColorGlow_Master_MAT_IVTK` [PAINTABLE]  params: (none of the watched names)
+
+## `BB_Grounds.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 8
+  - `Concrete_Hexagons_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `ConcreteTrim_Dark_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `OOB_Grass_01` [PAINTABLE]  params: (none of the watched names)
+  - `Black_Trans_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `CS_SearchlightsLens_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_CS_Metal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_LOD_FakeLight_V3_2_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_LCD_glow_MAT` [PAINTABLE]  params: (none of the watched names)
+
+## `BB_Lights.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 9
+  - `BB_Flags_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Building_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `ConcreteTrim_Dark_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Banner_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_CS_Metal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SuperMetal00` [PAINTABLE]  params: (none of the watched names)
+  - `CS_HexStarFlare_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_LensFlare_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_StadiumLight_Flare_Mat` [PAINTABLE]  params: (none of the watched names)
+
+## `BB_OOB.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 16
+  - `Basic_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BigBanner_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Building_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Concrete_Hexagons_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `ConcreteTrim_Dark_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `AnimAdScreen_Master_T_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `DroneBot_Thruster_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_CS_Metal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SuperMetal00` [PAINTABLE]  params: (none of the watched names)
+  - `M_EV_Lightbeam_Master_01` [PAINTABLE]  params: (none of the watched names)
+  - `FogSheet_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_LOD_FakeLight_V3_2_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_CityLights_01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_Concrete_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_V4_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CrowdFlag_Mat` [PAINTABLE]  params: (none of the watched names)
+
+## `BB_OOB2.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 23
+  - `BB_AnimAdRibbon_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Window_Barred_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `AnimAdRibbon_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `AnimAdScreen_Goal_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `AnimAdScreen_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `CS_TC_Searchlight_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `CS_TC_Smoketrail_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `DynamicLights_Function_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Fireworks_BendPS_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Fireworks_FakePS_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `FlashGradient_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `StatueLightCone_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `TeamColorGlow_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Basic_WPO_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_SeparatedAds_Frame_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_CS_Metal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SuperMetal00` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SpaceMetal4` [PAINTABLE]  params: (none of the watched names)
+  - `CS_StadiumLights_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `CS_Stairs_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_TentFabric_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Confetti_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `HandRail_Mat` [PAINTABLE]  params: (none of the watched names)
+
+## `BB_P.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 47
+  - `Banner_Vertical_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BB_Trophy_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BigBanner_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_LOD_FakeLight_BOUCHER_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `NFL_CornerArrows_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Collision_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_Skydome_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `TeamColorGlow_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_CS_Metal_Master` [PAINTABLE]  params: (none of the watched names)
+  - `MetalTexture_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Dust_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Electricity_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CubeMap_HotSpot_Additive_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CubeMap_HotSpot_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DigitalSpark_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FogSheet_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GlowTrail_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `LightCone_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Smoke_Explosion_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Smoke_Puff_04_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SmokeTrail_Explosion_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Hedge_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostOrb_2D_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_LightCone_03_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `LightConeSprite_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostOrb_Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Scoreboard_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_Field_Hexagons_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_LightCone_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_OOB_RLCS_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_StadiumLight_Flare_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_StadiumLights_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_V3_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_V4_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CrowdFlag_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `StadiumLights_B_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `TeamColorGlow_Master_MAT_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_UtopiaMaster` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Glowing_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Scrolling_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Warm_PS` [PAINTABLE]  params: (none of the watched names)
+
+## `Beach_Cage.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 3
+  - `ForceField_HexGage_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `LightCone_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_NetFence_MAT` [PAINTABLE]  params: (none of the watched names)
+
+## `Beach_Field.upk`
+- plaintext: `False`
+- paintable_pkg: `False`
+- Material exports: 23
+  - `Beach_FieldDrain01_Mat`  params: (none of the watched names)
+  - `Beach_FieldStraps_MAT`  params: (none of the watched names)
+  - `Beach_FieldSupports_MAT`  params: (none of the watched names)
+  - `Beach_FogCylinder_Mat`  params: (none of the watched names)
+  - `BCH_FieldGoalTrims_MAT`  params: (none of the watched names)
+  - `BCH_Plastic_MAT`  params: (none of the watched names)
+  - `BCH_RumbleStrip_MAT`  params: (none of the watched names)
+  - `Base_03`  params: (none of the watched names)
+  - `Base_04`  params: (none of the watched names)
+  - `Base_BO`  params: (none of the watched names)
+  - `Base_T`  params: (none of the watched names)
+  - `Leaves`  params: (none of the watched names)
+  - `Team01`  params: (none of the watched names)
+  - `Team02`  params: (none of the watched names)
+  - `Trim`  params: (none of the watched names)
+  - `Yellow`  params: (none of the watched names)
+  - `BCH_Sand_02_MAT`  params: (none of the watched names)
+  - `Beach_SandBlend_Master_MAT`  params: (none of the watched names)
+  - `FrostedGlass_MAT`  params: (none of the watched names)
+  - `DarkMetal_Mat`  params: (none of the watched names)
+  - `BCH_FieldGoalTrims_MAT_IVTK`  params: (none of the watched names)
+  - `Beach_FieldSupports_MAT_IVTK`  params: (none of the watched names)
+  - `Beach_SandBlend_Master_MAT_IVTK`  params: (none of the watched names)
+
+## `Beach_FX.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 15
+  - `Beach_MerryGoRound_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Sun_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BeachMaster_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_MGR_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Ocean_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_PropPlane_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Sky_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BeachFog_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `CoasterTrain_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_Beach_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FerrisWheel_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Seagull_Flock_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `DustyFlare_Thick_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Halo_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `HexStarFlare_Mat` [PAINTABLE]  params: (none of the watched names)
+
+## `Beach_Night_Cage.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 3
+  - `ForceField_HexGage_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `LightCone_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CSNetFence_MAT` [PAINTABLE]  params: (none of the watched names)
+
+## `Beach_Night_Field.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 26
+  - `Beach_FieldDrain01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_FieldStraps_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_FieldSupports2_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_FieldSupports_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_FogCylinder_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `TrimLight_Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_FieldGoalTrims_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_Plastic_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_RumbleStrip_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Base_03` [PAINTABLE]  params: (none of the watched names)
+  - `Base_04` [PAINTABLE]  params: (none of the watched names)
+  - `Base_BO` [PAINTABLE]  params: (none of the watched names)
+  - `Base_T` [PAINTABLE]  params: (none of the watched names)
+  - `Leaves` [PAINTABLE]  params: (none of the watched names)
+  - `Team01` [PAINTABLE]  params: (none of the watched names)
+  - `Team02` [PAINTABLE]  params: (none of the watched names)
+  - `Trim` [PAINTABLE]  params: (none of the watched names)
+  - `Yellow` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_Sand_Fast_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_SandBlend_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `FrostedGlass_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `DarkMetal_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_FieldGoalTrims_MAT_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_FieldSupports2_MAT_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_FieldSupports_MAT_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_SandBlend_Master_MAT_IVTK` [PAINTABLE]  params: (none of the watched names)
+
+## `Beach_Night_FX.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 17
+  - `Beach_MerryGoRound_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BeachMaster_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_MGR_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Ocean_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_OOB_Fire_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BeachFlags_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BeachFog_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Carousel_Lights_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `CityLightRandom_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `CoasterTrain_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_Beach_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FerrisWheel_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `LighthouseLight_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `M_EV_Lightbeam_Master_01` [PAINTABLE]  params: (none of the watched names)
+  - `DarkMetal_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `HexStarFlare_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SpotLightbeam_MAT` [PAINTABLE]  params: (none of the watched names)
+
+## `Beach_Night_GRS_OOB.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 72
+  - `DarkMetal_Simple_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_FieldSupports_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_Awning_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_Plastic_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_PropsMaster_Masked_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_PropsMaster_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_SmallHexTiles_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Surfboard_MN_Switch` [PAINTABLE]  params: (none of the watched names)
+  - `BeachMaster_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `FlatTempColor_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Metal_Parent_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `B` [PAINTABLE]  params: (none of the watched names)
+  - `Base` [PAINTABLE]  params: (none of the watched names)
+  - `Base_03` [PAINTABLE]  params: (none of the watched names)
+  - `Base_04` [PAINTABLE]  params: (none of the watched names)
+  - `Base_05` [PAINTABLE]  params: (none of the watched names)
+  - `Base_BO` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Base_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Buoy_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_BuoyLogo_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Main_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_StreetSigns_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_SYttJ_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Train_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `HighriseMetal_Simple_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Light` [PAINTABLE]  params: (none of the watched names)
+  - `Strap` [PAINTABLE]  params: (none of the watched names)
+  - `Team01` [PAINTABLE]  params: (none of the watched names)
+  - `Team01_Night` [PAINTABLE]  params: (none of the watched names)
+  - `Team02` [PAINTABLE]  params: (none of the watched names)
+  - `Team02_Night` [PAINTABLE]  params: (none of the watched names)
+  - `Trim` [PAINTABLE]  params: (none of the watched names)
+  - `Yellow` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_707_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Flag_Placeholder_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_PalmDecal_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_StreetBanner_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Pier_Light_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `AmericanFlag_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Grafiti_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_GrassOOB_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_PsyonixLogo_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_RLCS_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_TeamMask_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BeachPalm_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BeachPalmLOD_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Beach_Generic` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Beach_OOB_Buildings_Night_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `RoadParkingLot_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `OOBTerrain_FoliageShell_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `OOBTerrain_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_Sand_02_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_SShore_Night_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Night_CoasterGlow_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BeachFlags_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BeachPalm_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_Beach_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Night_Light01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SuperMetal00` [PAINTABLE]  params: (none of the watched names)
+  - `Farm_Metal_Parent_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Wood_Parent_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DarkMetal_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `ForceField_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Light01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Matte_Floor_01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CeilingLight_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `UND_copper_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `UND_Master_Blend` [PAINTABLE]  params: (none of the watched names)
+  - `UND_Light_01` [PAINTABLE]  params: (none of the watched names)
+  - `FountainWater_02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FountainWater_Pool_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_UtopiaMaster` [PAINTABLE]  params: (none of the watched names)
+
+## `Beach_Night_GRS_P.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 143
+  - `Basic_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Ball_V3` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_FieldDrain01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_FieldSupports_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Frisbee_01` [PAINTABLE]  params: (none of the watched names)
+  - `TrimLight_Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Banner_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Banner_Tower_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Banners_02_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Canopy_01_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_ClothFencing_01_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_ClothFencing_Logo_01_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_ClothFencing_Stage_01_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Field_SandBlend_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_FieldLights_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_FogRing_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Grass_3D_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Grass_LOD_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Grass_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_MetalPanel_01_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_SaltyFest_Tiled_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_SandPile_01_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Stage_Wall_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Tent_01_A_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Tent_01_B_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Tent_01_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Tent_02_B_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Tent_03_A_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Tent_03_B_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_WallDesign_01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_WallDesign_02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_G_Basic_V2_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_SandBlend_TeamColor_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_G_Crowd_Beach_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `M_Speaker_Vibration` [PAINTABLE]  params: (none of the watched names)
+  - `StageRays_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Team_lightBeam_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_FieldGoalTrims_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_Plastic_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_PropsMaster_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_RumbleStrip_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Surfboard_MN_Switch` [PAINTABLE]  params: (none of the watched names)
+  - `BeachMaster_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Base` [PAINTABLE]  params: (none of the watched names)
+  - `Base_03` [PAINTABLE]  params: (none of the watched names)
+  - `Base_04` [PAINTABLE]  params: (none of the watched names)
+  - `Base_05` [PAINTABLE]  params: (none of the watched names)
+  - `Base_BO` [PAINTABLE]  params: (none of the watched names)
+  - `Base_T` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Buoy_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_BuoyLogo_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Main_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Matte_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `HighriseMetal_Simple_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Sand` [PAINTABLE]  params: (none of the watched names)
+  - `Trim` [PAINTABLE]  params: (none of the watched names)
+  - `vball_B` [PAINTABLE]  params: (none of the watched names)
+  - `Yellow` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Flag_Placeholder_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Pier_Light_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_GrassOOB_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_TeamMask_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_Sand_02_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_SandBlend_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BeachFog_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BeachSky_Night_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CityLightRandom_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_Beach_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FrostedGlass_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `WaterfallMist_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Collision_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CSNetFence_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SuperMetal00` [PAINTABLE]  params: (none of the watched names)
+  - `M_EV_Lightbeam_Master_01` [PAINTABLE]  params: (none of the watched names)
+  - `M_EV_Lightbeam_Master_1sided_01` [PAINTABLE]  params: (none of the watched names)
+  - `lightBeam_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `lightRig_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `StageRays_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `FF_LightCone_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_FF_Dusk_Banner` [PAINTABLE]  params: (none of the watched names)
+  - `Mat_Metal_Simple` [PAINTABLE]  params: (none of the watched names)
+  - `FF_Dusk_Banner_Master_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FNI_FogVolume_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `DarkMetal_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `ForceField_HexGage_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MetalTexture_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Dust_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Electricity_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CubeMap_HotSpot_Additive_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CubeMap_HotSpot_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DigitalSpark_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FogSheet_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GlowTrail_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Smoke_Explosion_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SmokeTrail_Explosion_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_PinLights` [PAINTABLE]  params: (none of the watched names)
+  - `Glow02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GroomedGrass_OLD_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `dry_ice_fb_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `FillFlare_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `HexStarFlare_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SimpleFlare_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SoftCircle_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `StripFlare_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MM_SpeakerMesh` [PAINTABLE]  params: (none of the watched names)
+  - `Neo_Floor01_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `OL_Clouds_00_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `RDP_Plants_Master_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Basic_Orange_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Park_BannerFlag00` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_LightsOn` [PAINTABLE]  params: (none of the watched names)
+  - `BoostOrb_2D_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_LightCone_03_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `LightConeSprite_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostOrb_Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Glow_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SpotLightbeam_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Scoreboard_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SunCorona01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `SunCorona01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DarkMetal_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MetalPaintable_Master` [PAINTABLE]  params: (none of the watched names)
+  - `Matte_Floor_01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CS_Stairs_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `CameraFlash_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_V3_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_FieldGoalTrims_MAT_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_FieldSupports_MAT_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_FieldSupports_White_MAT_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_SandBlend_Master_MAT_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `SH_LightMetalTrim_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `StringLights_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `UND_G_Stone_01_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `FountainWater_05_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FountainWater_Pool_03_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_LightCone_Bright_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Glowing_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Scrolling_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BoostPad_Warm_PS` [PAINTABLE]  params: (none of the watched names)
+
+## `Beach_Night_GRS_VFX.upk`
+- plaintext: `False`
+- paintable_pkg: `False`
+- Material exports: 16
+  - `Beach_FieldSupports_MAT`  params: (none of the watched names)
+  - `M_SaltyDrums`  params: (none of the watched names)
+  - `BeachMaster_MAT`  params: (none of the watched names)
+  - `Base_04`  params: (none of the watched names)
+  - `Beach_Matte_MAT`  params: (none of the watched names)
+  - `BCH_MGR_Mat`  params: (none of the watched names)
+  - `Beach_Ocean_MAT`  params: (none of the watched names)
+  - `Carousel_Lights_MAT`  params: (none of the watched names)
+  - `CityLightRandom_MAT`  params: (none of the watched names)
+  - `CoasterTrain_MAT`  params: (none of the watched names)
+  - `FerrisWheel_MAT`  params: (none of the watched names)
+  - `LighthouseLight_MAT`  params: (none of the watched names)
+  - `M_EV_Lightbeam_Master_01`  params: (none of the watched names)
+  - `HexStarFlare_Mat`  params: (none of the watched names)
+  - `M_Drummer_Anim`  params: (none of the watched names)
+  - `M_Guitarist_Anim`  params: (none of the watched names)
+
+## `Beach_Night_OOB.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 79
+  - `DarkMetal_Simple_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_FieldSupports_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_Awning_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_HueShift_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_HueShift_O_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_Plastic_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_PropsMaster_Masked_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_PropsMaster_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_SmallHexTiles_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Surfboard_MN_Switch` [PAINTABLE]  params: (none of the watched names)
+  - `BeachMaster_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `FlatTempColor_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Metal_Parent_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Base` [PAINTABLE]  params: (none of the watched names)
+  - `Base_03` [PAINTABLE]  params: (none of the watched names)
+  - `Base_04` [PAINTABLE]  params: (none of the watched names)
+  - `Base_05` [PAINTABLE]  params: (none of the watched names)
+  - `Base_BO` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Base_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Buoy_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_BuoyLogo_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Main_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Matte_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_StreetSigns_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_SYttJ_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Train_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `HighriseMetal_Simple_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Light` [PAINTABLE]  params: (none of the watched names)
+  - `Strap` [PAINTABLE]  params: (none of the watched names)
+  - `Team01` [PAINTABLE]  params: (none of the watched names)
+  - `Team01_Night` [PAINTABLE]  params: (none of the watched names)
+  - `Team02` [PAINTABLE]  params: (none of the watched names)
+  - `Team02_Night` [PAINTABLE]  params: (none of the watched names)
+  - `Trim` [PAINTABLE]  params: (none of the watched names)
+  - `Vballnet_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Yellow` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_707_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_PalmDecal_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_StreetBanner_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Pier_Light_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `AmericanFlag_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Grafiti_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_GrassOOB_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_PsyonixLogo_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_RLCS_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_RLVBall_01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_TeamMask_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BeachPalm_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BeachPalmLOD_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Beach_Generic` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Beach_OOB_Buildings_Night_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `RoadParkingLot_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `BCH_Sand_02_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_Night_CoasterGlow_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BeachFlags_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `BeachPalm_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Crowd_Beach_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Night_Light01_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `grey` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_SuperMetal00` [PAINTABLE]  params: (none of the watched names)
+  - `Farm_Metal_Parent_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Wood_Parent_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `DarkMetal_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MetalTexture_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Park_BannerFlag00` [PAINTABLE]  params: (none of the watched names)
+  - `BBall_DarkMetal_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Scoreboard_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_MetalPaintable_Master` [PAINTABLE]  params: (none of the watched names)
+  - `CS_Stairs_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Park_BannerFlag00_IVTK` [PAINTABLE]  params: (none of the watched names)
+  - `CeilingLight_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `UND_copper_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `UND_Master_Blend` [PAINTABLE]  params: (none of the watched names)
+  - `UND_Light_01` [PAINTABLE]  params: (none of the watched names)
+  - `FountainWater_02_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `FountainWater_Pool_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_UtopiaMaster` [PAINTABLE]  params: (none of the watched names)
+  - `Window_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `Beach_G_Basic_V2_Mat` [PAINTABLE]  params: (none of the watched names)
+
+## `Beach_Night_OOB2.upk`
+- plaintext: `False`
+- paintable_pkg: `False`
+- Material exports: 26
+  - `Beach_FieldSupports_MAT`  params: (none of the watched names)
+  - `BCH_Awning_MAT`  params: (none of the watched names)
+  - `BCH_PropsMaster_MAT`  params: (none of the watched names)
+  - `BCH_SmallHexTiles_Mat`  params: (none of the watched names)
+  - `BeachMaster_MAT`  params: (none of the watched names)
+  - `Metal_Parent_Mat`  params: (none of the watched names)
+  - `B`  params: (none of the watched names)
+  - `Beach_Base_MAT`  params: (none of the watched names)
+  - `Beach_Main_MAT`  params: (none of the watched names)
+  - `Strap`  params: (none of the watched names)
+  - `Team01`  params: (none of the watched names)
+  - `Team02`  params: (none of the watched names)
+  - `Trim`  params: (none of the watched names)
+  - `Yellow`  params: (none of the watched names)
+  - `Beach_Flag_Placeholder_Mat`  params: (none of the watched names)
+  - `Pier_Light_MAT`  params: (none of the watched names)
+  - `Beach_GrassOOB_MAT`  params: (none of the watched names)
+  - `Beach_TeamMask_MAT`  params: (none of the watched names)
+  - `RoadParkingLot_Mat`  params: (none of the watched names)
+  - `BCH_SShore_Night_Mat`  params: (none of the watched names)
+  - `Night_Light01_Mat`  params: (none of the watched names)
+  - `MAT_SuperMetal00`  params: (none of the watched names)
+  - `Farm_Metal_Parent_Mat`  params: (none of the watched names)
+  - `ForceField_Mat`  params: (none of the watched names)
+  - `Light01_Mat`  params: (none of the watched names)
+  - `UND_Master_Blend`  params: (none of the watched names)
+
+## `Beach_Night_OOBTerrain.upk`
+- plaintext: `False`
+- paintable_pkg: `False`
+- Material exports: 3
+  - `OOBTerrain_FoliageShell_Mat`  params: (none of the watched names)
+  - `OOBTerrain_Mat`  params: (none of the watched names)
+  - `BCH_Sand_02_MAT`  params: (none of the watched names)
+
+## `EngineDebugMaterials.upk`
+- plaintext: `True`
+- paintable_pkg: `False`
+- Material exports: 25
+  - `BlackUnlitMaterial`  params: (none of the watched names)
+  - `BoneWeightMaterial`  params: Mask
+  - `GeomMaterial`  params: (none of the watched names)
+  - `HeatmapMaterial`  params: Mask
+  - `LevelColorationLitMaterial`  params: Mask
+  - `LevelColorationUnlitMaterial`  params: Mask
+  - `M_TextureDefinedSpecularReflection`  params: Alpha, Emissive, Mask, Normal
+  - `LightmapResolutionMaterial`  params: Mask, Normal
+  - `MAT_LevelColorationLitLightmapUVs`  params: Mask, Texture
+  - `MaterialError_Mat`  params: Mask
+  - `ShadedLevelColorationLitMaterial`  params: Color
+  - `ShadedLevelColorationUnlitMaterial`  params: Mask
+  - `TangentColorMaterial`  params: Mask
+  - `TerrainCollisionMaterial`  params: Mask
+  - `M_Sand_Master_VertPaint`  params: Emissive, Mask, Normal
+  - `TexturePaint_2Tex_Color`  params: Alpha, Mask, Normal
+  - `VertexColorMaterial`  params: Mask
+  - `VertexColorViewMode_AlphaAsColor`  params: (none of the watched names)
+  - `VertexColorViewMode_BlueOnly`  params: (none of the watched names)
+  - `VertexColorViewMode_ColorOnly`  params: (none of the watched names)
+  - `VertexColorViewMode_GreenOnly`  params: (none of the watched names)
+  - `VertexColorViewMode_RedOnly`  params: (none of the watched names)
+  - `VertexPaint_2Tex_Color`  params: Alpha, Mask, Normal
+  - `VertexPaint_4Tex`  params: Alpha, Diffuse, Mask, Normal
+  - `WireframeMaterial`  params: Mask
+
+## `Engine.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 9
+  - `Default__Material` [PAINTABLE]  params: (none of the watched names)
+  - `DefaultMaterial` [PAINTABLE]  params: (none of the watched names)
+  - `FogVolumeMaterial` [PAINTABLE]  params: (none of the watched names)
+  - `M_StreamingPause` [PAINTABLE]  params: (none of the watched names)
+  - `NodeBuddy_Red1` [PAINTABLE]  params: (none of the watched names)
+  - `NodeBuddy_Target` [PAINTABLE]  params: (none of the watched names)
+  - `NodeBuddy_Text1` [PAINTABLE]  params: (none of the watched names)
+  - `NodeBuddy_Text2` [PAINTABLE]  params: (none of the watched names)
+  - `NodeBuddy_White1` [PAINTABLE]  params: (none of the watched names)
+
+## `Engine_MI_Shaders.upk`
+- plaintext: `True`
+- paintable_pkg: `False`
+- Material exports: 16
+  - `M_ES_Phong_Masked_Master_1sided`  params: Alpha, Mask, Normal, Texture
+  - `M_ES_Phong_Masked_Master_2sided`  params: Alpha, Emissive, Normal
+  - `M_ES_Phong_Opaque_Liquid_Master_01`  params: Alpha, Normal
+  - `M_ES_Phong_Opaque_Master_01`  params: Alpha, Normal
+  - `M_ES_Phong_Translucent_Liquid_Master_01`  params: Alpha, Normal
+  - `M_ES_Phong_Translucent_Liquid_Master_01_1sided`  params: Alpha, Normal
+  - `M_ES_Phong_Translucent_Master_01`  params: Alpha, Normal
+  - `M_ES_Unlit_Translucent_Liquid_Master_01`  params: Alpha, Diffuse, Normal
+  - `M_Shader_Complex`  params: Alpha, Normal
+  - `M_Shader_Medium`  params: Alpha, Mask, Normal
+  - `M_Shader_PlanarMap`  params: Alpha, Mask, Normal
+  - `M_Shader_Simple`  params: Alpha, Mask, Normal
+  - `M_Shader_Simple_CustomUV`  params: Alpha, Mask, Normal
+  - `M_Shader_SimpleMasked`  params: Alpha, Mask, Normal
+  - `M_Shader_SimpleMaskedTwoSided`  params: Alpha, Mask, Normal, Specular
+  - `M_Shader_SimpleTranslucent`  params: Alpha, Mask
+
+## `body_aa_SF.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 6
+  - `AmbientFlames_02_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `GoodChassis_Painted_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Glass_Translucent` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Plastic_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Trim_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Windshield_Base` [PAINTABLE]  params: (none of the watched names)
+
+## `body_aftershock_premium_skins_SF.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 1
+  - `UberSkin_V1_Mat` [PAINTABLE]  params: (none of the watched names)
+
+## `Body_Aftershock_SF.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 2
+  - `Flame_Amb_MAT` [PAINTABLE]  params: (none of the watched names)
+  - `MasterChassis_GoodENV_MAT` [PAINTABLE]  params: (none of the watched names)
+
+## `skin_10x_SF.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 1
+  - `Mat_10x` [PAINTABLE]  params: (none of the watched names)
+
+## `skin_aa_flames_tierall_SF.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 5
+  - `GoodChassis_Painted_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Glass_Translucent` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Plastic_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Trim_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Windshield_Base` [PAINTABLE]  params: (none of the watched names)
+
+## `skin_aa_lightning_tierall_SF.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 5
+  - `GoodChassis_Painted_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Glass_Translucent` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Plastic_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Trim_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Windshield_Base` [PAINTABLE]  params: (none of the watched names)
+
+## `skin_aa_livery1_SF.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 6
+  - `Body_Paintable_Diffuse_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GoodChassis_Painted_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Glass_Translucent` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Plastic_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Trim_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Windshield_Base` [PAINTABLE]  params: (none of the watched names)
+
+## `skin_aa_livery2_SF.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 6
+  - `Body_Paintable_Diffuse_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GoodChassis_Painted_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Glass_Translucent` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Plastic_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Trim_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Windshield_Base` [PAINTABLE]  params: (none of the watched names)
+
+## `skin_aa_livery3_SF.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 6
+  - `Body_Paintable_Diffuse_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GoodChassis_Painted_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Glass_Translucent` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Plastic_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Trim_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Windshield_Base` [PAINTABLE]  params: (none of the watched names)
+
+## `skin_aa_livery4_SF.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 6
+  - `Body_Paintable_Diffuse_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `GoodChassis_Painted_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Glass_Translucent` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Plastic_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Trim_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Windshield_Base` [PAINTABLE]  params: (none of the watched names)
+
+## `skin_aa_stripes_tierall_SF.upk`
+- plaintext: `False`
+- paintable_pkg: `True`
+- Material exports: 5
+  - `GoodChassis_Painted_Mat` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Glass_Translucent` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Plastic_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Trim_Base` [PAINTABLE]  params: (none of the watched names)
+  - `MAT_Vehicle_Windshield_Base` [PAINTABLE]  params: (none of the watched names)
+

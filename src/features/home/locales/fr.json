@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "safe": "Sans injection · sans interception · réversible",
+    "title": "Ta voiture. Tes couleurs. Ton arène.",
+    "subtitle": "Swappe tes cosmétiques, peins ta propre palette, pose des decals custom et joue sur des maps de la communauté — directement depuis tes fichiers de jeu.",
+    "playOnline": "Jouer en ligne",
+    "playOffline": "Jouer hors ligne (mods)"
+  },
+  "setup": {
+    "gameTitle": "Rocket League introuvable",
+    "gameBody": "Choisis le dossier du jeu pour que l'app puisse lire tes cosmétiques.",
+    "keysTitle": "Clés des packages absentes",
+    "keysBody": "Ajoute keys.txt pour activer les swaps d'items et les decals custom.",
+    "cta": "Ouvrir les réglages"
+  },
+  "loadout": {
+    "title": "Configuration actuelle",
+    "items": "Items",
+    "palette": "Palette",
+    "decal": "Decal custom",
+    "map": "Map",
+    "swaps_one": "{{count}} swap",
+    "swaps_other": "{{count}} swaps",
+    "stock": "D'origine",
+    "stockPalette": "Palette d'origine",
+    "stale": "À réappliquer après une mise à jour du jeu",
+    "applied": "Appliquée",
+    "none": "Aucun",
+    "mapTarget": "Remplace {{target}}",
+    "stockMaps": "Maps d'origine"
+  },
+  "session": {
+    "title": "Cette session",
+    "open": "Ouvrir le tracker",
+    "wins": "Victoires",
+    "losses": "Défaites",
+    "streak": "Série",
+    "goals": "Buts",
+    "mvps": "MVP"
+  }
+}

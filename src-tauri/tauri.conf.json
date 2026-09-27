@@ -1,0 +1,83 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "ALXS-RL-Mod",
+  "version": "0.2.0",
+  "identifier": "com.alxs.rlmod",
+  "build": {
+    "beforeDevCommand": "bun run dev",
+    "devUrl": "http://127.0.0.1:1420",
+    "beforeBuildCommand": "bun run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "ALXS-RL-Mod",
+        "url": "/",
+        "width": 1360,
+        "height": 860,
+        "minWidth": 1100,
+        "minHeight": 720,
+        "center": true,
+        "visible": false,
+        "resizable": true,
+        "decorations": false,
+        "transparent": false,
+        "backgroundColor": "#06070c",
+        "shadow": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' asset: http://asset.localhost data: blob: https://trackercdn.com https://cdn.bakkesplugins.com https://bakkesplugins.com https://lethamyr.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost; script-src 'self'",
+      "assetProtocol": {
+        "enable": true,
+        "scope": [
+          "$LOCALDATA/ALXS-RL-Mod/**"
+        ]
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis"
+    ],
+    "createUpdaterArtifacts": true,
+    "category": "Game",
+    "shortDescription": "Rocket League customisation — file-based, injection-free",
+    "longDescription": "Item swaps, colour palettes, custom decals, map library, presets and a live match tracker for Rocket League. Everything works on game files and the official Stats API: no injection, no traffic interception, no certificates.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": {
+      "resources/keys/README.md": "keys/README.md"
+    },
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": [
+          "English",
+          "French"
+        ],
+        "displayLanguageSelector": false,
+        "installerHooks": "windows/hooks.nsh"
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://github.com/ALXS-GitHub/ALXS-RL-Mod/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDBEMEQxRjVCNDZCRDUwQkYKUldTL1VMMUdXeDhORFhxN3NwVFZaUVBmakpNZUs1OEIzRzdhekNYaXROTlpsRE5DSHkyaE1qbGsK",
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  }
+}

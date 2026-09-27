@@ -1,0 +1,109 @@
+{
+  "eyebrow": "Arène",
+  "title": "Maps",
+  "subtitle": "Ta bibliothèque de maps custom. Une map remplace une arène Labs ; l'originale est sauvegardée et revient en un clic. Marche aussi jeu lancé, depuis le menu principal.",
+  "tabs": {
+    "library": "Bibliothèque",
+    "browse": "Parcourir"
+  },
+  "actions": {
+    "import": "Importer des fichiers",
+    "importFolder": "Importer un dossier"
+  },
+  "import": {
+    "filesTitle": "Importer des maps (.upk, .udk, .zip)",
+    "folderTitle": "Importer un dossier de maps (ex. le dossier Workshop de BakkesMod)",
+    "filter": "Maps Rocket League",
+    "dropTitle": "Dépose pour importer",
+    "dropHint": ".upk, .udk, .zip ou dossiers"
+  },
+  "session": {
+    "active": "Installée dans le jeu",
+    "offline": "Session hors ligne",
+    "details": "Remplace {{target}} · depuis {{when}}",
+    "autoRestore": "l'arène d'origine revient à la fermeture du jeu",
+    "restore": "Remettre l'arène d'origine"
+  },
+  "library": {
+    "search": "Rechercher par nom, auteur ou tag",
+    "all": "Toutes ({{count}})",
+    "favorites": "Favorites",
+    "dropHint": "Astuce : glisse-dépose des fichiers ou dossiers n'importe où",
+    "noMatch": "Aucune map ne correspond",
+    "emptyTitle": "Ta bibliothèque est vide",
+    "emptyDescription": "Importe des fichiers .upk/.zip, un dossier Workshop, ou télécharge des maps depuis l'onglet Parcourir."
+  },
+  "origin": {
+    "imported": "Importée",
+    "bakkesMod": "Dossier Workshop",
+    "bakkesPlugins": "BakkesPlugins",
+    "lethamyr": "Lethamyr",
+    "other": "Autre"
+  },
+  "card": {
+    "installed": "Installée",
+    "favorite": "Favori",
+    "playOffline": "Jouer hors ligne",
+    "installHint": "Remplacer l'arène Labs par cette map (Underpass par défaut)",
+    "edit": "Modifier",
+    "reveal": "Afficher dans le dossier",
+    "delete": "Supprimer",
+    "lastPlayed": "jouée {{when}}",
+    "added": "ajoutée {{when}}",
+    "installHintLive": "Swapper maintenant — reviens au menu principal si tu es sur cette arène",
+    "swap": "Swap",
+    "swapped": "Swappée",
+    "playOfflineHint": "Swapper et lancer le jeu hors ligne, sans EAC",
+    "playOfflineRunning": "Le jeu est déjà lancé",
+    "replacesHint": "Arène Labs que cette map remplace (modifiable dans Modifier)"
+  },
+  "edit": {
+    "title": "Modifier la map",
+    "name": "Nom",
+    "tags": "Tags",
+    "tagsPlaceholder": "anneaux, entraînement, 1v1…",
+    "target": "Arène Labs à remplacer",
+    "defaultTarget": "Par défaut ({{target}})",
+    "targetHint": "Choisis la map Labs que tu lanceras depuis Entraînement libre → Entraînement personnalisé. Underpass convient à la plupart des maps."
+  },
+  "delete": {
+    "title": "Supprimer cette map ?",
+    "description": "{{name}} sera retirée de ta bibliothèque.",
+    "warning": "Les fichiers de la map sont supprimés du dossier de l'app. Action irréversible."
+  },
+  "browse": {
+    "search": "Rechercher sur BakkesPlugins",
+    "searchPage": "Filtrer cette page",
+    "previous": "Page précédente",
+    "next": "Page suivante",
+    "page": "Page {{page}}",
+    "pageOf": "Page {{page}} / {{total}}",
+    "download": "Télécharger",
+    "openPage": "Ouvrir la page",
+    "inLibrary": "Dans la bibliothèque",
+    "showInLibrary": "Voir dans la bibliothèque",
+    "unknownAuthor": "Auteur inconnu",
+    "externalHint": "Télécharge-la dans ton navigateur, puis dépose le fichier ici.",
+    "lethamyrNote": "Lethamyr héberge ses fichiers sur Google Drive, d'où l'app ne télécharge pas. Ouvre la page d'une map, télécharge-la dans ton navigateur, puis glisse le fichier dans cette fenêtre.",
+    "empty": "Aucune map trouvée",
+    "phase": {
+      "download": "Téléchargement",
+      "verify": "Vérification de l'empreinte",
+      "extract": "Extraction",
+      "done": "Terminé",
+      "failed": "Échec"
+    }
+  },
+  "toast": {
+    "imported_one": "{{count}} map importée",
+    "imported_other": "{{count}} maps importées",
+    "nothingImported": "Aucune map trouvée dans ce que tu as déposé",
+    "installed": "{{name}} installée — lance-la depuis l'Entraînement libre dans l'arène Labs",
+    "launched": "{{name}} est prête",
+    "launchedHint": "Le jeu démarre sans EAC. L'arène d'origine revient quand tu le fermes.",
+    "downloaded": "{{name}} ajoutée à ta bibliothèque",
+    "installedLive": "{{name}} est en place",
+    "restoredLive": "L'arène d'origine est revenue",
+    "liveHint": "Charge l'arène Labs depuis l'Entraînement libre pour y jouer."
+  }
+}

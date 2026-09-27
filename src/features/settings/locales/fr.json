@@ -1,0 +1,84 @@
+{
+  "eyebrow": "Système",
+  "title": "Réglages",
+  "subtitle": "Emplacement du jeu, apparence, automatisation et confidentialité.",
+  "game": {
+    "title": "Rocket League",
+    "source": {
+      "epic": "Epic Games",
+      "steam": "Steam",
+      "manual": "Dossier personnalisé"
+    },
+    "folder": "Dossier du jeu",
+    "folderHint": "Détecté automatiquement pour Epic et Steam. Choisis-le à la main si besoin.",
+    "autoDetect": "Détection auto",
+    "pickTitle": "Sélectionne le dossier de Rocket League",
+    "pickSuccess": "Dossier du jeu mis à jour"
+  },
+  "keys": {
+    "title": "Fichiers du jeu",
+    "status": "Clés des packages",
+    "present": "Disponibles",
+    "missing": "Absentes",
+    "presentHint_one": "{{count}} clé chargée — swaps d'items et decals custom activés.",
+    "presentHint_other": "{{count}} clés chargées — swaps d'items et decals custom activés.",
+    "missingHint": "Sans keys.txt, les swaps d'items et les decals custom sont désactivés. Maps, palette et tracker fonctionnent quand même.",
+    "dropIn": "Ajouter keys.txt",
+    "dropInHint": "Choisis ton keys.txt (il est copié dans le dossier de données de l'app), ou dépose-le toi-même dans ce dossier.",
+    "import": "Importer keys.txt"
+  },
+  "appearance": {
+    "title": "Apparence",
+    "language": "Langue",
+    "languageHint": "Langue de l'interface.",
+    "fx": "Effets visuels",
+    "fxHint": "Fond aurora animé. « Bas » divise le coût GPU par deux.",
+    "fxOff": "Désactivés",
+    "fxLow": "Bas",
+    "fxHigh": "Élevés",
+    "pauseInGame": "Mettre les effets en pause en jeu",
+    "pauseInGameHint": "Arrête toute animation quand Rocket League est au premier plan."
+  },
+  "automation": {
+    "title": "Automatisation",
+    "reapply": "Réappliquer après les mises à jour du jeu",
+    "reapplyHint": "Reconstruit automatiquement tes swaps, ta palette et tes decals à partir des nouveaux fichiers du jeu.",
+    "restoreMaps": "Restaurer les maps à la fermeture du jeu",
+    "restoreMapsHint": "Après une session hors ligne, la map d'origine est remise pour que le jeu en ligne reste propre."
+  },
+  "privacy": {
+    "title": "Confidentialité & sécurité",
+    "local": "Tout tourne en local : ton catalogue vient de tes propres fichiers de jeu.",
+    "noInjection": "Rien n'est injecté dans le processus du jeu.",
+    "noInterception": "Le trafic du jeu n'est jamais intercepté : pas de certificats, pas de proxy, pas de fichier hosts.",
+    "reversible": "Chaque modification de fichier est enregistrée avec une sauvegarde vérifiée et peut être annulée.",
+    "diagnostics": "Pack de diagnostic",
+    "diagnosticsHint": "Crée un zip local (logs + réglages) à partager si tu as besoin d'aide. Rien n'est envoyé.",
+    "diagnosticsDone": "Diagnostic enregistré"
+  },
+  "about": {
+    "title": "À propos",
+    "version": "Version",
+    "data": "Données de l'app",
+    "logs": "Logs",
+    "showLogs": "Afficher les logs",
+    "logsHint": "Conservés 30 jours.",
+    "checkUpdates": "Rechercher une mise à jour"
+  },
+  "stock": {
+    "title": "Restaurer le jeu d'origine",
+    "hint": "Retire toutes les modifications faites par l'app dans les fichiers du jeu. Pratique si quelque chose cloche.",
+    "gameRunning": "Ferme Rocket League d'abord.",
+    "action": "Restaurer",
+    "confirmTitle": "Restaurer le jeu d'origine ?",
+    "confirmBody": "Le jeu retrouve ses fichiers d'origine.",
+    "listSwaps": "Tous les swaps d'items sont annulés",
+    "listPalette": "La palette de couleurs revient à celle d'origine",
+    "listDecal": "Le decal custom est retiré",
+    "listMap": "La map custom active est retirée",
+    "kept": "Tes presets, palettes, packs de decals et ta bibliothèque de maps sont conservés — tu peux tout réappliquer quand tu veux.",
+    "done": "Jeu restauré",
+    "doneDetail_one": "{{count}} fichier restauré.",
+    "doneDetail_other": "{{count}} fichiers restaurés."
+  }
+}

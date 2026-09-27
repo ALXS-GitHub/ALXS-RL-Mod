@@ -1,0 +1,35 @@
+{
+  "eyebrow": "Arena",
+  "title": "Play",
+  "subtitle": "Start Rocket League online with Easy Anti-Cheat, or offline with your mods and custom maps.",
+  "launch": {
+    "notInstalled": "Rocket League not found — set its folder in Settings",
+    "alreadyRunning": "The game is already running",
+    "started": "Rocket League is starting",
+    "viaLauncher": "Launch requested from your game launcher",
+    "eacHint": "Online with Easy Anti-Cheat.",
+    "offlineHint": "Offline, without EAC: mods and custom maps are active.",
+    "footnote": "This app never injects anything into the game and never touches its network traffic.",
+    "eac": {
+      "badge": "EAC on",
+      "title": "Play online",
+      "viaEpic": "Starts through the Epic Games launcher, with Easy Anti-Cheat and your online account.",
+      "viaSteam": "Starts through Steam, with Easy Anti-Cheat and your online account.",
+      "direct": "Starts the EAC build of the game directly.",
+      "p1": "Ranked, casual, tournaments",
+      "p2": "Item swaps, palette and decals stay visible to you only",
+      "p3": "Custom maps must be restored first",
+      "cta": "Launch online",
+      "mapActive": "Custom map \"{{name}}\" is installed — restore the stock arena first (Maps)"
+    },
+    "offline": {
+      "badge": "EAC off",
+      "title": "Offline & modding",
+      "description": "Starts the game without Easy Anti-Cheat: custom maps, free play and offline tools.",
+      "p1": "Custom maps in the Labs arena",
+      "p2": "BakkesMod works in this mode only",
+      "p3": "No online matchmaking",
+      "cta": "Launch offline"
+    }
+  }
+}
