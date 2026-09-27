@@ -86,6 +86,16 @@
     "externalHint": "Télécharge-la dans ton navigateur, puis dépose le fichier ici.",
     "lethamyrNote": "Lethamyr héberge ses fichiers sur Google Drive, d'où l'app ne télécharge pas. Ouvre la page d'une map, télécharge-la dans ton navigateur, puis glisse le fichier dans cette fenêtre.",
     "empty": "Aucune map trouvée",
+    "downloads_one": "{{value}} téléchargement",
+    "downloads_other": "{{value}} téléchargements",
+    "rating_one": "★ {{value}} ({{count}} note)",
+    "rating_other": "★ {{value}} ({{count}} notes)",
+    "sort": {
+      "downloads": "Les plus téléchargées",
+      "newest": "Les plus récentes",
+      "rating": "Les mieux notées",
+      "views": "Les plus vues"
+    },
     "phase": {
       "download": "Téléchargement",
       "verify": "Vérification de l'empreinte",

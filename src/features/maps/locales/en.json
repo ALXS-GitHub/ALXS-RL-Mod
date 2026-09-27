@@ -86,6 +86,16 @@
     "externalHint": "Download in your browser, then drop the file here.",
     "lethamyrNote": "Lethamyr hosts its files on Google Drive, which this app does not download from. Open a map page, download it in your browser, then drag the file into this window.",
     "empty": "No maps found",
+    "downloads_one": "{{value}} download",
+    "downloads_other": "{{value}} downloads",
+    "rating_one": "★ {{value}} ({{count}} rating)",
+    "rating_other": "★ {{value}} ({{count}} ratings)",
+    "sort": {
+      "downloads": "Most downloaded",
+      "newest": "Newest",
+      "rating": "Top rated",
+      "views": "Most viewed"
+    },
     "phase": {
       "download": "Downloading",
       "verify": "Verifying checksum",

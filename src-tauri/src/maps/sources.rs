@@ -1,10 +1,13 @@
 //! Community map sources.
 //!
 //! - **bakkesplugins.com** — public JSON API:
-//!   `GET /api/rocket-league-maps?page=&pageSize=&search=` (paged list),
-//!   `GET /api/rocket-league-maps/{id}` (detail),
-//!   `GET /api/rocket-league-maps/{id}/versions` (files: `edgeUrl` zip on
-//!   `cdn.bakkesplugins.com`, `fileHash` = SHA-256). Fully downloadable.
+//!   `GET /api/rocket-league-maps?page=&pageSize=&search=&sortBy=` (paged
+//!   list, `sortBy` = downloads | newest | rating | views),
+//!   `GET /api/rocket-league-maps/{id}` (detail, with `files[]`),
+//!   `GET /api/rocket-league-maps/{id}/versions` (same `files[]`, fallback).
+//!   A file is an `edgeUrl` zip on `cdn.bakkesplugins.com`; its `fileHash`
+//!   is the SHA-256 of the map package *inside* the zip (`fileName`), not
+//!   of the zip. Fully downloadable.
 //! - **lethamyr.com** — server-rendered HTML list (`/maps?page=N`, cards
 //!   `<a href="/maps/{id}">` with cover image, title and subtitle). Its
 //!   download links redirect to Google Drive, which is outside our network
@@ -13,6 +16,7 @@
 
 use std::collections::HashMap;
 use std::io::Write;
+use std::path::Path;
 
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
@@ -22,8 +26,8 @@ use crate::base::error::{AppError, AppResult};
 use crate::base::security::{ensure_allowed, http_client, Purpose};
 use crate::maps::library;
 use crate::maps::model::{
-    display_name, BrowseResult, DownloadPhase, DownloadProgress, MapEntry, MapOrigin, RemoteMap,
-    RemoteSource,
+    display_name, BrowseResult, DownloadPhase, DownloadProgress, MapEntry, MapOrigin, MapSort,
+    RemoteMap, RemoteSource,
 };
 
 pub const EVENT_DOWNLOAD: &str = "maps://download";
@@ -58,6 +62,12 @@ struct BpMap {
     tags: Vec<BpTag>,
     member: Option<BpMember>,
     latest_version_file_size_bytes: Option<u64>,
+    download_count: Option<u64>,
+    average_rating: Option<f64>,
+    rating_count: Option<u32>,
+    latest_version_string: Option<String>,
+    /// Present on the detail endpoint only (same shape as `/versions`).
+    files: Option<Vec<BpVersion>>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -76,7 +86,7 @@ struct BpMember {
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct BpVersion {
-    edge_url: String,
+    edge_url: Option<String>,
     file_name: Option<String>,
     file_size_bytes: Option<u64>,
     file_hash: Option<String>,
@@ -107,8 +117,48 @@ fn bp_to_remote(m: BpMap, installed: &HashMap<(RemoteSource, String), String>) -
             .filter_map(|t| t.short_name.or(t.key))
             .collect(),
         updated_at: m.updated_at,
+        download_count: m.download_count,
+        average_rating: m.average_rating.filter(|r| r.is_finite()),
+        rating_count: m.rating_count,
+        latest_version_string: m.latest_version_string,
         downloadable: true,
     }
+}
+
+/// Newest downloadable file of a map (by `createdAt`).
+fn latest_version(versions: Vec<BpVersion>) -> Option<BpVersion> {
+    versions
+        .into_iter()
+        .filter(|v| v.edge_url.as_deref().is_some_and(|u| !u.is_empty()))
+        .max_by(|a, b| a.created_at.cmp(&b.created_at))
+}
+
+/// Picks the extracted package the published `fileHash` covers: the one
+/// named `file_name` (base name, case-insensitive, raw or sanitised as
+/// extraction does), otherwise the only package. Pure (tested).
+pub fn hashed_package<'a>(file_name: Option<&str>, packages: &'a [String]) -> Option<&'a str> {
+    let wanted = file_name
+        .map(|n| n.rsplit(['/', '\\']).next().unwrap_or(n).trim())
+        .filter(|n| !n.is_empty());
+    if let Some(wanted) = wanted {
+        let sanitised = crate::base::fsx::sanitize_file_name(wanted);
+        if let Some(hit) = packages
+            .iter()
+            .find(|p| p.eq_ignore_ascii_case(wanted) || p.eq_ignore_ascii_case(&sanitised))
+        {
+            return Some(hit);
+        }
+    }
+    match packages {
+        [only] => Some(only),
+        _ => None,
+    }
+}
+
+/// Published hash, if usable (64 hex chars; empty or malformed → skipped).
+fn published_hash(raw: Option<&str>) -> Option<&str> {
+    raw.map(str::trim)
+        .filter(|h| h.len() == 64 && h.bytes().all(|b| b.is_ascii_hexdigit()))
 }
 
 fn url_encode(s: &str) -> String {
@@ -227,12 +277,20 @@ fn installed_index(library: &[MapEntry]) -> HashMap<(RemoteSource, String), Stri
         .collect()
 }
 
-pub async fn browse(source: RemoteSource, query: &str, page: u32) -> AppResult<BrowseResult> {
+pub async fn browse(
+    source: RemoteSource,
+    query: &str,
+    page: u32,
+    sort: MapSort,
+) -> AppResult<BrowseResult> {
     let page = page.max(1);
     let installed = installed_index(&library::list().unwrap_or_default());
     match source {
         RemoteSource::BakkesPlugins => {
-            let mut url = format!("{BP_API}?page={page}&pageSize={PAGE_SIZE}");
+            let mut url = format!(
+                "{BP_API}?page={page}&pageSize={PAGE_SIZE}&sortBy={}",
+                sort.as_api()
+            );
             let q = query.trim();
             if !q.is_empty() {
                 url.push_str(&format!("&search={}", url_encode(q)));
@@ -285,6 +343,10 @@ pub async fn browse(source: RemoteSource, query: &str, page: u32) -> AppResult<B
                     size_bytes: None,
                     tags: Vec::new(),
                     updated_at: None,
+                    download_count: None,
+                    average_rating: None,
+                    rating_count: None,
+                    latest_version_string: None,
                     downloadable: false,
                 })
                 .collect();
@@ -348,17 +410,20 @@ pub async fn download(
 
 async fn download_bp(app: &AppHandle, remote_id: &str) -> AppResult<MapEntry> {
     let src = RemoteSource::BakkesPlugins;
-    let detail: BpMap = get_json(&format!("{BP_API}/{remote_id}")).await?;
-    let mut versions: Vec<BpVersion> = get_json(&format!("{BP_API}/{remote_id}/versions")).await?;
-    versions.sort_by(|a, b| b.created_at.cmp(&a.created_at));
-    let version = versions
-        .into_iter()
-        .next()
+    let mut detail: BpMap = get_json(&format!("{BP_API}/{remote_id}")).await?;
+    // The detail usually carries `files[]`; `/versions` is the fallback.
+    let versions = match detail.files.take().filter(|f| !f.is_empty()) {
+        Some(files) => files,
+        None => get_json(&format!("{BP_API}/{remote_id}/versions")).await?,
+    };
+    let version = latest_version(versions)
         .ok_or_else(|| AppError::NotFound("no downloadable version".into()))?;
-    let url = ensure_allowed(&version.edge_url, Purpose::Maps)?;
+    let edge_url = version.edge_url.clone().unwrap_or_default();
+    let url = ensure_allowed(&edge_url, Purpose::Maps)?;
+    let expected_hash = published_hash(version.file_hash.as_deref()).map(str::to_string);
 
     let staging = library::new_staging()?;
-    let lower = version.edge_url.to_ascii_lowercase();
+    let lower = edge_url.to_ascii_lowercase();
     let download_name = if lower.ends_with(".zip") {
         "download.zip".to_string()
     } else {
@@ -406,22 +471,8 @@ async fn download_bp(app: &AppHandle, remote_id: &str) -> AppResult<MapEntry> {
         file.flush()?;
         drop(file);
 
-        emit(
-            app,
-            src,
-            remote_id,
-            DownloadPhase::Verify,
-            downloaded,
-            total,
-        );
-        if let Some(expected) = version.file_hash.as_deref().filter(|h| h.len() == 64) {
-            let got = hex::encode(hasher.finalize());
-            if !got.eq_ignore_ascii_case(expected) {
-                return Err(AppError::HashMismatch(format!(
-                    "bakkesplugins map {remote_id}"
-                )));
-            }
-        }
+        // Hash of the raw download: the map itself when it is not a zip.
+        let download_hash = hex::encode(hasher.finalize());
 
         emit(
             app,
@@ -431,7 +482,8 @@ async fn download_bp(app: &AppHandle, remote_id: &str) -> AppResult<MapEntry> {
             downloaded,
             total,
         );
-        if download_name == "download.zip" {
+        let is_zip = download_name == "download.zip";
+        if is_zip {
             let (zip_path, staging_dir) = (target.clone(), staging.clone());
             let count = tauri::async_runtime::spawn_blocking(move || -> AppResult<usize> {
                 let n = library::extract_zip(&zip_path, &staging_dir)?;
@@ -444,6 +496,33 @@ async fn download_bp(app: &AppHandle, remote_id: &str) -> AppResult<MapEntry> {
                 return Err(AppError::InvalidInput(
                     "the download contains no .upk/.udk map".into(),
                 ));
+            }
+        }
+
+        emit(
+            app,
+            src,
+            remote_id,
+            DownloadPhase::Verify,
+            downloaded,
+            total,
+        );
+        if let Some(expected) = expected_hash {
+            // `fileHash` covers the package inside the zip; a match on the
+            // raw download is accepted too (non-zip uploads).
+            let verified = download_hash.eq_ignore_ascii_case(&expected)
+                || (is_zip && {
+                    let (staging_dir, file_name) = (staging.clone(), version.file_name.clone());
+                    tauri::async_runtime::spawn_blocking(move || {
+                        verify_extracted(&staging_dir, file_name.as_deref(), &expected)
+                    })
+                    .await
+                    .map_err(|e| AppError::Internal(e.to_string()))??
+                });
+            if !verified {
+                return Err(AppError::HashMismatch(format!(
+                    "bakkesplugins map {remote_id}"
+                )));
             }
         }
 
@@ -487,6 +566,20 @@ async fn download_bp(app: &AppHandle, remote_id: &str) -> AppResult<MapEntry> {
         let _ = std::fs::remove_dir_all(&staging);
     }
     outcome
+}
+
+/// Hashes the extracted package `fileHash` refers to and compares it.
+fn verify_extracted(staging: &Path, file_name: Option<&str>, expected: &str) -> AppResult<bool> {
+    let packages: Vec<String> = library::packages_in(staging)
+        .into_iter()
+        .map(|(n, _)| n)
+        .collect();
+    match hashed_package(file_name, &packages) {
+        Some(p) => {
+            Ok(crate::base::fsx::sha256_file(&staging.join(p))?.eq_ignore_ascii_case(expected))
+        }
+        None => Ok(false),
+    }
 }
 
 #[cfg(test)]
@@ -547,6 +640,74 @@ mod tests {
         let raw = r#"{"id":1,"name":"x","bannerUrl":"https://evil.example/a.jpg"}"#;
         let m: BpMap = serde_json::from_str(raw).unwrap();
         assert!(bp_to_remote(m, &HashMap::new()).preview_url.is_none());
+    }
+
+    #[test]
+    fn picks_the_hashed_package() {
+        let pk = |v: &[&str]| v.iter().map(|s| s.to_string()).collect::<Vec<_>>();
+        // Named file wins, case-insensitive, even among several packages.
+        let many = pk(&["Textures.upk", "Turn_By_Turn.udk"]);
+        assert_eq!(
+            hashed_package(Some("turn_by_turn.UDK"), &many),
+            Some("Turn_By_Turn.udk")
+        );
+        // A path in `fileName` is reduced to its base name.
+        assert_eq!(
+            hashed_package(Some("maps/Turn_By_Turn.udk"), &many),
+            Some("Turn_By_Turn.udk")
+        );
+        // Name as sanitised by the extraction.
+        let odd = pk(&["My_Map_.upk", "b.upk"]);
+        assert_eq!(
+            hashed_package(Some("My Map!.upk"), &pk(&["My Map_.upk"])),
+            Some("My Map_.upk")
+        );
+        assert_eq!(
+            hashed_package(Some("My:Map?.upk"), &odd),
+            Some("My_Map_.upk")
+        );
+        // Unknown or missing name: only a single package is accepted.
+        let one = pk(&["Other.upk"]);
+        assert_eq!(
+            hashed_package(Some("Turn_By_Turn.udk"), &one),
+            Some("Other.upk")
+        );
+        assert_eq!(hashed_package(None, &one), Some("Other.upk"));
+        assert_eq!(hashed_package(Some(""), &one), Some("Other.upk"));
+        assert_eq!(hashed_package(Some("nope.udk"), &many), None);
+        assert_eq!(hashed_package(None, &many), None);
+        assert_eq!(hashed_package(Some("a.upk"), &[]), None);
+    }
+
+    #[test]
+    fn published_hash_is_validated() {
+        let h = "219B028C29C7649543709636C38ECA6F5DC35F35DCDC2FA0D0512A4586014FF3";
+        assert_eq!(published_hash(Some(h)), Some(h));
+        assert_eq!(published_hash(Some("")), None);
+        assert_eq!(published_hash(None), None);
+        assert_eq!(published_hash(Some(&"z".repeat(64))), None);
+    }
+
+    #[test]
+    fn uses_detail_files_and_latest_version() {
+        let raw = r#"{"id":294,"name":"Turn By Turn","downloadCount":43,"averageRating":0,
+          "ratingCount":0,"files":[
+            {"fileName":"Old.udk","edgeUrl":"https://cdn.bakkesplugins.com/uploads/a-0.9.zip",
+             "fileHash":"","versionString":"0.9","createdAt":"2026-02-01T00:00:00Z"},
+            {"fileName":"Turn_By_Turn.udk","edgeUrl":"https://cdn.bakkesplugins.com/uploads/b-1.0.0.zip",
+             "fileSizeBytes":20956,"fileHash":"219B028C29C7649543709636C38ECA6F5DC35F35DCDC2FA0D0512A4586014FF3",
+             "versionString":"1.0.0","createdAt":"2026-03-01T18:53:34Z"},
+            {"fileName":"Broken.udk","createdAt":"2027-01-01T00:00:00Z"}]}"#;
+        let mut m: BpMap = serde_json::from_str(raw).unwrap();
+        let v = latest_version(m.files.take().unwrap()).unwrap();
+        assert_eq!(v.version_string.as_deref(), Some("1.0.0"));
+        assert_eq!(v.file_name.as_deref(), Some("Turn_By_Turn.udk"));
+        let r = bp_to_remote(m, &HashMap::new());
+        assert_eq!(r.download_count, Some(43));
+        assert_eq!(r.rating_count, Some(0));
+        // List items have no `files`.
+        let item: BpMap = serde_json::from_str(r#"{"id":1,"name":"x"}"#).unwrap();
+        assert!(item.files.is_none());
     }
 
     #[test]

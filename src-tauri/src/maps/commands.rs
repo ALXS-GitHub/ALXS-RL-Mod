@@ -7,7 +7,7 @@ use tauri::AppHandle;
 use crate::base::error::{AppError, AppResult};
 use crate::extras::launch;
 use crate::game::install;
-use crate::maps::model::{BrowseResult, MapEntry, MapPatch, MapSession, RemoteSource};
+use crate::maps::model::{BrowseResult, MapEntry, MapPatch, MapSession, MapSort, RemoteSource};
 use crate::maps::{library, session, sources};
 
 async fn blocking<T: Send + 'static>(
@@ -53,8 +53,15 @@ pub async fn maps_browse(
     source: RemoteSource,
     query: Option<String>,
     page: Option<u32>,
+    sort: Option<MapSort>,
 ) -> AppResult<BrowseResult> {
-    sources::browse(source, query.as_deref().unwrap_or(""), page.unwrap_or(1)).await
+    sources::browse(
+        source,
+        query.as_deref().unwrap_or(""),
+        page.unwrap_or(1),
+        sort.unwrap_or_default(),
+    )
+    .await
 }
 
 #[tauri::command]

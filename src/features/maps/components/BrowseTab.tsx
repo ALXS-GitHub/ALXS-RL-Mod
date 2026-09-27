@@ -9,9 +9,10 @@ import { EmptyState, ErrorState, Skeleton } from "@/components/ui/feedback";
 import { GlassCard } from "@/components/ui/glass";
 import { SearchInput } from "@/components/ui/input";
 import { Segmented } from "@/components/ui/segmented";
+import { Select } from "@/components/ui/select";
 import { notify } from "@/components/ui/toast";
-import { formatBytes } from "@/lib/format";
-import type { DownloadProgress, RemoteMap, RemoteSource } from "../api";
+import { formatBytes, formatNumber } from "@/lib/format";
+import { type DownloadProgress, MAP_SORTS, type MapSort, type RemoteMap, type RemoteSource } from "../api";
 import { useBrowse, useDownloadMap, useDownloadProgress } from "../queries";
 import { MapArt } from "./MapArt";
 
@@ -46,6 +47,25 @@ function ProgressBar({ progress }: { progress: DownloadProgress }) {
   );
 }
 
+/** `43 downloads · ★ 4.5 (2 ratings)` — bakkesplugins only. */
+function RemoteStats({ map }: { map: RemoteMap }) {
+  const { t } = useTranslation("maps");
+  const parts: string[] = [];
+  if (map.downloadCount != null) {
+    parts.push(t("browse.downloads", { count: map.downloadCount, value: formatNumber(map.downloadCount) }));
+  }
+  if (map.averageRating != null && map.ratingCount) {
+    parts.push(
+      t("browse.rating", {
+        count: map.ratingCount,
+        value: formatNumber(Math.round(map.averageRating * 10) / 10),
+      }),
+    );
+  }
+  if (!parts.length) return null;
+  return <p className="truncate text-[11px] text-fg-subtle tabular-nums">{parts.join(" · ")}</p>;
+}
+
 interface RemoteCardProps {
   map: RemoteMap;
   progress: DownloadProgress | undefined;
@@ -75,6 +95,7 @@ function RemoteCard({ map, progress, downloading, onDownload, onOpenLibrary }: R
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-3 p-3">
+        <RemoteStats map={map} />
         {map.description ? <p className="line-clamp-2 text-xs text-fg-muted">{map.description}</p> : null}
         {map.tags.length ? (
           <div className="flex flex-wrap gap-1">
@@ -127,14 +148,17 @@ export function BrowseTab({ onShowLibrary }: { onShowLibrary: () => void }) {
   const [source, setSource] = useState<RemoteSource>("bakkesPlugins");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [sort, setSort] = useState<MapSort>("downloads");
   const debounced = useDebounced(query);
-  const browse = useBrowse(source, debounced, page);
+  const browse = useBrowse(source, debounced, page, sort);
   const download = useDownloadMap();
   const progress = useDownloadProgress();
 
-  // Back to page 1 whenever the search or the source changes.
+  // Back to page 1 whenever the search, the order or the source changes.
   // biome-ignore lint/correctness/useExhaustiveDependencies: reset on input change only
-  useEffect(() => setPage(1), [debounced, source]);
+  useEffect(() => setPage(1), [debounced, source, sort]);
+
+  const sortOptions = MAP_SORTS.map((value) => ({ value, label: t(`browse.sort.${value}`) }));
 
   const data = browse.data;
 
@@ -156,6 +180,9 @@ export function BrowseTab({ onShowLibrary }: { onShowLibrary: () => void }) {
           placeholder={source === "lethamyr" ? t("browse.searchPage") : t("browse.search")}
           className="w-full max-w-sm"
         />
+        {source === "bakkesPlugins" ? (
+          <Select value={sort} onValueChange={setSort} options={sortOptions} className="w-44" />
+        ) : null}
         <div className="ml-auto flex items-center gap-2 text-xs text-fg-subtle">
           <Button
             size="icon-sm"

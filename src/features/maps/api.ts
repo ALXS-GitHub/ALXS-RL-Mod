@@ -35,6 +35,11 @@ export function targetLabel(target: string): string {
 export const remoteSourceSchema = z.enum(["bakkesPlugins", "lethamyr"]);
 export type RemoteSource = z.infer<typeof remoteSourceSchema>;
 
+/** Browse order (bakkesplugins only). */
+export const MAP_SORTS = ["downloads", "newest", "rating", "views"] as const;
+export const mapSortSchema = z.enum(MAP_SORTS);
+export type MapSort = z.infer<typeof mapSortSchema>;
+
 export const mapOriginSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("imported") }),
   z.object({ kind: z.literal("bakkesMod"), folderName: z.string() }),
@@ -87,6 +92,10 @@ export const remoteMapSchema = z.object({
   sizeBytes: z.number().nullable(),
   tags: z.array(z.string()),
   updatedAt: z.string().nullable(),
+  downloadCount: z.number().nullish(),
+  averageRating: z.number().nullish(),
+  ratingCount: z.number().nullish(),
+  latestVersionString: z.string().nullish(),
   pageUrl: z.string(),
   downloadable: z.boolean(),
   installedMapId: z.string().nullable(),
@@ -124,8 +133,8 @@ export const mapsApi = {
   import: (paths: string[]) => call("maps_import", { paths }, z.array(mapEntrySchema)),
   remove: (id: string) => callVoid("maps_delete", { id }),
   update: (id: string, patch: MapPatch) => call("maps_update", { id, patch }, mapEntrySchema),
-  browse: (source: RemoteSource, query: string, page: number) =>
-    call("maps_browse", { source, query, page }, browseResultSchema),
+  browse: (source: RemoteSource, query: string, page: number, sort: MapSort) =>
+    call("maps_browse", { source, query, page, sort }, browseResultSchema),
   download: (source: RemoteSource, remoteId: string) =>
     call("maps_download", { source, remoteId }, mapEntrySchema),
   activate: (id: string, target: string | null) => call("maps_activate", { id, target }, mapSessionSchema),

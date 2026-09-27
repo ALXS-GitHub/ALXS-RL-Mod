@@ -41,7 +41,7 @@ fn is_package(p: &Path) -> bool {
 }
 
 /// Packages directly inside a map folder, `(file name, size)`.
-fn packages_in(dir: &Path) -> Vec<(String, u64)> {
+pub(crate) fn packages_in(dir: &Path) -> Vec<(String, u64)> {
     let Ok(entries) = std::fs::read_dir(dir) else {
         return Vec::new();
     };

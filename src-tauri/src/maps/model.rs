@@ -55,6 +55,29 @@ pub enum RemoteSource {
     Lethamyr,
 }
 
+/// Sort order of the bakkesplugins browse list (ignored by Lethamyr).
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub enum MapSort {
+    #[default]
+    Downloads,
+    Newest,
+    Rating,
+    Views,
+}
+
+impl MapSort {
+    /// Value of the bakkesplugins `sortBy` query parameter.
+    pub fn as_api(self) -> &'static str {
+        match self {
+            MapSort::Downloads => "downloads",
+            MapSort::Newest => "newest",
+            MapSort::Rating => "rating",
+            MapSort::Views => "views",
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(
     rename_all = "camelCase",
@@ -141,6 +164,11 @@ pub struct RemoteMap {
     pub size_bytes: Option<u64>,
     pub tags: Vec<String>,
     pub updated_at: Option<String>,
+    /// Popularity figures (bakkesplugins only; `None` for Lethamyr).
+    pub download_count: Option<u64>,
+    pub average_rating: Option<f64>,
+    pub rating_count: Option<u32>,
+    pub latest_version_string: Option<String>,
     /// Page on the source website.
     pub page_url: String,
     /// False when the source only offers an external link (Lethamyr → Google Drive).
@@ -380,6 +408,13 @@ mod tests {
         let files = vec![("a.upk".to_string(), 10), ("b.udk".to_string(), 20)];
         assert_eq!(pick_main_package(&files).as_deref(), Some("b.udk"));
         assert_eq!(pick_main_package(&[]), None);
+    }
+
+    #[test]
+    fn sort_maps_to_api_values() {
+        let s: MapSort = serde_json::from_str(r#""rating""#).unwrap();
+        assert_eq!(s.as_api(), "rating");
+        assert_eq!(MapSort::default().as_api(), "downloads");
     }
 
     #[test]

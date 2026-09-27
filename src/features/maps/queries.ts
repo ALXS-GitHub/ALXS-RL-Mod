@@ -6,6 +6,7 @@ import {
   type DownloadProgress,
   downloadProgressSchema,
   type MapPatch,
+  type MapSort,
   mapsApi,
   type RemoteSource,
 } from "./api";
@@ -14,8 +15,8 @@ export const mapsKeys = {
   all: ["maps"] as const,
   list: ["maps", "list"] as const,
   session: ["maps", "session"] as const,
-  browse: (source: RemoteSource, query: string, page: number) =>
-    ["maps", "browse", source, query, page] as const,
+  browse: (source: RemoteSource, query: string, page: number, sort: MapSort) =>
+    ["maps", "browse", source, query, page, sort] as const,
 };
 
 export function useMaps() {
@@ -26,10 +27,10 @@ export function useMapSession() {
   return useQuery({ queryKey: mapsKeys.session, queryFn: mapsApi.session, refetchInterval: 10_000 });
 }
 
-export function useBrowse(source: RemoteSource, query: string, page: number) {
+export function useBrowse(source: RemoteSource, query: string, page: number, sort: MapSort) {
   return useQuery({
-    queryKey: mapsKeys.browse(source, query, page),
-    queryFn: () => mapsApi.browse(source, query, page),
+    queryKey: mapsKeys.browse(source, query, page, sort),
+    queryFn: () => mapsApi.browse(source, query, page, sort),
     placeholderData: keepPreviousData,
     staleTime: 5 * 60_000,
   });

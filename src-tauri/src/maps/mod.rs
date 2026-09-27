@@ -1,8 +1,10 @@
 //! Map library, community sources and the active map session.
 //!
-//! A map is "played" by dropping it into `CookedPCConsole/mods/` under the
-//! name of a Labs arena (the game's native override layer). The stock arena
-//! is never modified. Only one map session exists at a time.
+//! A map is "played" by writing it over a Labs arena file in the
+//! `CookedPCConsole/` root (`Labs_*_P.upk`, `Placement::RootReplace`): the
+//! stock arena is backed up by `game::writer` and restored on deactivation.
+//! Companion packages (rare) go to `CookedPCConsole/mods/`. Only one map
+//! session exists at a time (see [`session`]).
 
 pub mod commands;
 pub mod library;
