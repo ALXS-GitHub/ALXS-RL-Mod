@@ -19,6 +19,7 @@ pub mod swap;
 // play slice
 pub mod extras;
 pub mod maps;
+pub mod market;
 pub mod stats;
 
 use std::sync::RwLock;
@@ -163,6 +164,8 @@ pub fn run() {
             integrity::commands::integrity_reapply,
             integrity::commands::integrity_restore_stock,
             // play: maps, launch, stats, extras
+            market::commands::market_browse,
+            market::commands::market_install,
             maps::commands::maps_list,
             maps::commands::maps_import,
             maps::commands::maps_delete,

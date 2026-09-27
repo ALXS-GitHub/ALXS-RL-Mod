@@ -1,0 +1,56 @@
+{
+  "eyebrow": "Community",
+  "title": "Marketplace",
+  "subtitle": "Maps, car decals and balls from the community, installed into your libraries in one click.",
+  "tabs": {
+    "maps": "Maps",
+    "decal": "Car decals",
+    "ball": "Balls"
+  },
+  "search": "Search packs…",
+  "sort": {
+    "downloads": "Most downloaded",
+    "likes": "Most liked",
+    "newest": "Newest",
+    "updated": "Recently updated",
+    "trending": "Trending"
+  },
+  "count_one": "{{count}} pack",
+  "count_other": "{{count}} packs",
+  "countTruncated": "{{shown}} of {{total}} shown",
+  "truncatedHint": "AlphaConsole only returns the first 20 results of a search: refine it to find more.",
+  "empty": {
+    "title": "No pack found",
+    "description": "Try another search or another source."
+  },
+  "credits": {
+    "alphaConsole": "Packs from alphaconsole.io, by their authors. They stay hosted there; the app only downloads the one you install.",
+    "rlDesigner": "Packs from the RL-Designer repository, already in the app's real-colour format."
+  },
+  "card": {
+    "install": "Install",
+    "inLibrary": "In your library",
+    "showInLibrary": "Open library",
+    "openPage": "Open the page",
+    "unknownAuthor": "Unknown author",
+    "downloads_one": "{{value}} download",
+    "downloads_other": "{{value}} downloads"
+  },
+  "install": {
+    "title": "Install {{name}}",
+    "description": "This pack is in AlphaConsole's format.",
+    "convert": "Convert to real colours (recommended)",
+    "convertDetail": "Painted zones follow your primary and accent colours, the rest keeps the image's own colours. The original files are kept.",
+    "cancel": "Cancel",
+    "confirm": "Install"
+  },
+  "done": {
+    "title": "{{name}} installed",
+    "variants_one": "{{count}} variant",
+    "variants_other": "{{count}} variants",
+    "converted_one": "{{count}} converted",
+    "converted_other": "{{count}} converted",
+    "failed_one": "{{count}} failed",
+    "failed_other": "{{count}} failed"
+  }
+}

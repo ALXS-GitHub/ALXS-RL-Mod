@@ -28,6 +28,12 @@
         },
         {
           "url": "https://tracker.gg/*"
+        },
+        {
+          "url": "https://alphaconsole.io/*"
+        },
+        {
+          "url": "https://github.com/ALXS-GitHub/RL-Designer/*"
         }
       ]
     },

@@ -20,9 +20,14 @@ pub enum Purpose {
     Ratings,
     /// Opening a link in the user's browser.
     Browse,
+    /// Marketplace listings and downloads (decal and ball packs).
+    Market,
 }
 
 const MAP_HOSTS: &[&str] = &["bakkesplugins.com", "lethamyr.com", "rocketleaguemaps.us"];
+/// AlphaConsole's library (pages + `s3.` file bucket) and RL-Designer's
+/// GitHub repo (raw files; `market::rl_designer` also pins the path).
+const MARKET_HOSTS: &[&str] = &["alphaconsole.io", "raw.githubusercontent.com"];
 const RATING_HOSTS: &[&str] = &[
     "api.tracker.gg",
     "tracker.gg",
@@ -36,6 +41,7 @@ const BROWSE_HOSTS: &[&str] = &[
     "rocketleague.tracker.network",
     "ballchasing.com",
     "github.com",
+    "alphaconsole.io",
 ];
 
 fn hosts_for(purpose: Purpose) -> &'static [&'static str] {
@@ -43,6 +49,7 @@ fn hosts_for(purpose: Purpose) -> &'static [&'static str] {
         Purpose::Maps => MAP_HOSTS,
         Purpose::Ratings => RATING_HOSTS,
         Purpose::Browse => BROWSE_HOSTS,
+        Purpose::Market => MARKET_HOSTS,
     }
 }
 
@@ -112,5 +119,9 @@ mod tests {
         assert!(ensure_allowed("https://127.0.0.1/", Purpose::Maps).is_err());
         assert!(ensure_allowed("https://u:p@bakkesplugins.com", Purpose::Maps).is_err());
         assert!(ensure_allowed("https://api.tracker.gg/x", Purpose::Maps).is_err());
+        assert!(
+            ensure_allowed("https://s3.alphaconsole.io/uploads/x.zip", Purpose::Market).is_ok()
+        );
+        assert!(ensure_allowed("https://s3.alphaconsole.io/uploads/x.zip", Purpose::Maps).is_err());
     }
 }

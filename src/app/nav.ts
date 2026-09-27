@@ -10,6 +10,7 @@ import {
   Puzzle,
   Settings,
   Sparkles,
+  Store,
   Volleyball,
 } from "lucide-react";
 
@@ -94,6 +95,22 @@ export const NAV: readonly NavItem[] = [
     section: "arena",
     keywords: ["workshop", "map", "bakkesplugins", "lethamyr"],
     modifiesGame: true,
+  },
+  {
+    to: "/market",
+    labelKey: "nav.market",
+    icon: Store,
+    section: "arena",
+    keywords: [
+      "marketplace",
+      "download",
+      "télécharger",
+      "alphaconsole",
+      "bakkesplugins",
+      "rl-designer",
+      "decal",
+      "ball",
+    ],
   },
   {
     to: "/tracker",

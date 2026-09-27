@@ -1,0 +1,56 @@
+{
+  "eyebrow": "Communauté",
+  "title": "Marketplace",
+  "subtitle": "Maps, stickers et balles de la communauté, installés dans tes bibliothèques en un clic.",
+  "tabs": {
+    "maps": "Maps",
+    "decal": "Stickers",
+    "ball": "Balles"
+  },
+  "search": "Rechercher des packs…",
+  "sort": {
+    "downloads": "Les plus téléchargés",
+    "likes": "Les plus aimés",
+    "newest": "Les plus récents",
+    "updated": "Mis à jour récemment",
+    "trending": "Tendances"
+  },
+  "count_one": "{{count}} pack",
+  "count_other": "{{count}} packs",
+  "countTruncated": "{{shown}} affichés sur {{total}}",
+  "truncatedHint": "AlphaConsole ne renvoie que les 20 premiers résultats d'une recherche : affine-la pour en trouver d'autres.",
+  "empty": {
+    "title": "Aucun pack trouvé",
+    "description": "Essaie une autre recherche ou une autre source."
+  },
+  "credits": {
+    "alphaConsole": "Packs d'alphaconsole.io, par leurs auteurs. Ils restent hébergés là-bas ; l'app télécharge seulement celui que tu installes.",
+    "rlDesigner": "Packs du dépôt RL-Designer, déjà au format vraies couleurs de l'app."
+  },
+  "card": {
+    "install": "Installer",
+    "inLibrary": "Dans ta bibliothèque",
+    "showInLibrary": "Ouvrir la bibliothèque",
+    "openPage": "Ouvrir la page",
+    "unknownAuthor": "Auteur inconnu",
+    "downloads_one": "{{value}} téléchargement",
+    "downloads_other": "{{value}} téléchargements"
+  },
+  "install": {
+    "title": "Installer {{name}}",
+    "description": "Ce pack est au format AlphaConsole.",
+    "convert": "Convertir en vraies couleurs (recommandé)",
+    "convertDetail": "Les zones peintes suivent tes couleurs principale et d'accent, le reste garde les couleurs de l'image. Les fichiers d'origine sont conservés.",
+    "cancel": "Annuler",
+    "confirm": "Installer"
+  },
+  "done": {
+    "title": "{{name}} installé",
+    "variants_one": "{{count}} variante",
+    "variants_other": "{{count}} variantes",
+    "converted_one": "{{count}} convertie",
+    "converted_other": "{{count}} converties",
+    "failed_one": "{{count}} en échec",
+    "failed_other": "{{count}} en échec"
+  }
+}

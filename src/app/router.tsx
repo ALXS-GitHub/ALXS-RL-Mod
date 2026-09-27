@@ -33,6 +33,7 @@ const routes = [
   page("/palette", () => import("@/features/palette/PalettePage"), "PalettePage"),
   page("/decals", () => import("@/features/decals/DecalsPage"), "DecalsPage"),
   page("/ball", () => import("@/features/ball/BallPage"), "BallPage"),
+  page("/market", () => import("@/features/market/MarketPage"), "MarketPage"),
   page("/maps", () => import("@/features/maps/MapsPage"), "MapsPage"),
   page("/play", () => import("@/features/play/PlayPage"), "PlayPage"),
   page("/tracker", () => import("@/features/tracker/TrackerPage"), "TrackerPage"),
