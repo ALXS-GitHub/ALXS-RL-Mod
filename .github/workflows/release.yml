@@ -43,7 +43,7 @@ jobs:
           tagName: v__VERSION__
           releaseName: "ALXS-RL-Mod v__VERSION__"
           releaseBody: |
-            Download **ALXS-RL-Mod_${{ github.ref_name }}_x64-setup.exe** below and run it (Windows, Epic Games version of Rocket League).
+            Download the **`_x64-setup.exe`** installer below and run it (Windows, Epic Games version of Rocket League).
             Already installed? The app updates itself.
 
             See the [README](https://github.com/ALXS-GitHub/ALXS-RL-Mod#readme) for keys.txt and the FAQ.
