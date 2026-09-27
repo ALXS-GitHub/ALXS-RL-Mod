@@ -1,6 +1,7 @@
-import { Lock, PackageSearch, RefreshCw, Sparkles } from "lucide-react";
+import { FileKey2, Lock, PackageSearch, RefreshCw, Sparkles } from "lucide-react";
 import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useKeysPicker } from "@/components/shell/WelcomeDialog";
 import { Button } from "@/components/ui/button";
 import { EmptyState, ErrorState, Skeleton } from "@/components/ui/feedback";
 import { SearchInput } from "@/components/ui/input";
@@ -28,6 +29,7 @@ export function ItemsPage() {
   const swaps = useSwaps();
   const refresh = useRefreshCatalog();
   const apply = useApplySwap();
+  const keysPicker = useKeysPicker();
 
   const [slot, setSlot] = useState<Slot>("decal");
   const [step, setStep] = useState<PickStep>("owned");
@@ -205,6 +207,25 @@ export function ItemsPage() {
 
       <IntegrityBanner />
 
+      {catalog.data && !catalog.data.fromGame ? (
+        <div className="flex items-center gap-3 rounded-lg border border-warning/25 bg-warning/[0.06] px-3.5 py-2.5">
+          <FileKey2 className="size-4 shrink-0 text-warning" />
+          <div className="min-w-0 flex-1">
+            <p className="text-[13px] font-medium">{t("noKeys.title")}</p>
+            <p className="text-xs text-fg-muted">{t("noKeys.description")}</p>
+          </div>
+          <Button
+            variant="primary"
+            size="sm"
+            loading={keysPicker.busy}
+            onClick={() => void keysPicker.pick()}
+          >
+            <FileKey2 />
+            {t("noKeys.import")}
+          </Button>
+        </div>
+      ) : null}
+
       {catalog.error ? (
         <ErrorState error={catalog.error} onRetry={() => void catalog.refetch()} />
       ) : (
@@ -217,8 +238,12 @@ export function ItemsPage() {
                   items: formatNumber(catalog.data.items.length),
                   missing: formatNumber(catalog.data.unresolved),
                 })}
-                <br />
-                {catalog.data.fromGame ? t("catalogFromGame") : t("catalogBundled")}
+                {catalog.data.fromGame ? (
+                  <>
+                    <br />
+                    {t("catalogFromGame")}
+                  </>
+                ) : null}
               </p>
             ) : null}
           </div>

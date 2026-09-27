@@ -103,12 +103,16 @@
     "restored": "Item d'origine restauré"
   },
   "catalogFromGame": "Liste des produits lue dans ton jeu — les nouvelles saisons apparaissent automatiquement.",
-  "catalogBundled": "Liste des produits : copie intégrée (celle du jeu n'a pas pu être lue).",
   "locked": {
     "bannerTitle_one": "{{count}} item de cette catégorie est verrouillé.",
     "bannerTitle_other": "{{count}} items de cette catégorie sont verrouillés.",
     "bannerBody": "Leur fichier est chiffré avec une clé absente de keys.txt : tu peux les remplacer par un autre item, mais pas les afficher à la place d'un autre. Ils se débloquent dès que la clé est ajoutée (Réglages › Fichiers du jeu).",
     "pickTitle": "Item verrouillé",
     "pickBody": "{{name}} est chiffré avec une clé absente de keys.txt : il ne peut pas être l'item affiché. Ajoute la clé dans Réglages › Fichiers du jeu pour le débloquer."
+  },
+  "noKeys": {
+    "title": "La liste des items a besoin de ton keys.txt",
+    "description": "Rocket League chiffre les fichiers qui listent ses items. Importe un keys.txt de la communauté pour les lire — le README explique où le trouver.",
+    "import": "Importer keys.txt"
   }
 }

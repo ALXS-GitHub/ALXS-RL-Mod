@@ -1,7 +1,7 @@
 {
   "name": "alxs-rl-mod",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Rocket League customisation without injection: item swaps, custom decals, ball, palettes, Workshop maps, presets and a match tracker.",
   "license": "GPL-3.0-or-later",
   "homepage": "https://alxs-github.github.io/ALXS-RL-Mod/",

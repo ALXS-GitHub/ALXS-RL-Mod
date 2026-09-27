@@ -103,12 +103,16 @@
     "restored": "Original item restored"
   },
   "catalogFromGame": "Product list read from your game — new seasons appear automatically.",
-  "catalogBundled": "Product list: bundled copy (the game's list could not be read).",
   "locked": {
     "bannerTitle_one": "{{count}} item in this category is locked.",
     "bannerTitle_other": "{{count}} items in this category are locked.",
     "bannerBody": "Their game file is encrypted with a key missing from keys.txt: you can replace them with another item, but they can't be shown in place of one. They unlock as soon as the key is added (Settings › Game files).",
     "pickTitle": "Locked item",
     "pickBody": "{{name}} is encrypted with a key missing from keys.txt, so it can't be used as the item you see. Add the key in Settings › Game files to unlock it."
+  },
+  "noKeys": {
+    "title": "The item list needs your keys.txt",
+    "description": "Rocket League encrypts the files that list its items. Import a community keys.txt to read them — see the README for where to get one.",
+    "import": "Import keys.txt"
   }
 }

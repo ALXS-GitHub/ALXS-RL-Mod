@@ -35,7 +35,9 @@ pub fn init(app: &AppHandle) -> AppResult<()> {
     Ok(())
 }
 
-/// Current snapshot; rebuilt transparently if the game build changed.
+/// Current snapshot; rebuilt transparently if the game build changed, or
+/// if it was built without keys and keys are now available (imported or
+/// dropped in since).
 pub fn snapshot(app: &AppHandle) -> AppResult<Arc<CatalogSnapshot>> {
     let install = install::current_install(app)?;
     let build = fingerprint::current(&install)
@@ -43,7 +45,8 @@ pub fn snapshot(app: &AppHandle) -> AppResult<Arc<CatalogSnapshot>> {
         .unwrap_or_default();
     if let Ok(guard) = CACHE.read() {
         if let Some(snap) = guard.as_ref() {
-            if snap.build == build {
+            let stale = !snap.from_game && !crate::upk::keys::ring(app).is_empty();
+            if snap.build == build && !stale {
                 return Ok(Arc::clone(snap));
             }
         }
