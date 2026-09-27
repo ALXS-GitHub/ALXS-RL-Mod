@@ -13,8 +13,8 @@ use alxs_rl_mod_lib::market::model::MarketKind;
 use alxs_rl_mod_lib::market::rl_designer::{kind_dir, Index, IndexPack, IndexVariant};
 use serde_json::Value;
 
-/// Creator templates, not wearable packs.
-const SKIPPED_PACKS: &[&str] = &["Templates"];
+/// Creator templates (not wearable) and packs kept out of the marketplace.
+const SKIPPED_PACKS: &[&str] = &["Templates", "Jordan"];
 const PREVIEW_FILE: &str = "preview.png";
 const PREVIEW_SIZE: u32 = 256;
 
