@@ -12,6 +12,8 @@ use crate::upk::tables::{self, Export, Import};
 use crate::upk::texture::{self, Texture2D};
 
 pub struct Package {
+    /// The file, with the compressed chunks of fully encrypted packages
+    /// already decrypted (the header region stays as on disk).
     pub bytes: Vec<u8>,
     pub summary: PackageSummary,
     pub header: HeaderRegion,
@@ -21,9 +23,12 @@ pub struct Package {
 }
 
 impl Package {
-    pub fn open(bytes: Vec<u8>, ring: &KeyRing) -> UpkResult<Self> {
+    pub fn open(mut bytes: Vec<u8>, ring: &KeyRing) -> UpkResult<Self> {
         let summary = PackageSummary::parse(&bytes)?;
         let header = crypto::open_header(&bytes, &summary, ring)?;
+        if let Some(key) = header.key.filter(|_| !header.chunks.is_empty()) {
+            crypto::xor_chunks(&mut bytes, &header.chunks, &key)?;
+        }
         let names = NameTable::parse(&header.plain, summary.name_count);
         if names.entries.len() != summary.name_count {
             return Err(UpkError::Format(format!(
@@ -104,10 +109,23 @@ impl Package {
     }
 
     /// The package bytes with the (re-encrypted) header region spliced in.
+    /// The chunks of a fully encrypted package are still plain: patch the
+    /// body, then [`seal`](Self::seal) the result.
     pub fn header_bytes(&self) -> UpkResult<Vec<u8>> {
         let mut out = self.bytes.clone();
         self.header.splice_into(&mut out)?;
         Ok(out)
+    }
+
+    /// Encrypts the compressed chunks of a fully encrypted package with the
+    /// header's (possibly re-targeted) key. No-op for other packages.
+    pub fn seal(&self, out: &mut [u8]) -> UpkResult<()> {
+        match self.header.key {
+            Some(key) if !self.header.chunks.is_empty() => {
+                crypto::xor_chunks(out, &self.header.chunks, &key)
+            }
+            _ => Ok(()),
+        }
     }
 }
 

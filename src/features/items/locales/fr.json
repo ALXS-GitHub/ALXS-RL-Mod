@@ -66,7 +66,7 @@
   "grid": {
     "swapped": "Swappé",
     "sharedHint": "Partage son fichier de jeu avec d'autres variantes : le swapper les affecte aussi.",
-    "lockedHint": "Chiffré avec une clé absente de keys.txt : il peut être remplacé, mais pas affiché à la place d'un autre item.",
+    "lockedHint": "Chiffré avec une clé absente de keys.txt : il ne peut pas encore servir dans un swap.",
     "locked": "Clé manquante"
   },
   "history": {
@@ -106,9 +106,9 @@
   "locked": {
     "bannerTitle_one": "{{count}} item de cette catégorie est verrouillé.",
     "bannerTitle_other": "{{count}} items de cette catégorie sont verrouillés.",
-    "bannerBody": "Leur fichier est chiffré avec une clé absente de keys.txt : tu peux les remplacer par un autre item, mais pas les afficher à la place d'un autre. Ils se débloquent dès que la clé est ajoutée (Réglages › Fichiers du jeu).",
+    "bannerBody": "Leur fichier est chiffré avec une clé absente de keys.txt : ils ne peuvent pas encore servir dans un swap. Ils se débloquent dès qu'un keys.txt contenant leur clé est importé (Réglages › Fichiers du jeu).",
     "pickTitle": "Item verrouillé",
-    "pickBody": "{{name}} est chiffré avec une clé absente de keys.txt : il ne peut pas être l'item affiché. Ajoute la clé dans Réglages › Fichiers du jeu pour le débloquer."
+    "pickBody": "{{name}} est chiffré avec une clé absente de keys.txt : il ne peut pas servir dans un swap. Importe un keys.txt plus récent dans Réglages › Fichiers du jeu pour le débloquer."
   },
   "noKeys": {
     "title": "La liste des items a besoin de ton keys.txt",

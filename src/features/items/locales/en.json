@@ -66,7 +66,7 @@
   "grid": {
     "swapped": "Swapped",
     "sharedHint": "Shares its game file with other variants: swapping it affects them too.",
-    "lockedHint": "Encrypted with a key that is missing from keys.txt: it can be replaced, but not shown in place of another item.",
+    "lockedHint": "Encrypted with a key that is missing from keys.txt: it can't be used in a swap yet.",
     "locked": "Missing key"
   },
   "history": {
@@ -106,9 +106,9 @@
   "locked": {
     "bannerTitle_one": "{{count}} item in this category is locked.",
     "bannerTitle_other": "{{count}} items in this category are locked.",
-    "bannerBody": "Their game file is encrypted with a key missing from keys.txt: you can replace them with another item, but they can't be shown in place of one. They unlock as soon as the key is added (Settings › Game files).",
+    "bannerBody": "Their game file is encrypted with a key missing from keys.txt, so they can't be used in a swap yet. They unlock as soon as a keys.txt with their key is imported (Settings › Game files).",
     "pickTitle": "Locked item",
-    "pickBody": "{{name}} is encrypted with a key missing from keys.txt, so it can't be used as the item you see. Add the key in Settings › Game files to unlock it."
+    "pickBody": "{{name}} is encrypted with a key missing from keys.txt, so it can't be used in a swap. Import a newer keys.txt in Settings › Game files to unlock it."
   },
   "noKeys": {
     "title": "The item list needs your keys.txt",

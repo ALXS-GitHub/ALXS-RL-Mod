@@ -43,6 +43,9 @@ between modules (IPC command names, write layer, conventions).
 
 - Cooked `.upk`: header tables AES-256-ECB encrypted (keys in
   `src-tauri/resources/keys/keys.txt`, gitignored), body = RL chunked zlib.
+  Since 2026-08, new items are "fully encrypted" (AES-CTR header + chunks,
+  per-package nonces): see `docs_rl/package_encryption.md`. The game picks
+  the key by package name — re-encrypt with the target's key.
   See `docs_rl/palette.md`, `docs_rl/custom_decals*.md`.
 - `TAGame.upk` holds the colour palettes (not AES-encrypted).
 - Package renames must be length-preserving (null-pad) or re-point to a

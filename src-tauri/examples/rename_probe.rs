@@ -43,7 +43,7 @@ fn main() {
         &target,
     );
     println!("rules: {rules:?}");
-    let out = alxs_rl_mod_lib::upk::rename_package(&bytes, &rules, &ring).unwrap();
+    let out = alxs_rl_mod_lib::upk::rename_package(&bytes, &rules, &ring, None).unwrap();
     let (n0, i0, e0, p0, s) = dump(&bytes, &ring);
     let (n1, i1, e1, p1, _) = dump(&out, &ring);
     println!("names={} imports={} exports={} name_end={} import_off={} export_off={} depends_off={} region_start={}",

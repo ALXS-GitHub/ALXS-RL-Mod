@@ -5,6 +5,7 @@ localisation), materials and textures, written while building the app. They are 
 reference and are **not** documentation of the current code — see
 [`docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md) for that.
 
+- `package_encryption.md` — AES-ECB vs the "fully encrypted" AES-CTR packages (2026-08+).
 - `palette.md` — `TAGame.upk` colour palettes (current approach).
 - `lethamyr_maps_approach.md` — how community maps replace an arena.
 - `custom_decals*.md`, `mic_diffuse_binding_finding.md`, `startup_upk_body_mic.md`,

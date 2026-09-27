@@ -153,6 +153,10 @@ export function ItemsPage() {
       : "update";
 
   const pick = (item: CatalogItem) => {
+    if (item.locked) {
+      notify.info(t("locked.pickTitle"), t("locked.pickBody", { name: itemLabel(item) }));
+      return;
+    }
     if (step === "owned") {
       const existing = swaps.data?.find((s) => s.request.slot === slot && s.request.ownedId === item.id);
       if (existing) return loadSwap(existing);
@@ -160,8 +164,6 @@ export function ItemsPage() {
       if (wantedId !== null && byId.get(wantedId)?.package === item.package) setWantedId(null);
       setStep("wanted");
       setSearch("");
-    } else if (item.locked) {
-      notify.info(t("locked.pickTitle"), t("locked.pickBody", { name: itemLabel(item) }));
     } else {
       setWantedId(item.id);
     }

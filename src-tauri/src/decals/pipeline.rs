@@ -127,6 +127,7 @@ pub fn build(
     // 3. Header + patched body blocks, same size as the donor.
     let mut out = pkg.header_bytes()?;
     patch.apply(&mut out, &body.map)?;
+    pkg.seal(&mut out)?;
     debug_assert_eq!(out.len(), pkg.bytes.len());
 
     Ok(MaskSwap {
@@ -395,6 +396,7 @@ pub fn build_swap(
         }
         Err(e) => return Err(e.into()),
     };
+    pkg.seal(&mut out)?;
     debug_assert_eq!(out.len(), pkg.bytes.len());
 
     Ok(TextureSwap {

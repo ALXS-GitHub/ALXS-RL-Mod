@@ -161,7 +161,16 @@ fn body_name_uses(body: &[u8]) -> impl Fn(usize) -> bool + '_ {
 }
 
 /// Renames entries of a package and returns the patched file (same size).
-pub fn rename_package(bytes: &[u8], rules: &[Rename], keys: &KeyRing) -> UpkResult<Vec<u8>> {
+///
+/// `target_key` is the key of the package the result replaces: the game
+/// picks the key from the file name, so an encrypted donor is re-encrypted
+/// with it (header, and chunks of fully encrypted packages).
+pub fn rename_package(
+    bytes: &[u8],
+    rules: &[Rename],
+    keys: &KeyRing,
+    target_key: Option<crate::upk::keys::AesKey>,
+) -> UpkResult<Vec<u8>> {
     let summary = PackageSummary::parse(bytes)?;
     let mut header = crypto::open_header(bytes, &summary, keys)?;
     let table = NameTable::parse(&header.plain, summary.name_count);
@@ -173,8 +182,12 @@ pub fn rename_package(bytes: &[u8], rules: &[Rename], keys: &KeyRing) -> UpkResu
         )));
     }
     let refs = tables::name_ref_offsets(&header, &summary)?;
-    let body = crate::upk::chunks::ChunkMap::read_from(bytes, summary.total_header_size)
-        .and_then(|map| crate::upk::chunks::decompress_all(bytes, &map))
+    let mut plain_file = std::borrow::Cow::Borrowed(bytes);
+    if let Some(key) = header.key.filter(|_| !header.chunks.is_empty()) {
+        crypto::xor_chunks(plain_file.to_mut(), &header.chunks, &key)?;
+    }
+    let body = crate::upk::chunks::ChunkMap::read_from(&plain_file, summary.total_header_size)
+        .and_then(|map| crate::upk::chunks::decompress_all(&plain_file, &map))
         .unwrap_or_default();
     apply_all(
         &mut header.plain,
@@ -184,8 +197,21 @@ pub fn rename_package(bytes: &[u8], rules: &[Rename], keys: &KeyRing) -> UpkResu
         body_name_uses(&body),
     )?;
     let mut out = bytes.to_vec();
+    if let (Some(old), Some(new)) = (header.key, target_key) {
+        if old != new {
+            crypto::xor_chunks(&mut out, &header.chunks, &old)?;
+            crypto::xor_chunks(&mut out, &header.chunks, &new)?;
+            header.key = Some(new);
+        }
+    }
     header.splice_into(&mut out)?;
     Ok(out)
+}
+
+/// Key of an encrypted package (`None` when it is plain or no key opens it).
+pub fn package_key(bytes: &[u8], keys: &KeyRing) -> Option<crate::upk::keys::AesKey> {
+    let summary = PackageSummary::parse(bytes).ok()?;
+    crypto::open_header(bytes, &summary, keys).ok()?.key
 }
 
 /// [`rename_package`] on an opened package: renames in its decrypted header
@@ -218,6 +244,43 @@ mod tests {
 
     fn never(_: usize) -> bool {
         false
+    }
+
+    #[test]
+    fn reencrypts_fully_encrypted_packages_for_the_target_key() {
+        use base64::Engine as _;
+        let (donor, target) = ([4u8; 32], [9u8; 32]);
+        let payload: Vec<u8> = (0..3000u32).map(|i| (i % 13) as u8).collect();
+        let file = crate::upk::crypto::tests::fully_encrypted(&donor, &payload);
+        let b64 = base64::prelude::BASE64_STANDARD;
+        let ring = KeyRing::from_text(
+            &format!(
+                "{}
+{}",
+                b64.encode(donor),
+                b64.encode(target)
+            ),
+            None,
+        );
+
+        let out = rename_package(
+            &file,
+            &[Rename::new("Engine", "Engyn")],
+            &ring,
+            Some(target),
+        )
+        .unwrap();
+        assert_eq!(out.len(), file.len());
+        assert_eq!(package_key(&out, &ring), Some(target));
+        let pkg = crate::upk::Package::open(out, &ring).unwrap();
+        assert_eq!(pkg.names.get(1), "Engyn");
+        let map =
+            crate::upk::chunks::ChunkMap::read_from(&pkg.bytes, pkg.summary.total_header_size)
+                .unwrap();
+        assert_eq!(
+            crate::upk::chunks::decompress_all(&pkg.bytes, &map).unwrap(),
+            payload
+        );
     }
 
     #[test]

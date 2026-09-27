@@ -73,7 +73,17 @@ pub fn apply_with_id(app: &AppHandle, req: &SwapRequest, id: &str) -> AppResult<
     if keys.is_empty() {
         return Err(AppError::KeysMissing);
     }
-    let out = crate::upk::rename::rename_package(&bytes, &renames, &keys)?;
+    // The game decrypts the file with the key of the name it loads: the
+    // owned item's. Without that key the swapped file would be unreadable.
+    let owned_stock = stock_bytes(&install, &owned.package)?;
+    if !crate::upk::can_decrypt(&owned_stock, &keys) {
+        return Err(AppError::Unsupported(format!(
+            "{} is encrypted with a key missing from keys.txt",
+            owned.package
+        )));
+    }
+    let target_key = crate::upk::rename::package_key(&owned_stock, &keys);
+    let out = crate::upk::rename::rename_package(&bytes, &renames, &keys, target_key)?;
 
     let target = install.cooked_dir.join(&owned.package);
     writer::install_file(app, Owner::Swap, id, &target, Placement::RootReplace, &out)?;

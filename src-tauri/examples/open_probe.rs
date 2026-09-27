@@ -25,8 +25,24 @@ fn main() {
         );
         println!(
             "  full open: {:?}",
-            crypto::open_header(&full, &s, &ring).map(|h| h.key.is_some())
+            crypto::open_header(&full, &s, &ring).map(|h| (
+                h.key.is_some(),
+                h.nonce.is_some(),
+                h.chunks.len()
+            ))
         );
+        match alxs_rl_mod_lib::upk::Package::open(full.clone(), &ring) {
+            Ok(pkg) => match pkg.body() {
+                Ok(body) => println!(
+                    "  body: {} bytes, {} segments, {} textures",
+                    body.data.len(),
+                    body.segments.len(),
+                    pkg.textures(&body).len()
+                ),
+                Err(e) => println!("  body error: {e}"),
+            },
+            Err(e) => println!("  package error: {e}"),
+        }
         let mut f = std::fs::File::open(std::path::Path::new(&cooked).join(&name)).unwrap();
         let mut head = vec![0u8; 64 * 1024];
         let n = f.read(&mut head).unwrap();

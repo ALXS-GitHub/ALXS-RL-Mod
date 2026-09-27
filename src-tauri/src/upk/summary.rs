@@ -11,6 +11,12 @@ pub const PACKAGE_MAGIC: u32 = 0x9E2A_83C1;
 /// thumbnail table offsets (UE3 VER_ADDED_... = 623). RL files are 868.
 const VER_GUIDS_AND_THUMBNAILS: u16 = 623;
 
+/// Package flag of Rocket League's "fully encrypted" packages (licensee
+/// version 33+, from late August 2026): header *and* compressed chunks are
+/// AES-256-CTR, each with its own 12-byte nonce.
+pub const FULL_ENCRYPTED_FLAG: u32 = 0x0800;
+const LICENSEE_CTR: u16 = 33;
+
 #[derive(Debug, Clone, Default)]
 pub struct Generation {
     pub export_count: u32,
@@ -37,6 +43,9 @@ pub struct PackageSummary {
     pub engine_version: Option<u32>,
     pub cooker_version: Option<u32>,
     pub compression_flags: Option<u32>,
+    /// Nonce of the AES-CTR header region (fully encrypted packages only):
+    /// the last field of the summary, right before the name table.
+    pub header_nonce: Option<[u8; 12]>,
 }
 
 impl PackageSummary {
@@ -83,7 +92,17 @@ impl PackageSummary {
             engine_version: None,
             cooker_version: None,
             compression_flags: None,
+            header_nonce: None,
         };
+        if licensee_version >= LICENSEE_CTR && package_flags & FULL_ENCRYPTED_FLAG != 0 {
+            let nonce = name_offset
+                .checked_sub(12)
+                .and_then(|at| buf.get(at..name_offset))
+                .ok_or(UpkError::Truncated("header nonce"))?;
+            let mut n = [0u8; 12];
+            n.copy_from_slice(nonce);
+            summary.header_nonce = Some(n);
+        }
         // Optional tail — never fail the parse because of it.
         let _ = summary.parse_tail(&mut r);
         Ok(summary)
