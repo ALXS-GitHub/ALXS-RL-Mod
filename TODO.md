@@ -21,4 +21,10 @@ Les choses auxquelles je pense au fur et à mesure qu'il faudrait faire :
   5. Balle : page Balle → Itzy (Default) → Appliquer, puis un match (entraînement libre).
   6. Régression Octane : réappliquer un pack Octane.
   - En cas de crash : Réglages › Logs › Jeu.
+- [ ] Tests à faire (2026-09-27, suite) :
+  1. Swap d'un item de la saison 24 (nouveau format chiffré AES-CTR, ex. roues Condor Motor) en item voulu, puis en jeu.
+  2. Swap entre deux items qui n'ont pas la même clé (le fichier est maintenant re-chiffré avec la clé de l'item possédé).
+  3. Marketplace : installer un sticker AlphaConsole (conversion cochée), un pack RL-Designer, une balle, et une map bakkesplugins (le contrôle d'empreinte a été corrigé).
+  4. Fermer la fenêtre de l'app : le processus doit se terminer (plus d'instance fantôme).
+- [ ] Boost meters (AlphaConsole) : pas faisable en fichiers pour l'instant, ils vivent dans le HUD Scaleform (`GFX_Hud_SF.upk`) ; demande une exploration à part.
 - [ ] Venom / Road Hog / Esper : pas de donneur hybride ; piste = donneur Octane (ClassyLady) avec les textures de carrosserie re-pointées vers celles de la voiture.
