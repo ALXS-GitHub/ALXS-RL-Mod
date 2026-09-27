@@ -44,6 +44,7 @@ pub fn run() {
     if !restore_mode {
         builder = builder.plugin(tauri_plugin_single_instance::init(|app, _argv, _cwd| {
             if let Some(window) = app.get_webview_window("main") {
+                let _ = window.show();
                 let _ = window.unminimize();
                 let _ = window.set_focus();
             }
@@ -184,6 +185,15 @@ pub fn run() {
             stats::commands::overlay_open,
             stats::commands::overlay_close,
         ])
+        // Closing the main window quits the app: the hidden tracker.gg
+        // browser and the overlay are helper windows and must not keep a
+        // windowless process alive (a new launch would be handed to it and
+        // show nothing).
+        .on_window_event(|window, event| {
+            if window.label() == "main" && matches!(event, tauri::WindowEvent::Destroyed) {
+                window.app_handle().exit(0);
+            }
+        })
         .run(tauri::generate_context!())
         .expect("error while running ALXS-RL-Mod");
 }
