@@ -1,4 +1,4 @@
-//! Pure planning helpers: package-name rename rules and painted variants.
+//! Pure planning helpers: package-name rename rules.
 //!
 //! Rocket League only loads a cooked package whose internal name matches its
 //! file name, so the wanted package is renamed to the owned package's name
@@ -8,26 +8,9 @@
 //! - decals: rename the base name only — the `_SF` FName is referenced by the
 //!   package's own asset lookups and must keep resolving.
 
-use crate::catalog::resolver::{package_base, package_stem, PackageIndex};
+use crate::catalog::resolver::{package_base, package_stem};
 use crate::catalog::Slot;
 use crate::upk::rename::Rename;
-
-/// Paint ids as used by the game (0 = unpainted).
-pub const PAINTS: [&str; 13] = [
-    "None",
-    "Crimson",
-    "Lime",
-    "Black",
-    "Orange",
-    "Sky Blue",
-    "Cobalt",
-    "Saffron",
-    "Grey",
-    "Pink",
-    "Forest Green",
-    "Purple",
-    "Titanium White",
-];
 
 pub fn derive_rules(slot: Slot, source_package: &str, target_package: &str) -> Vec<Rename> {
     let src_base = package_base(source_package).to_string();
@@ -49,39 +32,6 @@ pub fn derive_rules(slot: Slot, source_package: &str, target_package: &str) -> V
     }
     rules.retain(|r| r.source != r.target);
     rules
-}
-
-/// File-name slugs the game uses for painted variants of a package.
-fn paint_slugs(paint: u8) -> Vec<String> {
-    let Some(name) = PAINTS.get(paint as usize).filter(|_| paint > 0) else {
-        return Vec::new();
-    };
-    let mut slugs = vec![name.replace(' ', ""), name.replace(' ', "_")];
-    let extra: &[&str] = match paint {
-        5 => &["SB"],
-        8 => &["Gray"],
-        10 => &["FG"],
-        12 => &["TW"],
-        _ => &[],
-    };
-    slugs.extend(extra.iter().map(|s| s.to_string()));
-    slugs.dedup();
-    slugs
-}
-
-/// A painted variant package of `package`, if the install ships one.
-/// Most items are painted at runtime and have no such file: callers fall
-/// back to the unpainted package.
-pub fn painted_variant(index: &PackageIndex, package: &str, paint: u8) -> Option<String> {
-    let base = package_base(package);
-    paint_slugs(paint).into_iter().find_map(|slug| {
-        [
-            format!("{base}_{slug}_SF.upk"),
-            format!("{base}_{slug}.upk"),
-        ]
-        .into_iter()
-        .find_map(|c| index.get(&c).map(str::to_string))
-    })
 }
 
 #[cfg(test)]
@@ -121,19 +71,5 @@ mod tests {
     fn packages_without_sf_suffix() {
         let r = derive_rules(Slot::Body, "Body_Foo.upk", "Body_Bar.upk");
         assert_eq!(pairs(&r), vec![("Body_Foo", "Body_Bar")]);
-    }
-
-    #[test]
-    fn painted_variant_lookup() {
-        let idx = PackageIndex::from_names([
-            "wheel_x_TitaniumWhite_SF.upk".to_string(),
-            "wheel_x_SF.upk".to_string(),
-        ]);
-        assert_eq!(
-            painted_variant(&idx, "wheel_x_SF.upk", 12).as_deref(),
-            Some("wheel_x_TitaniumWhite_SF.upk")
-        );
-        assert_eq!(painted_variant(&idx, "wheel_x_SF.upk", 1), None);
-        assert_eq!(painted_variant(&idx, "wheel_x_SF.upk", 0), None);
     }
 }

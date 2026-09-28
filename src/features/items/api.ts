@@ -49,8 +49,8 @@ export const swapRequestSchema = z.object({
   ownedId: z.number(),
   wantedId: z.number(),
   paint: z.number().nullable().optional(),
-  /** Experimental recolour: hue in degrees (0..359). */
-  tint: z.number().nullable().optional(),
+  /** Custom colour `#rrggbb` (experimental recolour). */
+  color: z.string().nullable().optional(),
 });
 export type SwapRequest = z.infer<typeof swapRequestSchema>;
 
@@ -78,6 +78,14 @@ export const swapEventSchema = z.object({
 });
 export type SwapEvent = z.infer<typeof swapEventSchema>;
 
+/** An official paint, read from the game (`swap::paint::PaintInfo`). */
+export const paintInfoSchema = z.object({
+  id: z.number(),
+  label: z.string(),
+  hex: z.string(),
+});
+export type PaintInfo = z.infer<typeof paintInfoSchema>;
+
 export const itemsApi = {
   catalog: () => call("catalog_get", {}, catalogSnapshotSchema),
   refreshCatalog: () => call("catalog_refresh", {}, catalogSnapshotSchema),
@@ -86,6 +94,8 @@ export const itemsApi = {
   restore: (id: string) => callVoid("swap_restore", { id }),
   restoreAll: () => call("swap_restore_all", {}, z.number()),
   history: () => call("swap_history", {}, z.array(swapEventSchema)),
+  paints: () => call("swap_paints", {}, z.array(paintInfoSchema)),
+  itemPaints: (itemId: number) => call("swap_item_paints", { itemId }, z.array(z.number())),
   integrityCheck: () => call("integrity_check", {}, integrityReportSchema),
   integrityReapply: () => call("integrity_reapply", {}, integrityReportSchema),
   /** Absolute path of a cached PNG thumbnail (engine slice), or null. */

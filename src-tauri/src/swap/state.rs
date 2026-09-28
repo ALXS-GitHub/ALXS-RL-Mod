@@ -22,13 +22,37 @@ pub struct SwapRequest {
     pub slot: Slot,
     pub owned_id: u32,
     pub wanted_id: u32,
-    /// 0..=12, see `rules::PAINTS`. `None`/0 = unpainted.
+    /// An official paint (the game's PaintID, see `swap::paint`).
+    /// `None`/0 = unpainted.
     #[serde(default)]
     pub paint: Option<u8>,
-    /// Experimental recolour: every data colour of the shown item moved to
-    /// this hue (degrees, 0..360). See `upk::recolor`.
+    /// Custom colour (`#rrggbb`, experimental): every data colour of the
+    /// shown item recoloured towards it. See `upk::recolor`.
     #[serde(default)]
+    pub color: Option<String>,
+    /// Earlier prototype: a hue in degrees. Read only, turned into `color`.
+    #[serde(default, skip_serializing)]
     pub tint: Option<u16>,
+}
+
+impl SwapRequest {
+    /// Turns a legacy `tint` (hue) into `color`, which is what gets saved.
+    pub fn migrate(&mut self) {
+        if let Some(h) = self.tint.take() {
+            if self.color.is_none() {
+                self.color = Some(crate::upk::recolor::Target::hue(f32::from(h)).to_hex());
+            }
+        }
+    }
+
+    /// The custom colour to apply, including a legacy `tint`.
+    pub fn custom_color(&self) -> Option<crate::upk::recolor::Target> {
+        match (&self.color, self.tint) {
+            (Some(hex), _) => crate::upk::recolor::Target::from_hex(hex),
+            (None, Some(h)) => Some(crate::upk::recolor::Target::hue(f32::from(h))),
+            (None, None) => None,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -103,7 +127,11 @@ fn state_path() -> AppResult<PathBuf> {
 }
 
 pub fn load() -> AppResult<SwapState> {
-    fsx::read_json_or_default(&state_path()?)
+    let mut state: SwapState = fsx::read_json_or_default(&state_path()?)?;
+    for swap in &mut state.active {
+        swap.request.migrate();
+    }
+    Ok(state)
 }
 
 pub fn save(state: &SwapState) -> AppResult<()> {
@@ -145,6 +173,7 @@ mod tests {
                 owned_id: 1,
                 wanted_id: 2,
                 paint: None,
+                color: None,
                 tint: None,
             },
             owned_label: "a".into(),

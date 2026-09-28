@@ -147,6 +147,8 @@ pub fn run() {
             catalog::commands::catalog_refresh,
             swap::commands::swap_list,
             swap::commands::swap_apply,
+            swap::commands::swap_paints,
+            swap::commands::swap_item_paints,
             swap::commands::swap_restore,
             swap::commands::swap_restore_all,
             swap::commands::swap_history,

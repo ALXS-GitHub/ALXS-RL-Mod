@@ -19,7 +19,15 @@ import { ItemGrid } from "./components/ItemGrid";
 import { SlotRail } from "./components/SlotRail";
 import { type ComposerMode, type PickStep, SwapComposer } from "./components/SwapComposer";
 import { itemLabel, searchKey } from "./constants";
-import { useApplySwap, useCatalog, useRefreshCatalog, useSwaps } from "./queries";
+import {
+  useApplySwap,
+  useCatalog,
+  useItemPaints,
+  usePaintLabel,
+  usePaints,
+  useRefreshCatalog,
+  useSwaps,
+} from "./queries";
 
 type BodyFilter = "auto" | "all" | "universal" | `${number}`;
 
@@ -36,7 +44,7 @@ export function ItemsPage() {
   const [ownedId, setOwnedId] = useState<number | null>(null);
   const [wantedId, setWantedId] = useState<number | null>(null);
   const [paint, setPaint] = useState(0);
-  const [tint, setTint] = useState<number | null>(null);
+  const [color, setColor] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [bodyFilter, setBodyFilter] = useState<BodyFilter>("auto");
   const deferredSearch = useDeferredValue(search);
@@ -45,6 +53,16 @@ export function ItemsPage() {
   const byId = useMemo(() => new Map(items?.map((i) => [i.id, i])), [items]);
   const owned = ownedId !== null ? byId.get(ownedId) : undefined;
   const wanted = wantedId !== null ? byId.get(wantedId) : undefined;
+  const allPaints = usePaints();
+  const wantedPaints = useItemPaints(wanted?.id ?? null);
+  const paintLabel = usePaintLabel();
+  const paintOptions = useMemo(
+    () =>
+      (allPaints.data ?? [])
+        .filter((p) => wantedPaints.data?.includes(p.id))
+        .map((p) => ({ id: p.id, label: paintLabel(p.label), hex: p.hex })),
+    [allPaints.data, wantedPaints.data, paintLabel],
+  );
 
   const counts = useMemo(
     () =>
@@ -112,7 +130,7 @@ export function ItemsPage() {
     setOwnedId(swap.request.ownedId);
     setWantedId(swap.request.wantedId);
     setPaint(swap.request.paint ?? 0);
-    setTint(swap.request.tint ?? null);
+    setColor(swap.request.color ?? null);
     setStep("wanted");
     setSearch("");
     setBodyFilter("auto");
@@ -126,7 +144,7 @@ export function ItemsPage() {
     setSearch("");
     setWantedId(null);
     setPaint(0);
-    setTint(null);
+    setColor(null);
     setBodyFilter("auto");
     setOwnedId(null);
     setStep("owned");
@@ -156,7 +174,7 @@ export function ItemsPage() {
     ? "new"
     : activeForOwned.request.wantedId === wantedId &&
         (activeForOwned.request.paint ?? 0) === paint &&
-        (activeForOwned.request.tint ?? null) === tint
+        (activeForOwned.request.color ?? null) === color
       ? "unchanged"
       : "update";
 
@@ -185,7 +203,7 @@ export function ItemsPage() {
   const onApply = () => {
     if (!owned || !wanted) return;
     // The pick stays: the composer then shows it as the active swap.
-    apply.mutate({ slot, ownedId: owned.id, wantedId: wanted.id, paint: paint > 0 ? paint : null, tint });
+    apply.mutate({ slot, ownedId: owned.id, wantedId: wanted.id, paint: paint > 0 ? paint : null, color });
   };
 
   const bodyOptions = [
@@ -265,9 +283,12 @@ export function ItemsPage() {
               step={step}
               onStepChange={setStep}
               paint={paint}
-              onPaintChange={setPaint}
-              tint={tint}
-              onTintChange={setTint}
+              color={color}
+              onColorChange={(next) => {
+                setPaint(next.paint);
+                setColor(next.color);
+              }}
+              paints={paintOptions}
               onApply={onApply}
               applying={apply.isPending}
               mode={mode}

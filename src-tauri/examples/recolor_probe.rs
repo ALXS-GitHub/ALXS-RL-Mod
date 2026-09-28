@@ -2,7 +2,8 @@
 fn main() {
     let mut args = std::env::args().skip(1);
     let path = args.next().expect("package");
-    let hue: f32 = args.next().expect("hue").parse().unwrap();
+    let target = alxs_rl_mod_lib::upk::recolor::Target::from_hex(&args.next().expect("#rrggbb"))
+        .expect("hex colour");
     let out_path = args.next().expect("out");
     let keys = std::fs::read_to_string(concat!(
         env!("CARGO_MANIFEST_DIR"),
@@ -13,7 +14,7 @@ fn main() {
     let original = std::fs::read(&path).unwrap();
     let pkg = alxs_rl_mod_lib::upk::Package::open(original.clone(), &ring).unwrap();
     let body = pkg.body().unwrap();
-    let (patch, stats) = alxs_rl_mod_lib::upk::recolor::recolor_patch(&pkg, &body, hue);
+    let (patch, stats) = alxs_rl_mod_lib::upk::recolor::recolor_patch(&pkg, &body, target);
     println!("{stats:?}");
     let mut out = pkg.header_bytes().unwrap();
     let blocks = patch.apply(&mut out, &body.map).unwrap();

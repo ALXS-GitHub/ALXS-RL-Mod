@@ -143,6 +143,7 @@ mod tests {
             owned_id: owned,
             wanted_id: wanted,
             paint,
+            color: None,
             tint: None,
         }
     }

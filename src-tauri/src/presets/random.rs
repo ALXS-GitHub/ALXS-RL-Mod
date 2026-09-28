@@ -88,6 +88,7 @@ pub fn random_loadout(
             owned_id,
             wanted_id: pick.id,
             paint: None,
+            color: None,
             tint: None,
         });
     }

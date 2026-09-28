@@ -4,7 +4,7 @@
 use tauri::AppHandle;
 
 use crate::base::error::{AppError, AppResult};
-use crate::catalog::{self, resolver, CatalogItem, CatalogSnapshot};
+use crate::catalog::{self, CatalogItem, CatalogSnapshot};
 use crate::game::writer::{self, Owner, Placement};
 use crate::game::{fingerprint, install, ReapplyOutcome};
 use crate::swap::rules;
@@ -34,20 +34,17 @@ pub fn validate<'a>(
             req.slot, owned.slot, wanted.slot
         )));
     }
-    if req.paint.is_some_and(|p| p as usize >= rules::PAINTS.len()) {
-        return Err(AppError::InvalidInput(
-            "paint must be between 0 and 12".into(),
-        ));
-    }
-    if req.tint.is_some_and(|h| h >= 360) {
-        return Err(AppError::InvalidInput(
-            "tint must be a hue between 0 and 359".into(),
-        ));
+    if req
+        .color
+        .as_ref()
+        .is_some_and(|c| crate::upk::recolor::Target::from_hex(c).is_none())
+    {
+        return Err(AppError::InvalidInput("color must be #rrggbb".into()));
     }
     // The same package is fine when recolouring: the item replaces itself.
     if owned.package.eq_ignore_ascii_case(&wanted.package)
         && req.paint.unwrap_or(0) == 0
-        && req.tint.is_none()
+        && req.custom_color().is_none()
     {
         return Err(AppError::Conflict(format!(
             "{} and {} live in the same package ({})",
@@ -62,19 +59,21 @@ pub fn apply_with_id(app: &AppHandle, req: &SwapRequest, id: &str) -> AppResult<
     let snap = catalog::snapshot(app)?;
     let (owned, wanted) = validate(&snap, req)?;
     let install = install::current_install(app)?;
-    let index = resolver::PackageIndex::scan(&install.cooked_dir)?;
 
-    let painted = req
-        .paint
-        .filter(|p| *p > 0)
-        .and_then(|p| rules::painted_variant(&index, &wanted.package, p));
-    let source_package = painted.clone().unwrap_or_else(|| wanted.package.clone());
-    if source_package.eq_ignore_ascii_case(&owned.package) && req.tint.is_none() {
+    let paint = req.paint.filter(|p| *p > 0);
+    let source_package = wanted.package.clone();
+    if source_package.eq_ignore_ascii_case(&owned.package)
+        && paint.is_none()
+        && req.custom_color().is_none()
+    {
         return Err(AppError::Conflict(format!(
-            "no painted variant of {} on disk — the swap would change nothing",
+            "{} replacing itself without a colour would change nothing",
             owned.package
         )));
     }
+    let build = fingerprint::current(&install)
+        .map(|f| f.id())
+        .unwrap_or_default();
 
     let bytes = stock_bytes(&install, &source_package)?;
     let renames = rules::derive_rules(req.slot, &source_package, &owned.package);
@@ -97,8 +96,11 @@ pub fn apply_with_id(app: &AppHandle, req: &SwapRequest, id: &str) -> AppResult<
     } else {
         crate::upk::rename::rename_package(&bytes, &renames, &keys, target_key)?
     };
-    if let Some(hue) = req.tint {
-        out = recolor(out, &keys, f32::from(hue))?;
+    if let Some(id) = paint {
+        out = apply_paint(out, &keys, &install, &build, id)?;
+    }
+    if let Some(target) = req.custom_color() {
+        out = recolor(out, &keys, target)?;
     }
 
     let target = install.cooked_dir.join(&owned.package);
@@ -111,19 +113,110 @@ pub fn apply_with_id(app: &AppHandle, req: &SwapRequest, id: &str) -> AppResult<
         wanted_label: wanted.label_fr.clone(),
         target_package: owned.package.clone(),
         source_package,
-        painted: painted.is_some(),
+        painted: paint.is_some(),
         applied_at: chrono::Utc::now(),
-        build: fingerprint::current(&install)
-            .map(|f| f.id())
-            .unwrap_or_default(),
+        build,
     })
 }
 
-/// Moves every data colour of the package to `hue` (experimental).
-fn recolor(bytes: Vec<u8>, keys: &crate::upk::KeyRing, hue: f32) -> AppResult<Vec<u8>> {
+/// Bakes an official paint into the package's paint parameters.
+fn apply_paint(
+    bytes: Vec<u8>,
+    keys: &crate::upk::KeyRing,
+    install: &install::RlInstall,
+    build: &str,
+    id: u8,
+) -> AppResult<Vec<u8>> {
+    use crate::swap::paint;
     let pkg = crate::upk::Package::open(bytes, keys)?;
     let body = pkg.body()?;
-    let (patch, stats) = crate::upk::recolor::recolor_patch(&pkg, &body, hue);
+    let settings = paint::settings(&pkg, &body);
+    if settings.is_empty() {
+        return Err(AppError::Unsupported("this item cannot be painted".into()));
+    }
+    let db = paint::database(install, build, keys)?;
+    let chosen = db
+        .iter()
+        .find(|p| p.id == id)
+        .filter(|p| settings.iter().any(|s| s.accepts(p)))
+        .ok_or_else(|| {
+            AppError::Unsupported(format!("paint {id} is not available for this item"))
+        })?;
+    let (patch, count) = paint::apply(&pkg, &body, &settings, chosen, &db);
+    if count == 0 {
+        return Err(AppError::Unsupported(
+            "no paint parameter found in this item".into(),
+        ));
+    }
+    let mut out = pkg.header_bytes()?;
+    patch.apply(&mut out, &body.map)?;
+    pkg.seal(&mut out)?;
+    tracing::info!(paint = %chosen.label, values = count, "item painted");
+    Ok(out)
+}
+
+/// Paints the game offers (PaintID > 0, labelled).
+pub fn paints(app: &AppHandle) -> AppResult<Vec<crate::swap::paint::PaintInfo>> {
+    let install = install::current_install(app)?;
+    let build = fingerprint::current(&install)
+        .map(|f| f.id())
+        .unwrap_or_default();
+    let keys = crate::upk::keys::ring(app);
+    let db = crate::swap::paint::database(&install, &build, &keys)?;
+    Ok(db
+        .iter()
+        .filter(|p| p.id > 0 && !p.label.is_empty())
+        .map(|p| p.info())
+        .collect())
+}
+
+/// PaintIDs the catalog item accepts (empty: not paintable).
+pub fn item_paints(app: &AppHandle, item_id: u32) -> AppResult<Vec<u8>> {
+    use crate::swap::paint;
+    let snap = catalog::snapshot(app)?;
+    let item = snap
+        .get(item_id)
+        .ok_or_else(|| AppError::NotFound(format!("item {item_id}")))?;
+    let install = install::current_install(app)?;
+    let build = fingerprint::current(&install)
+        .map(|f| f.id())
+        .unwrap_or_default();
+    let keys = crate::upk::keys::ring(app);
+    let bytes = stock_bytes(&install, &item.package)?;
+    let Ok(pkg) = crate::upk::Package::open(bytes, &keys) else {
+        return Ok(Vec::new());
+    };
+    let body = pkg.body()?;
+    let settings = paint::settings(&pkg, &body);
+    if settings.is_empty() {
+        return Ok(Vec::new());
+    }
+    let db = paint::database(&install, &build, &keys)?;
+    let accepted: Vec<&paint::Paint> = db
+        .iter()
+        .filter(|p| !p.label.is_empty() && settings.iter().any(|s| s.accepts(p)))
+        .collect();
+    // Paintable in the game, but its paint parameters live in another
+    // package (inherited): nothing in this file to bake a paint into.
+    let writable = accepted
+        .first()
+        .is_some_and(|p| paint::apply(&pkg, &body, &settings, p, &db).1 > 0);
+    Ok(if writable {
+        accepted.iter().map(|p| p.id).collect()
+    } else {
+        Vec::new()
+    })
+}
+
+/// Recolours every data colour of the package towards `target` (experimental).
+fn recolor(
+    bytes: Vec<u8>,
+    keys: &crate::upk::KeyRing,
+    target: crate::upk::recolor::Target,
+) -> AppResult<Vec<u8>> {
+    let pkg = crate::upk::Package::open(bytes, keys)?;
+    let body = pkg.body()?;
+    let (patch, stats) = crate::upk::recolor::recolor_patch(&pkg, &body, target);
     if stats.colors == 0 {
         return Err(AppError::Unsupported(
             "this item has no colour the app can change".into(),
@@ -135,7 +228,7 @@ fn recolor(bytes: Vec<u8>, keys: &crate::upk::KeyRing, hue: f32) -> AppResult<Ve
     tracing::info!(
         colors = stats.colors,
         exports = stats.exports,
-        hue,
+        ?target,
         "item recoloured"
     );
     Ok(out)

@@ -6,6 +6,7 @@
 
 pub mod commands;
 pub mod engine;
+pub mod paint;
 pub mod rules;
 pub mod state;
 

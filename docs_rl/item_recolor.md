@@ -22,5 +22,33 @@ Notes:
   so a table's `[min, max]` header stays valid.
 
 Tooling: `cargo run --example color_probe -- <package>` dumps the colour
-properties; `cargo run --example recolor_probe -- <package> <hue> <out>`
+properties; `cargo run --example recolor_probe -- <package> <#rrggbb> <out>`
 writes a recoloured copy.
+
+## Official paints (swap::paint)
+
+- Paint database: `TAGame.upk`, export `PaintDB` (`PaintDatabase_TA`,
+  package `ProductPaint`): `Paints` = object refs, index = the game's
+  PaintID (1 Crimson, 2 Lime, 3 Black, 4 Sky Blue, 5 Cobalt, 6 Burnt Sienna,
+  7 Forest Green, 8 Purple, 9 Pink, 10 Orange, 11 Grey, 12 Titanium White,
+  13 Saffron, 14–18 metals, 19–29 "… Glow"). Each `ProductPaint_TA`:
+  `Label`, `Colors[12]` (static array, linear RGBA, indexed by
+  `EPaintColorVariant`: Primary, LightAccent, DarkAccent, Emissive,
+  DeEmissive, Complementary, Balanced, Tertiary, Additive, Unused3…).
+- An item: one or more `ProductAttribute_PaintSettings_TA` (defaults:
+  `PaintParameterName=CustomColor`, `PaintType=Primary`,
+  `PaintEmissiveMultiplier=1`, `bPaintParticles=false`), with
+  `MaterialGroups[].Materials` (the MICs it paints), `IncludePaintIDs`,
+  `UnsupportedPaints`, `PaintAdditionalParameters[]` (`ParameterName`,
+  `PaintVariant`, `bEnabled`) and `PaintsToOverride[]` → per paint,
+  `ProductOverride_ParticleSystemColorParameter_TA.ParameterOverrides[]`
+  (`PaintParameterName`, `PaintType`, `Paint` or `CustomColor`).
+- The game sets `Colors[PaintType] × multiplier` on the named parameters
+  at runtime (decoded from `ProductAttribute_Painted_TA`). We bake the same
+  values into the defaults: MIC `VectorParameterValues`,
+  `MaterialExpressionVectorParameter.DefaultValue` and particle
+  `DistributionVectorParticleParameter.Constant`. Items whose parameter is
+  only inherited from another package's material (e.g. `WHEEL_Brink`)
+  cannot be painted file-only.
+- Tooling: `cargo run --release --example paint_apply_probe -- <CookedPCConsole> <PaintID> <item.upk>…`,
+  `examples/paint_probe.rs` (generic dumper).

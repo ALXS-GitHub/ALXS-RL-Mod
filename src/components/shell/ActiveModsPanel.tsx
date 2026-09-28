@@ -25,7 +25,8 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { useBallStatus, useRemoveBall } from "@/features/ball/queries";
 import { useDecalStatus, useRemoveDecal } from "@/features/decals/queries";
 import { ItemThumb } from "@/features/items/components/ItemThumb";
-import { PAINTS, SLOT_ICONS } from "@/features/items/constants";
+import { SwapColorBadge } from "@/features/items/components/SwapColorBadge";
+import { SLOT_ICONS } from "@/features/items/constants";
 import { useCatalog, useRestoreSwap, useSwaps } from "@/features/items/queries";
 import { targetLabel } from "@/features/maps/api";
 import { localPreview, MapArt } from "@/features/maps/components/MapArt";
@@ -309,7 +310,6 @@ function Content({ onClose }: { onClose: () => void }) {
           <Group label={t("mods.items")}>
             {swaps.data?.map((swap) => {
               const Icon = SLOT_ICONS[swap.request.slot];
-              const paint = PAINTS.find((p) => p.id === (swap.request.paint ?? 0));
               return (
                 <ModRow
                   key={swap.id}
@@ -318,13 +318,7 @@ function Content({ onClose }: { onClose: () => void }) {
                     <>
                       <Icon className="size-3" />
                       {t(`items:slots.${swap.request.slot}`)}
-                      {paint && paint.id > 0 ? (
-                        <span
-                          className="size-2 rounded-full border border-white/30"
-                          style={{ background: paint.hex }}
-                          title={t(`items:paint.${paint.key}`)}
-                        />
-                      ) : null}
+                      <SwapColorBadge paint={swap.request.paint} color={swap.request.color} />
                     </>
                   }
                   title={swap.wantedLabel}

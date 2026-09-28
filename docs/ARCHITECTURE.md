@@ -168,7 +168,8 @@ Errors always serialize as `{ kind: string, message: string }`.
 
 ### catalog slice (catalog / swap / presets / integrity)
 - `catalog_get() -> CatalogSnapshot` · `catalog_refresh() -> CatalogSnapshot`
-- `swap_list() -> Vec<ActiveSwap>` · `swap_apply(req: SwapRequest) -> ActiveSwap` (`SwapRequest.tint`: optional hue 0..359, experimental recolour through `upk::recolor`; owned == wanted is allowed with a tint)
+- `swap_list() -> Vec<ActiveSwap>` · `swap_apply(req: SwapRequest) -> ActiveSwap` (`SwapRequest.paint`: official paint = the game's PaintID, baked into the item's paint parameters by `swap::paint`; `SwapRequest.color`: custom `#rrggbb`, experimental recolour through `upk::recolor`; owned == wanted is allowed with a paint or a colour)
+- `swap_paints() -> Vec<PaintInfo>` (the game's paints, read from `TAGame.upk` `PaintDB`) · `swap_item_paints(item_id) -> Vec<u8>` (PaintIDs the item accepts and that can be baked into its file; empty = not paintable)
 - `swap_restore(id) -> ()` · `swap_restore_all() -> u32` · `swap_history() -> Vec<SwapEvent>`
 - `presets_list() -> Vec<Preset>` · `presets_save(preset) -> Preset` · `presets_delete(id)`
 - `presets_apply(id) -> PresetApplyReport` · `presets_capture(name) -> Preset`

@@ -35,6 +35,18 @@ pub async fn swap_restore_all(app: AppHandle) -> AppResult<u32> {
     blocking(move || engine::restore_all(&app)).await
 }
 
+/// Every official paint (for colour badges and pickers).
+#[tauri::command]
+pub async fn swap_paints(app: AppHandle) -> AppResult<Vec<crate::swap::paint::PaintInfo>> {
+    blocking(move || engine::paints(&app)).await
+}
+
+/// Paints a catalog item accepts (empty: not paintable).
+#[tauri::command]
+pub async fn swap_item_paints(app: AppHandle, item_id: u32) -> AppResult<Vec<u8>> {
+    blocking(move || engine::item_paints(&app, item_id)).await
+}
+
 /// Newest first.
 #[tauri::command]
 pub fn swap_history() -> AppResult<Vec<SwapEvent>> {

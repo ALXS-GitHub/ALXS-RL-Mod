@@ -61,7 +61,14 @@
     "forestGreen": "Vert forêt",
     "purple": "Violet",
     "titaniumWhite": "Blanc titane",
-    "keptNote": "L'item swappé garde la peinture de l'item que tu possèdes — la peinture est appliquée par le jeu, pas stockée dans les fichiers."
+    "keptNote": "Sans peinture ni couleur, l'item affiché garde la peinture de l'item que tu possèdes.",
+    "burntSienna": "Terre de Sienne",
+    "gold": "Or",
+    "roseGold": "Or rose",
+    "whiteGold": "Or blanc",
+    "onyx": "Onyx",
+    "platinum": "Platine",
+    "glow": "{{name}} lumineux"
   },
   "grid": {
     "swapped": "Swappé",
@@ -115,18 +122,33 @@
     "description": "Rocket League chiffre les fichiers qui listent ses items. Importe un keys.txt de la communauté pour les lire — le README explique où le trouver.",
     "import": "Importer keys.txt"
   },
-  "tint": {
-    "label": "Couleur (expérimental)",
-    "original": "Couleurs d'origine",
-    "red": "Rouge",
-    "orange": "Orange",
-    "yellow": "Jaune",
-    "green": "Vert",
-    "cyan": "Cyan",
-    "blue": "Bleu",
-    "purple": "Violet",
-    "pink": "Rose",
-    "hint": "Recolore les particules et les couleurs du matériau de l'item affiché. Les couleurs intégrées aux shaders du jeu gardent leur teinte.",
-    "selfHint": "Même item des deux côtés : choisis une couleur pour recolorer l'item que tu possèdes."
+  "color": {
+    "label": "Couleur",
+    "modes": {
+      "original": "Origine",
+      "paint": "Peinture",
+      "custom": "Personnalisée"
+    },
+    "presets": {
+      "red": "Rouge",
+      "orange": "Orange",
+      "yellow": "Jaune",
+      "green": "Vert",
+      "cyan": "Cyan",
+      "blue": "Bleu",
+      "purple": "Violet",
+      "pink": "Rose",
+      "white": "Blanc"
+    },
+    "hints": {
+      "original": "L'item garde ses couleurs d'origine.",
+      "paint": "Peinture officielle, appliquée là où le jeu peint cet item. Si l'item que tu possèdes est lui-même peint, le jeu peut garder sa peinture.",
+      "custom": "Expérimental : recolore les particules et les couleurs du matériau de l'item. Les couleurs intégrées aux shaders du jeu gardent leur teinte."
+    },
+    "selfHint": "Même item des deux côtés : choisis une peinture ou une couleur pour recolorer l'item que tu possèdes.",
+    "badge": {
+      "custom": "Couleur personnalisée {{hex}}",
+      "paint": "Peinture : {{name}}"
+    }
   }
 }

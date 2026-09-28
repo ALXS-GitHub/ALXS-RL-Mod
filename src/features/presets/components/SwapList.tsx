@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { CatalogItem, SwapRequest } from "@/features/items/api";
 import { ItemThumb } from "@/features/items/components/ItemThumb";
+import { SwapColorBadge } from "@/features/items/components/SwapColorBadge";
 import { itemLabel, SLOT_ICONS } from "@/features/items/constants";
 
 /** Compact owned → wanted rows (preview of a preset's swaps). */
@@ -23,6 +24,7 @@ export function SwapList({ swaps, byId }: { swaps: SwapRequest[]; byId: Map<numb
               <p className="flex items-center gap-1.5 text-[11px] text-fg-subtle">
                 <Icon className="size-3" />
                 {t(`slots.${s.slot}`)}
+                <SwapColorBadge paint={s.paint} color={s.color} />
               </p>
               <p className="truncate text-[13px] font-medium">
                 {wanted ? itemLabel(wanted) : `#${s.wantedId}`}
