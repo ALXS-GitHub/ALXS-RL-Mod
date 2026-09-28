@@ -12,6 +12,7 @@ import { Segmented } from "@/components/ui/segmented";
 import { Switch } from "@/components/ui/switch";
 import { notify } from "@/components/ui/toast";
 import { Tooltip } from "@/components/ui/tooltip";
+import { cn } from "@/lib/cn";
 import { useGameStatus } from "@/lib/game";
 import { useFx } from "@/stores/fx";
 import { type Palette, type PaletteDraft, type Rgb, STOCK_ID } from "./api";
@@ -269,7 +270,7 @@ export function PalettePage() {
           </div>
         }
       >
-        <div className="grid gap-5 @5xl:grid-cols-[minmax(0,1fr)_300px]">
+        <div className={cn("grid gap-5", slot !== null && "@5xl:grid-cols-[minmax(0,1fr)_300px]")}>
           <GlassCard interactive={false} className="flex min-w-0 flex-col gap-4 p-4">
             {!draft ? (
               <div className="space-y-4">
@@ -357,17 +358,20 @@ export function PalettePage() {
             )}
           </GlassCard>
 
-          <GlassPanel className="h-fit @5xl:sticky @5xl:top-4">
-            <ColorEditor
-              index={slot}
-              color={slot !== null ? (current[slot] ?? null) : null}
-              stockColor={slot !== null ? (stockColors[slot] ?? null) : null}
-              columns={columns}
-              onChange={(c) => slot !== null && setSlotColor(slot, c)}
-              onFillRow={() => fill("row")}
-              onFillColumn={() => fill("column")}
-            />
-          </GlassPanel>
+          {/* The picker only shows once a swatch is selected. */}
+          {slot !== null ? (
+            <GlassPanel className="h-fit @5xl:sticky @5xl:top-4">
+              <ColorEditor
+                index={slot}
+                color={slot !== null ? (current[slot] ?? null) : null}
+                stockColor={slot !== null ? (stockColors[slot] ?? null) : null}
+                columns={columns}
+                onChange={(c) => slot !== null && setSlotColor(slot, c)}
+                onFillRow={() => fill("row")}
+                onFillColumn={() => fill("column")}
+              />
+            </GlassPanel>
+          ) : null}
         </div>
       </Section>
 

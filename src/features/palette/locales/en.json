@@ -40,14 +40,13 @@
       "accent": "Accent"
     },
     "slot": "Slot {{index}} · {{hex}}",
-    "selectHint": "Select a swatch to edit it.",
     "pick": "Pick a colour",
     "hex": "Hex colour",
     "position": "Row {{row}} · Column {{col}}",
     "fillRow": "Fill row",
     "fillColumn": "Fill column",
     "resetSlot": "Reset to stock",
-    "note": "Rows are shades, columns are hues — the same layout as the in-game picker. A small dot marks slots changed from stock.",
+    "note": "Rows are shades, columns are hues — the same layout as the in-game picker. Click a swatch to change its colour; a small dot marks changed swatches.",
     "nameLabel": "Name"
   },
   "generators": {

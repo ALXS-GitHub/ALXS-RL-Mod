@@ -40,14 +40,13 @@
       "accent": "Accent"
     },
     "slot": "Case {{index}} · {{hex}}",
-    "selectHint": "Sélectionne une case pour la modifier.",
     "pick": "Choisir une couleur",
     "hex": "Couleur hexadécimale",
     "position": "Ligne {{row}} · Colonne {{col}}",
     "fillRow": "Remplir la ligne",
     "fillColumn": "Remplir la colonne",
     "resetSlot": "Remettre d'origine",
-    "note": "Les lignes sont des nuances, les colonnes des teintes — la même disposition que le nuancier du jeu. Un petit point marque les cases modifiées.",
+    "note": "Les lignes sont des nuances, les colonnes des teintes — la même disposition que le nuancier du jeu. Clique une case pour changer sa couleur ; un petit point marque les cases modifiées.",
     "nameLabel": "Nom"
   },
   "generators": {
