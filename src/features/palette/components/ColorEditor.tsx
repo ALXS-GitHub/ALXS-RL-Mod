@@ -1,9 +1,7 @@
 import { Columns3, Pipette, RotateCcw, Rows3 } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
+import { ColorPicker } from "@/components/ui/color-picker";
 import type { Rgb } from "../api";
 import { fromHex, toHex } from "../colors";
 
@@ -17,13 +15,6 @@ interface ColorEditorProps {
   onFillColumn: () => void;
 }
 
-const CHANNELS = ["r", "g", "b"] as const;
-const CHANNEL_TINT: Record<(typeof CHANNELS)[number], string> = {
-  r: "#ff5d73",
-  g: "#3ddc97",
-  b: "#5cc8ff",
-};
-
 /** Side panel editing the selected slot. */
 export function ColorEditor({
   index,
@@ -35,11 +26,6 @@ export function ColorEditor({
   onFillColumn,
 }: ColorEditorProps) {
   const { t } = useTranslation("palette");
-  const [hexDraft, setHexDraft] = useState(color ? toHex(color) : "");
-
-  useEffect(() => {
-    if (color) setHexDraft(toHex(color));
-  }, [color]);
 
   if (index === null || !color) {
     return (
@@ -50,62 +36,20 @@ export function ColorEditor({
     );
   }
 
-  const hex = toHex(color);
   const row = Math.floor(index / columns) + 1;
   const col = (index % columns) + 1;
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <div className="flex items-center gap-4">
-        <label
-          className="group relative size-14 shrink-0 cursor-pointer overflow-hidden rounded-[8px] shadow-[inset_0_0_0_1px_rgb(255_255_255/0.12)]"
-          style={{ background: hex }}
-        >
-          <input
-            type="color"
-            value={hex}
-            onChange={(e) => {
-              const c = fromHex(e.target.value);
-              if (c) onChange(c);
-            }}
-            className="absolute inset-0 cursor-pointer opacity-0"
-            aria-label={t("editor.pick")}
-          />
-          <Pipette className="absolute right-1.5 bottom-1.5 size-3.5 text-white/80 opacity-0 transition-opacity group-hover:opacity-100" />
-        </label>
-        <div className="min-w-0 space-y-1.5">
-          <p className="text-xs text-fg-subtle">{t("editor.position", { row, col })}</p>
-          <Input
-            value={hexDraft}
-            onChange={(e) => {
-              setHexDraft(e.target.value);
-              const c = fromHex(e.target.value);
-              if (c) onChange(c);
-            }}
-            className="w-28 font-mono uppercase"
-            aria-label={t("editor.hex")}
-            spellCheck={false}
-          />
-        </div>
-      </div>
-
-      <div className="space-y-3">
-        {CHANNELS.map((ch) => (
-          <div key={ch} className="flex items-center gap-3">
-            <span className="w-3 font-mono text-xs uppercase" style={{ color: CHANNEL_TINT[ch] }}>
-              {ch}
-            </span>
-            <Slider
-              value={[color[ch]]}
-              min={0}
-              max={255}
-              step={1}
-              onValueChange={([v]) => onChange({ ...color, [ch]: v ?? 0 })}
-            />
-            <span className="w-8 text-right font-mono text-xs tabular-nums text-fg-muted">{color[ch]}</span>
-          </div>
-        ))}
-      </div>
+      <p className="text-xs text-fg-subtle">{t("editor.position", { row, col })}</p>
+      <ColorPicker
+        value={toHex(color)}
+        size={148}
+        onChange={(hex) => {
+          const c = fromHex(hex);
+          if (c) onChange(c);
+        }}
+      />
 
       <div className="grid grid-cols-2 gap-2">
         <Button size="sm" variant="secondary" onClick={onFillRow}>

@@ -191,5 +191,10 @@
     "restart": "Restart",
     "upToDate": "You have the latest version",
     "check": "Check for updates"
+  },
+  "colorPicker": {
+    "wheel": "Colour wheel",
+    "hex": "Hex code",
+    "intensity": "Intensity"
   }
 }

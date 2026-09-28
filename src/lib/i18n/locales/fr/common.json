@@ -191,5 +191,10 @@
     "restart": "Redémarrer",
     "upToDate": "Tu as la dernière version",
     "check": "Rechercher une mise à jour"
+  },
+  "colorPicker": {
+    "wheel": "Roue des couleurs",
+    "hex": "Code hexa",
+    "intensity": "Intensité"
   }
 }
