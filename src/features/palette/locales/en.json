@@ -23,7 +23,8 @@
     "stock": "Stock colours",
     "stockHint": "The game's own pickers",
     "inGame": "In game",
-    "empty": "Your palettes will appear here. Start from the stock colours or a generator."
+    "empty": "Your palettes will appear here. Start from the stock colours or a generator.",
+    "newHint": "From the game's colours"
   },
   "editor": {
     "newName": "My palette",
@@ -47,7 +48,8 @@
     "fillColumn": "Fill column",
     "resetSlot": "Reset to stock",
     "preview": "Blue · Orange · Accent",
-    "note": "Rows are shades, columns are hues — the same layout as the in-game picker. A small dot marks slots changed from stock."
+    "note": "Rows are shades, columns are hues — the same layout as the in-game picker. A small dot marks slots changed from stock.",
+    "nameLabel": "Name"
   },
   "generators": {
     "rainbow": "Rainbow",
@@ -58,7 +60,9 @@
     "from": "Gradient start",
     "to": "Gradient end",
     "hueShift": "Rotate hues",
-    "resetStock": "Reset picker"
+    "resetStock": "Reset picker",
+    "title": "Quick fill",
+    "hint": "Replace the whole swatch grid shown above in one click."
   },
   "toast": {
     "saved": "\"{{name}}\" saved",
@@ -72,5 +76,12 @@
     "deleteTitle": "Delete \"{{name}}\"?",
     "deleteBody": "This palette will be removed from your library.",
     "deleteActiveBody": "This palette is in game: the stock colours will be restored first."
+  },
+  "sections": {
+    "library": "Your palettes",
+    "libraryHint": "Pick a palette to edit it, or start a new one from the game's colours.",
+    "editor": "Editing “{{name}}”",
+    "editorEmpty": "Editor",
+    "editorHint": "Change the swatches, then save and apply the palette in game."
   }
 }

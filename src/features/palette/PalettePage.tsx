@@ -7,7 +7,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ErrorState, Skeleton } from "@/components/ui/feedback";
 import { GlassCard, GlassPanel } from "@/components/ui/glass";
 import { Input } from "@/components/ui/input";
-import { Page, PageHeader } from "@/components/ui/layout";
+import { Page, PageHeader, Section } from "@/components/ui/layout";
 import { Segmented } from "@/components/ui/segmented";
 import { Switch } from "@/components/ui/switch";
 import { notify } from "@/components/ui/toast";
@@ -200,17 +200,54 @@ export function PalettePage() {
         title={t("title")}
         subtitle={t("subtitle")}
         actions={
-          <>
-            {status.data?.active ? (
-              <Button
-                variant="ghost"
-                onClick={() => restore.mutate()}
-                loading={restore.isPending}
-                disabled={gameRunning}
-              >
-                <RotateCcw />
-                {t("actions.restore")}
-              </Button>
+          status.data?.active ? (
+            <Button
+              variant="ghost"
+              onClick={() => restore.mutate()}
+              loading={restore.isPending}
+              disabled={gameRunning}
+            >
+              <RotateCcw />
+              {t("actions.restore")}
+            </Button>
+          ) : null
+        }
+      />
+
+      <PaletteStatusBanner status={status.data} gameRunning={gameRunning} />
+      {status.error ? <ErrorState error={status.error} onRetry={() => void status.refetch()} /> : null}
+      {stock.error ? <ErrorState error={stock.error} onRetry={() => void stock.refetch()} /> : null}
+
+      <Section title={t("sections.library")} description={t("sections.libraryHint")}>
+        <PaletteLibrary
+          palettes={palettes.data}
+          stock={stock.data}
+          selectedId={selectedId}
+          activeId={activeId}
+          onSelect={select}
+          onNew={() => stock.data && load(stock.data)}
+          onDuplicate={(p) => load(p, true)}
+          onDelete={setToDelete}
+        />
+      </Section>
+
+      <Section
+        title={
+          draft
+            ? t("sections.editor", { name: draft.name || t("editor.newName") })
+            : t("sections.editorEmpty")
+        }
+        description={t("sections.editorHint")}
+        actions={
+          <div className="flex items-center gap-2">
+            {dirty ? (
+              <Badge tone="warning" dot>
+                {t("editor.unsaved")}
+              </Badge>
+            ) : draft?.id && draft.id === activeId ? (
+              <Badge tone="success" dot>
+                {t("library.inGame")}
+              </Badge>
             ) : null}
             <Button variant="secondary" onClick={onSave} loading={save.isPending} disabled={!draft || !dirty}>
               <Save />
@@ -229,140 +266,129 @@ export function PalettePage() {
                 </Button>
               </span>
             </Tooltip>
-          </>
+          </div>
         }
-      />
-
-      <PaletteStatusBanner status={status.data} gameRunning={gameRunning} />
-      {status.error ? <ErrorState error={status.error} onRetry={() => void status.refetch()} /> : null}
-      {stock.error ? <ErrorState error={stock.error} onRetry={() => void stock.refetch()} /> : null}
-
-      <div className="grid gap-5 @4xl:grid-cols-[240px_minmax(0,1fr)] @6xl:grid-cols-[260px_minmax(0,1fr)_300px]">
-        <PaletteLibrary
-          palettes={palettes.data}
-          stock={stock.data}
-          selectedId={selectedId}
-          activeId={activeId}
-          onSelect={select}
-          onNew={() => stock.data && load(stock.data)}
-          onDuplicate={(p) => load(p, true)}
-          onDelete={setToDelete}
-        />
-
-        <GlassCard interactive={false} className="flex min-w-0 flex-col gap-4 p-4">
-          {!draft ? (
-            <div className="space-y-4">
-              <Skeleton className="h-10 w-72" />
-              <Skeleton className="aspect-[10/7] w-full" />
-            </div>
-          ) : (
-            <>
-              <div className="flex flex-wrap items-center gap-3">
-                <Input
-                  value={draft.name}
-                  onChange={(e) => {
-                    setDraft({ ...draft, name: e.target.value });
-                    setDirty(true);
-                  }}
-                  placeholder={t("editor.namePlaceholder")}
-                  className="max-w-xs text-sm font-semibold"
-                  maxLength={60}
-                />
-                {dirty ? (
-                  <Badge tone="warning" dot>
-                    {t("editor.unsaved")}
-                  </Badge>
-                ) : null}
-                {draft.id && draft.id === activeId && !dirty ? (
-                  <Badge tone="success" dot>
-                    {t("library.inGame")}
-                  </Badge>
-                ) : null}
-                <div className="ml-auto flex items-center gap-2.5">
-                  <Tooltip content={t("editor.linkHint")}>
-                    <span className="flex items-center gap-2 text-xs text-fg-muted">
-                      {linked ? <Link2 className="size-3.5 text-fg" /> : <Link2Off className="size-3.5" />}
-                      {t("editor.link")}
-                    </span>
-                  </Tooltip>
-                  <Switch
-                    checked={linked}
-                    onCheckedChange={(v) => {
-                      setLinked(v);
-                      if (v && draft) {
-                        const source = team === "orange" ? draft.primaryOrange : draft.primaryBlue;
-                        setDraft({ ...draft, primaryBlue: source, primaryOrange: source });
+      >
+        <div className="grid gap-5 @5xl:grid-cols-[minmax(0,1fr)_300px]">
+          <GlassCard interactive={false} className="flex min-w-0 flex-col gap-4 p-4">
+            {!draft ? (
+              <div className="space-y-4">
+                <Skeleton className="h-10 w-72" />
+                <Skeleton className="aspect-[10/7] w-full" />
+              </div>
+            ) : (
+              <>
+                <div className="flex flex-wrap items-end gap-4">
+                  <label className="flex min-w-56 flex-1 flex-col gap-1">
+                    <span className="text-xs text-fg-subtle">{t("editor.nameLabel")}</span>
+                    <Input
+                      value={draft.name}
+                      onChange={(e) => {
+                        setDraft({ ...draft, name: e.target.value });
                         setDirty(true);
-                      }
+                      }}
+                      placeholder={t("editor.namePlaceholder")}
+                      className="max-w-sm text-sm font-semibold"
+                      maxLength={60}
+                    />
+                  </label>
+                  <div className="flex items-center gap-2.5 pb-1.5">
+                    <Tooltip content={t("editor.linkHint")}>
+                      <span className="flex items-center gap-2 text-xs text-fg-muted">
+                        {linked ? <Link2 className="size-3.5 text-fg" /> : <Link2Off className="size-3.5" />}
+                        {t("editor.link")}
+                      </span>
+                    </Tooltip>
+                    <Switch
+                      checked={linked}
+                      onCheckedChange={(v) => {
+                        setLinked(v);
+                        if (v && draft) {
+                          const source = team === "orange" ? draft.primaryOrange : draft.primaryBlue;
+                          setDraft({ ...draft, primaryBlue: source, primaryOrange: source });
+                          setDirty(true);
+                        }
+                      }}
+                      aria-label={t("editor.link")}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs text-fg-subtle">{t("editor.teamLabel")}</span>
+                  <Segmented
+                    value={team}
+                    onValueChange={(v) => {
+                      setTeam(v);
+                      setSlot(null);
                     }}
-                    aria-label={t("editor.link")}
+                    options={teamOptions}
+                    aria-label={t("editor.teamLabel")}
                   />
                 </div>
-              </div>
 
-              <Segmented
-                value={team}
-                onValueChange={(v) => {
-                  setTeam(v);
-                  setSlot(null);
-                }}
-                options={teamOptions}
-                aria-label={t("editor.teamLabel")}
-              />
+                <div className="rounded-[8px] border border-line bg-black/20 p-2.5">
+                  <SwatchGrid
+                    key={team}
+                    colors={current}
+                    columns={columns}
+                    rows={PICKER_ROWS}
+                    selected={slot}
+                    onSelect={setSlot}
+                    stock={stockColors}
+                  />
+                </div>
+                <p className="text-xs text-fg-subtle">{t("editor.note")}</p>
 
-              <div className="rounded-[8px] border border-line bg-black/20 p-2.5">
-                <SwatchGrid
-                  key={team}
-                  colors={current}
-                  columns={columns}
-                  rows={PICKER_ROWS}
-                  selected={slot}
-                  onSelect={setSlot}
-                  stock={stockColors}
-                />
-              </div>
+                <div className="flex flex-col gap-2 border-line border-t pt-4">
+                  <div>
+                    <p className="text-[13px] font-medium">{t("generators.title")}</p>
+                    <p className="text-xs text-fg-subtle">{t("generators.hint")}</p>
+                  </div>
+                  <Generators
+                    columns={columns}
+                    rows={PICKER_ROWS}
+                    current={current}
+                    stock={normalize(stockColors, stockColors, slotCount)}
+                    onReplace={(next) => update(next.slice(0, slotCount))}
+                  />
+                </div>
+              </>
+            )}
+          </GlassCard>
 
-              <Generators
-                columns={columns}
-                rows={PICKER_ROWS}
-                current={current}
-                stock={normalize(stockColors, stockColors, slotCount)}
-                onReplace={(next) => update(next.slice(0, slotCount))}
-              />
-              <p className="text-xs text-fg-subtle">{t("editor.note")}</p>
-            </>
-          )}
-        </GlassCard>
-
-        <GlassPanel className="h-fit @4xl:col-span-2 @6xl:col-span-1 @6xl:sticky @6xl:top-4">
-          <ColorEditor
-            index={slot}
-            color={slot !== null ? (current[slot] ?? null) : null}
-            stockColor={slot !== null ? (stockColors[slot] ?? null) : null}
-            columns={columns}
-            onChange={(c) => slot !== null && setSlotColor(slot, c)}
-            onFillRow={() => fill("row")}
-            onFillColumn={() => fill("column")}
-          />
-          {draft ? (
-            <div className="border-line border-t px-4 py-3">
-              <p className="mb-2 text-xs text-fg-subtle">{t("editor.preview")}</p>
-              <div className="flex h-10 overflow-hidden rounded-[7px]">
-                {[draft.primaryBlue[slot ?? 0], draft.primaryOrange[slot ?? 0], draft.accent[slot ?? 0]].map(
-                  (c, i) => (
+          <GlassPanel className="h-fit @5xl:sticky @5xl:top-4">
+            <ColorEditor
+              index={slot}
+              color={slot !== null ? (current[slot] ?? null) : null}
+              stockColor={slot !== null ? (stockColors[slot] ?? null) : null}
+              columns={columns}
+              onChange={(c) => slot !== null && setSlotColor(slot, c)}
+              onFillRow={() => fill("row")}
+              onFillColumn={() => fill("column")}
+            />
+            {draft ? (
+              <div className="border-line border-t px-4 py-3">
+                <p className="mb-2 text-xs text-fg-subtle">{t("editor.preview")}</p>
+                <div className="flex h-10 overflow-hidden rounded-[7px]">
+                  {[
+                    draft.primaryBlue[slot ?? 0],
+                    draft.primaryOrange[slot ?? 0],
+                    draft.accent[slot ?? 0],
+                  ].map((c, i) => (
                     <div
                       // biome-ignore lint/suspicious/noArrayIndexKey: fixed trio
                       key={i}
                       className="flex-1"
                       style={{ background: c ? toHex(c) : "transparent" }}
                     />
-                  ),
-                )}
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : null}
-        </GlassPanel>
-      </div>
+            ) : null}
+          </GlassPanel>
+        </div>
+      </Section>
 
       <Dialog open={pending !== null} onOpenChange={(o) => !o && setPending(null)}>
         <DialogContent

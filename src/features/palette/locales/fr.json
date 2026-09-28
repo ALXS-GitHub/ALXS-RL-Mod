@@ -23,7 +23,8 @@
     "stock": "Couleurs d'origine",
     "stockHint": "Les nuanciers du jeu",
     "inGame": "En jeu",
-    "empty": "Tes palettes apparaîtront ici. Pars des couleurs d'origine ou d'un générateur."
+    "empty": "Tes palettes apparaîtront ici. Pars des couleurs d'origine ou d'un générateur.",
+    "newHint": "À partir des couleurs du jeu"
   },
   "editor": {
     "newName": "Ma palette",
@@ -47,7 +48,8 @@
     "fillColumn": "Remplir la colonne",
     "resetSlot": "Remettre d'origine",
     "preview": "Bleu · Orange · Accent",
-    "note": "Les lignes sont des nuances, les colonnes des teintes — la même disposition que le nuancier du jeu. Un petit point marque les cases modifiées."
+    "note": "Les lignes sont des nuances, les colonnes des teintes — la même disposition que le nuancier du jeu. Un petit point marque les cases modifiées.",
+    "nameLabel": "Nom"
   },
   "generators": {
     "rainbow": "Arc-en-ciel",
@@ -58,7 +60,9 @@
     "from": "Début du dégradé",
     "to": "Fin du dégradé",
     "hueShift": "Faire tourner les teintes",
-    "resetStock": "Réinitialiser le nuancier"
+    "resetStock": "Réinitialiser le nuancier",
+    "title": "Remplissage rapide",
+    "hint": "Remplace tout le nuancier affiché ci-dessus en un clic."
   },
   "toast": {
     "saved": "« {{name}} » enregistrée",
@@ -72,5 +76,12 @@
     "deleteTitle": "Supprimer « {{name}} » ?",
     "deleteBody": "Cette palette sera retirée de ta bibliothèque.",
     "deleteActiveBody": "Cette palette est en jeu : les couleurs d'origine seront d'abord restaurées."
+  },
+  "sections": {
+    "library": "Tes palettes",
+    "libraryHint": "Choisis une palette pour la modifier, ou pars des couleurs du jeu pour en créer une.",
+    "editor": "Modifier « {{name}} »",
+    "editorEmpty": "Éditeur",
+    "editorHint": "Change les cases du nuancier, puis enregistre et applique la palette en jeu."
   }
 }

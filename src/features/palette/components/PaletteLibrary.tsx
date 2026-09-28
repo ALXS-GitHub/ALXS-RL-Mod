@@ -59,11 +59,16 @@ export function PaletteLibrary({
   const items = [...(stock ? [stock] : []), ...(palettes ?? [])];
 
   return (
-    <div className="flex flex-col gap-3">
-      <Button variant="outline" onClick={onNew} className="w-full border-dashed">
-        <Plus />
-        {t("actions.new")}
-      </Button>
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-3">
+      <button
+        type="button"
+        onClick={onNew}
+        className="flex min-h-24 flex-col items-center justify-center gap-1.5 rounded-lg border border-line-strong border-dashed text-fg-muted transition-colors hover:border-[var(--color-accent)] hover:text-fg"
+      >
+        <Plus className="size-4" />
+        <span className="text-[13px] font-medium">{t("actions.new")}</span>
+        <span className="text-[11px] text-fg-subtle">{t("library.newHint")}</span>
+      </button>
       {!palettes || !stock ? (
         <>
           <Skeleton className="h-24" />
@@ -143,7 +148,7 @@ export function PaletteLibrary({
         })}
       </AnimatePresence>
       {palettes && palettes.length === 0 ? (
-        <p className="px-1 text-xs text-fg-subtle">{t("library.empty")}</p>
+        <p className="col-span-full px-1 text-xs text-fg-subtle">{t("library.empty")}</p>
       ) : null}
     </div>
   );
