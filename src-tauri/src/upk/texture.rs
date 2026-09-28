@@ -126,7 +126,12 @@ fn parse_mip(buf: &[u8], pos: usize, end: usize, with_offset: bool) -> Option<(M
         return None;
     }
     let elem_count = read_i32(buf, pos + 4)?;
-    let size_on_disk = read_i32(buf, pos + 8)?;
+    // Unused mips (e.g. a 4K top level the cook dropped) store -1 as size.
+    let unused = flags & BULK_UNUSED != 0;
+    let size_on_disk = match read_i32(buf, pos + 8)? {
+        -1 if unused => 0,
+        s => s,
+    };
     if elem_count < 0 || size_on_disk < 0 {
         return None;
     }
@@ -154,7 +159,7 @@ fn parse_mip(buf: &[u8], pos: usize, end: usize, with_offset: bool) -> Option<(M
             flags,
             elem_count: elem_count as u32,
             size_on_disk: size_on_disk as u32,
-            offset_in_file: if flags & BULK_SEPARATE_FILE != 0 {
+            offset_in_file: if flags & BULK_SEPARATE_FILE != 0 && !unused {
                 offset_in_file
             } else {
                 0
@@ -223,6 +228,15 @@ pub fn find_mips(
         }
     }
     None
+}
+
+/// `TextureFileCacheName` of a Texture2D export, read from its properties
+/// only (works for exports whose mip chain does not parse).
+pub fn cache_name_of(buf: &[u8], pos: usize, names: &NameTable) -> Option<String> {
+    let (tags, _) = props::walk(buf, pos + 4, names).ok()?;
+    props::find(&tags, "TextureFileCacheName")
+        .and_then(|p| p.as_name(buf, names))
+        .map(str::to_string)
 }
 
 /// Parses a Texture2D export whose serial data starts at `pos` (NetIndex).
@@ -428,6 +442,30 @@ mod tests {
         assert_eq!(t.mips[2].width, 64);
         // Patchable field positions point at the right bytes.
         assert_eq!(read_u64(&buf, t.mips[0].offset_field()), Some(4096));
+    }
+
+    #[test]
+    fn parses_chain_with_unused_top_mip() {
+        let n = names();
+        let mut buf = (-1i32).to_le_bytes().to_vec();
+        buf.extend(texture_props(256));
+        buf.extend([0x00, 0x00, 0x01, 0x00]);
+        buf.extend([0u8; 8]);
+        buf.extend(2i32.to_le_bytes());
+        // Unused 512 mip: elem 0, size -1, offset -1 (as cooked by RL).
+        buf.extend((BULK_SEPARATE_FILE | BULK_UNUSED).to_le_bytes());
+        buf.extend(0i32.to_le_bytes());
+        buf.extend((-1i32).to_le_bytes());
+        buf.extend((-1i64).to_le_bytes());
+        buf.extend(512i32.to_le_bytes());
+        buf.extend(512i32.to_le_bytes());
+        buf.extend(mip_bytes_tfc(256 * 256, 1000, 4096, 256));
+        let t = parse_texture(&buf, 0, buf.len(), 0, "Ball_N", &n).unwrap();
+        assert_eq!(t.mips.len(), 2);
+        assert!(t.mips[0].is_empty());
+        assert_eq!((t.mips[0].size_on_disk, t.mips[0].offset_in_file), (0, 0));
+        assert_eq!(t.mips[1].offset_in_file, 4096);
+        assert_eq!(cache_name_of(&buf, 0, &n).as_deref(), Some("Textures7"));
     }
 
     #[test]

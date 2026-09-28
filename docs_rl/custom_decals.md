@@ -831,3 +831,22 @@ If we wanted to test in-place reparenting **without injecting new imports**, the
 | `sandbox/research/catalog_material_parents.py` | Sample 53 UPKs, list Materials, flag paint-system membership |
 | `docs_rl/material_parent_candidates.md` | Generated catalog |
 
+
+## Cache hijack pitfall — 2026-09-28 : unused mips (custom ball crash)
+
+The swap pipeline renames the replaced textures' `TextureFileCacheName`
+FName (`Textures2` → `AlxsBall0`). The rename is package-wide, so **every**
+texture of that cache must be copied into ours at a new offset. A texture
+left behind keeps its stock offset and the game reads past the end of our
+small cache: `Detected data corruption [undershoot] trying to read … from
+'…\AlxsBall0.tfc'`, then a crash as soon as the ball loads.
+
+`GameInfo_Soccar_SF` → `Ball_Default00_N` (4096², 13 mips) starts with an
+**unused** top mip: `flags = 0x21` (separate file + `BULKDATA_Unused`),
+`elem_count = 0`, `size_on_disk = -1`, `offset = -1`. The parser rejected
+`size = -1`, so the normal map was skipped, not relocated, and crashed the
+game. Fixed: an unused mip with size -1 parses as an empty mip, and
+`build_swap` refuses (instead of writing a crashing file) when a texture of
+the hijacked cache still cannot be parsed. Check with
+`cargo run --example stranded_scan -- <CookedPCConsole> body_ skin_`
+(2026-09-28: only UmbraGenesis items and two GameInfo modes remain).

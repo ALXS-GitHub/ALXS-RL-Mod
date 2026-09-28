@@ -302,6 +302,26 @@ pub fn build_swap(
         )));
     };
     let tfc_name = custom_cache_name(spec.cache_prefix, source_cache.len());
+    // Hijacking the cache name re-points every texture of that cache: one
+    // we cannot relocate would read past the end of ours and crash the game.
+    let stranded: Vec<&str> = pkg
+        .exports
+        .iter()
+        .filter(|e| pkg.class_of(e) == "Texture2D")
+        .filter(|e| !textures.iter().any(|t| t.export_index == e.index))
+        .filter(|e| {
+            body.export_pos(e).is_some_and(|pos| {
+                texture::cache_name_of(&body.data, pos, &pkg.names).as_deref() == Some(source_cache)
+            })
+        })
+        .map(|e| e.object_name.as_str())
+        .collect();
+    if !stranded.is_empty() {
+        return Err(AppError::Unsupported(format!(
+            "textures of {source_cache} could not be read: {}",
+            stranded.join(", ")
+        )));
+    }
 
     // Encode each (image, format, mip chain) once: a mask's Painted variant
     // has the same dimensions as the regular one.
