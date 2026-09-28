@@ -121,6 +121,7 @@ upk::keys::KeyRing::load(app) -> AppResult<KeyRing>              // empty ring =
 upk::summary::PackageSummary::parse(&[u8]) -> Result<_, UpkError>
 upk::rename::{Rename, rename_package(&[u8], &[Rename], &KeyRing, target_key: Option<AesKey>) -> Result<Vec<u8>, UpkError>}  // re-keys for the target name
 upk::rename::package_key(&[u8], &KeyRing) -> Option<AesKey>
+upk::recolor::recolor_patch(&Package, &Body, hue) -> (StreamPatch, RecolorStats)  // data colours → one hue
 upk::Package::{open, header_bytes, seal}                         // seal = re-encrypt CTR chunks (fully encrypted packages)
 upk::rename::can_decrypt(&[u8], &KeyRing) -> bool
 upk::chunks::{ChunkedBody}                                        // read/patch RL chunked-zlib blocks
@@ -167,7 +168,7 @@ Errors always serialize as `{ kind: string, message: string }`.
 
 ### catalog slice (catalog / swap / presets / integrity)
 - `catalog_get() -> CatalogSnapshot` · `catalog_refresh() -> CatalogSnapshot`
-- `swap_list() -> Vec<ActiveSwap>` · `swap_apply(req: SwapRequest) -> ActiveSwap`
+- `swap_list() -> Vec<ActiveSwap>` · `swap_apply(req: SwapRequest) -> ActiveSwap` (`SwapRequest.tint`: optional hue 0..359, experimental recolour through `upk::recolor`; owned == wanted is allowed with a tint)
 - `swap_restore(id) -> ()` · `swap_restore_all() -> u32` · `swap_history() -> Vec<SwapEvent>`
 - `presets_list() -> Vec<Preset>` · `presets_save(preset) -> Preset` · `presets_delete(id)`
 - `presets_apply(id) -> PresetApplyReport` · `presets_capture(name) -> Preset`

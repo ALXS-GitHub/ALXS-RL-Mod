@@ -114,5 +114,19 @@
     "title": "The item list needs your keys.txt",
     "description": "Rocket League encrypts the files that list its items. Import a community keys.txt to read them — see the README for where to get one.",
     "import": "Import keys.txt"
+  },
+  "tint": {
+    "label": "Colour (experimental)",
+    "original": "Original colours",
+    "red": "Red",
+    "orange": "Orange",
+    "yellow": "Yellow",
+    "green": "Green",
+    "cyan": "Cyan",
+    "blue": "Blue",
+    "purple": "Purple",
+    "pink": "Pink",
+    "hint": "Recolours the particles and material colours of the item you see. Colours built into the game's shaders keep their tint.",
+    "selfHint": "Same item on both sides: pick a colour to recolour the item you own."
   }
 }

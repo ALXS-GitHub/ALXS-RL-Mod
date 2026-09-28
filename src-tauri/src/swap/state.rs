@@ -25,6 +25,10 @@ pub struct SwapRequest {
     /// 0..=12, see `rules::PAINTS`. `None`/0 = unpainted.
     #[serde(default)]
     pub paint: Option<u8>,
+    /// Experimental recolour: every data colour of the shown item moved to
+    /// this hue (degrees, 0..360). See `upk::recolor`.
+    #[serde(default)]
+    pub tint: Option<u16>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -141,6 +145,7 @@ mod tests {
                 owned_id: 1,
                 wanted_id: 2,
                 paint: None,
+                tint: None,
             },
             owned_label: "a".into(),
             wanted_label: "b".into(),

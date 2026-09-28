@@ -36,6 +36,7 @@ export function ItemsPage() {
   const [ownedId, setOwnedId] = useState<number | null>(null);
   const [wantedId, setWantedId] = useState<number | null>(null);
   const [paint, setPaint] = useState(0);
+  const [tint, setTint] = useState<number | null>(null);
   const [search, setSearch] = useState("");
   const [bodyFilter, setBodyFilter] = useState<BodyFilter>("auto");
   const deferredSearch = useDeferredValue(search);
@@ -99,7 +100,10 @@ export function ItemsPage() {
     if (step !== "wanted" || !owned) return new Set<number>();
     const pkg = owned.package.toLowerCase();
     // Same package as the owned item (locked items stay clickable: picking one explains why it can't be used).
-    return new Set(visible.filter((i) => i.package.toLowerCase() === pkg).map((i) => i.id));
+    // The owned item itself stays pickable: recolouring it in place.
+    return new Set(
+      visible.filter((i) => i.package.toLowerCase() === pkg && i.id !== owned.id).map((i) => i.id),
+    );
   }, [step, owned, visible]);
 
   /** Loads an active swap into the composer (owned, wanted and paint). */
@@ -108,6 +112,7 @@ export function ItemsPage() {
     setOwnedId(swap.request.ownedId);
     setWantedId(swap.request.wantedId);
     setPaint(swap.request.paint ?? 0);
+    setTint(swap.request.tint ?? null);
     setStep("wanted");
     setSearch("");
     setBodyFilter("auto");
@@ -121,6 +126,7 @@ export function ItemsPage() {
     setSearch("");
     setWantedId(null);
     setPaint(0);
+    setTint(null);
     setBodyFilter("auto");
     setOwnedId(null);
     setStep("owned");
@@ -148,7 +154,9 @@ export function ItemsPage() {
   const activeForOwned = swaps.data?.find((s) => s.request.slot === slot && s.request.ownedId === ownedId);
   const mode: ComposerMode = !activeForOwned
     ? "new"
-    : activeForOwned.request.wantedId === wantedId && (activeForOwned.request.paint ?? 0) === paint
+    : activeForOwned.request.wantedId === wantedId &&
+        (activeForOwned.request.paint ?? 0) === paint &&
+        (activeForOwned.request.tint ?? null) === tint
       ? "unchanged"
       : "update";
 
@@ -177,7 +185,7 @@ export function ItemsPage() {
   const onApply = () => {
     if (!owned || !wanted) return;
     // The pick stays: the composer then shows it as the active swap.
-    apply.mutate({ slot, ownedId: owned.id, wantedId: wanted.id, paint: paint > 0 ? paint : null });
+    apply.mutate({ slot, ownedId: owned.id, wantedId: wanted.id, paint: paint > 0 ? paint : null, tint });
   };
 
   const bodyOptions = [
@@ -258,6 +266,8 @@ export function ItemsPage() {
               onStepChange={setStep}
               paint={paint}
               onPaintChange={setPaint}
+              tint={tint}
+              onTintChange={setTint}
               onApply={onApply}
               applying={apply.isPending}
               mode={mode}

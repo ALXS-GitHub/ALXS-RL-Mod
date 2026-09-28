@@ -111,6 +111,7 @@ pub fn from_wire(wire: ShareV1) -> Preset {
                 owned_id,
                 wanted_id,
                 paint: (paint > 0 && paint <= 12).then_some(paint),
+                tint: None,
             })
         })
         .collect();

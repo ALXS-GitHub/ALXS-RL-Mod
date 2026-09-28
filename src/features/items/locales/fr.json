@@ -114,5 +114,19 @@
     "title": "La liste des items a besoin de ton keys.txt",
     "description": "Rocket League chiffre les fichiers qui listent ses items. Importe un keys.txt de la communauté pour les lire — le README explique où le trouver.",
     "import": "Importer keys.txt"
+  },
+  "tint": {
+    "label": "Couleur (expérimental)",
+    "original": "Couleurs d'origine",
+    "red": "Rouge",
+    "orange": "Orange",
+    "yellow": "Jaune",
+    "green": "Vert",
+    "cyan": "Cyan",
+    "blue": "Bleu",
+    "purple": "Violet",
+    "pink": "Rose",
+    "hint": "Recolore les particules et les couleurs du matériau de l'item affiché. Les couleurs intégrées aux shaders du jeu gardent leur teinte.",
+    "selfHint": "Même item des deux côtés : choisis une couleur pour recolorer l'item que tu possèdes."
   }
 }

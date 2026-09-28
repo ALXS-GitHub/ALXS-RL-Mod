@@ -19,6 +19,9 @@ interface SwapComposerProps {
   onStepChange: (step: PickStep) => void;
   paint: number;
   onPaintChange: (paint: number) => void;
+  /** Experimental recolour hue (degrees), `null` = original colours. */
+  tint: number | null;
+  onTintChange: (tint: number | null) => void;
   onApply: () => void;
   applying: boolean;
   mode: ComposerMode;
@@ -68,6 +71,55 @@ function PickCard({
   );
 }
 
+/** Hues offered for the experimental recolour (degrees). */
+const TINTS = [
+  { key: "red", hue: 0 },
+  { key: "orange", hue: 25 },
+  { key: "yellow", hue: 55 },
+  { key: "green", hue: 120 },
+  { key: "cyan", hue: 185 },
+  { key: "blue", hue: 220 },
+  { key: "purple", hue: 275 },
+  { key: "pink", hue: 320 },
+] as const;
+
+function TintPicker({ value, onChange }: { value: number | null; onChange: (tint: number | null) => void }) {
+  const { t } = useTranslation("items");
+  const swatch = "size-6 rounded-full border transition-shadow duration-150";
+  const ring = "shadow-[0_0_0_2px_var(--color-bg),0_0_0_3.5px_var(--color-accent)]";
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="mr-1 text-xs text-fg-subtle">{t("tint.label")}</span>
+      <button
+        type="button"
+        title={t("tint.original")}
+        aria-label={t("tint.original")}
+        aria-pressed={value === null}
+        onClick={() => onChange(null)}
+        className={cn(
+          swatch,
+          "grid place-items-center border-line-strong bg-white/[0.04]",
+          value === null && ring,
+        )}
+      >
+        <span className="h-px w-3.5 rotate-45 bg-fg-subtle" />
+      </button>
+      {TINTS.map(({ key, hue }) => (
+        <button
+          key={key}
+          type="button"
+          title={t(`tint.${key}`)}
+          aria-label={t(`tint.${key}`)}
+          aria-pressed={value === hue}
+          onClick={() => onChange(hue)}
+          className={cn(swatch, "border-white/10", value === hue && ring)}
+          style={{ background: `hsl(${hue} 85% 55%)` }}
+        />
+      ))}
+    </div>
+  );
+}
+
 /**
  * Owned → wanted summary and the apply CTA.
  *
@@ -81,12 +133,16 @@ export function SwapComposer({
   wanted,
   step,
   onStepChange,
+  tint,
+  onTintChange,
   onApply,
   applying,
   mode,
 }: SwapComposerProps) {
   const { t } = useTranslation("items");
-  const ready = Boolean(owned && wanted) && mode !== "unchanged";
+  // An item can replace itself only to be recoloured.
+  const recolourOnly = Boolean(owned && wanted && owned.id === wanted.id);
+  const ready = Boolean(owned && wanted) && mode !== "unchanged" && (!recolourOnly || tint !== null);
   return (
     <div className="glass flex flex-col gap-3 rounded-lg p-3">
       <div className="flex items-stretch gap-2">
@@ -101,6 +157,12 @@ export function SwapComposer({
           onClick={() => onStepChange("wanted")}
         />
       </div>
+      {wanted ? (
+        <div className="flex flex-col gap-1.5 border-line border-t pt-3">
+          <TintPicker value={tint} onChange={onTintChange} />
+          <p className="text-[11px] text-fg-subtle">{t(recolourOnly ? "tint.selfHint" : "tint.hint")}</p>
+        </div>
+      ) : null}
       <div className="flex flex-wrap items-center justify-between gap-3 border-line border-t pt-3">
         <p className="flex max-w-md items-center gap-2 text-xs text-fg-muted">
           {mode === "new" ? <Info className="size-3.5 shrink-0" /> : <Pencil className="size-3.5 shrink-0" />}

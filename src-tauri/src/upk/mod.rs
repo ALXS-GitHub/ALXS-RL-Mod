@@ -16,6 +16,7 @@ pub mod names;
 pub mod package;
 pub mod props;
 pub mod reader;
+pub mod recolor;
 pub mod rename;
 pub mod summary;
 pub mod tables;

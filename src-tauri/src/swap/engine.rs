@@ -39,7 +39,16 @@ pub fn validate<'a>(
             "paint must be between 0 and 12".into(),
         ));
     }
-    if owned.package.eq_ignore_ascii_case(&wanted.package) && req.paint.unwrap_or(0) == 0 {
+    if req.tint.is_some_and(|h| h >= 360) {
+        return Err(AppError::InvalidInput(
+            "tint must be a hue between 0 and 359".into(),
+        ));
+    }
+    // The same package is fine when recolouring: the item replaces itself.
+    if owned.package.eq_ignore_ascii_case(&wanted.package)
+        && req.paint.unwrap_or(0) == 0
+        && req.tint.is_none()
+    {
         return Err(AppError::Conflict(format!(
             "{} and {} live in the same package ({})",
             owned.label_en, wanted.label_en, owned.package
@@ -60,7 +69,7 @@ pub fn apply_with_id(app: &AppHandle, req: &SwapRequest, id: &str) -> AppResult<
         .filter(|p| *p > 0)
         .and_then(|p| rules::painted_variant(&index, &wanted.package, p));
     let source_package = painted.clone().unwrap_or_else(|| wanted.package.clone());
-    if source_package.eq_ignore_ascii_case(&owned.package) {
+    if source_package.eq_ignore_ascii_case(&owned.package) && req.tint.is_none() {
         return Err(AppError::Conflict(format!(
             "no painted variant of {} on disk — the swap would change nothing",
             owned.package
@@ -83,7 +92,14 @@ pub fn apply_with_id(app: &AppHandle, req: &SwapRequest, id: &str) -> AppResult<
         )));
     }
     let target_key = crate::upk::rename::package_key(&owned_stock, &keys);
-    let out = crate::upk::rename::rename_package(&bytes, &renames, &keys, target_key)?;
+    let mut out = if source_package.eq_ignore_ascii_case(&owned.package) {
+        bytes
+    } else {
+        crate::upk::rename::rename_package(&bytes, &renames, &keys, target_key)?
+    };
+    if let Some(hue) = req.tint {
+        out = recolor(out, &keys, f32::from(hue))?;
+    }
 
     let target = install.cooked_dir.join(&owned.package);
     writer::install_file(app, Owner::Swap, id, &target, Placement::RootReplace, &out)?;
@@ -101,6 +117,28 @@ pub fn apply_with_id(app: &AppHandle, req: &SwapRequest, id: &str) -> AppResult<
             .map(|f| f.id())
             .unwrap_or_default(),
     })
+}
+
+/// Moves every data colour of the package to `hue` (experimental).
+fn recolor(bytes: Vec<u8>, keys: &crate::upk::KeyRing, hue: f32) -> AppResult<Vec<u8>> {
+    let pkg = crate::upk::Package::open(bytes, keys)?;
+    let body = pkg.body()?;
+    let (patch, stats) = crate::upk::recolor::recolor_patch(&pkg, &body, hue);
+    if stats.colors == 0 {
+        return Err(AppError::Unsupported(
+            "this item has no colour the app can change".into(),
+        ));
+    }
+    let mut out = pkg.header_bytes()?;
+    patch.apply(&mut out, &body.map)?;
+    pkg.seal(&mut out)?;
+    tracing::info!(
+        colors = stats.colors,
+        exports = stats.exports,
+        hue,
+        "item recoloured"
+    );
+    Ok(out)
 }
 
 /// Applies a new swap, replacing any active swap on the same owned package.

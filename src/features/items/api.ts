@@ -49,6 +49,8 @@ export const swapRequestSchema = z.object({
   ownedId: z.number(),
   wantedId: z.number(),
   paint: z.number().nullable().optional(),
+  /** Experimental recolour: hue in degrees (0..359). */
+  tint: z.number().nullable().optional(),
 });
 export type SwapRequest = z.infer<typeof swapRequestSchema>;
 
