@@ -257,7 +257,7 @@ export function ItemsPage() {
       {catalog.error ? (
         <ErrorState error={catalog.error} onRetry={() => void catalog.refetch()} />
       ) : (
-        <div className="grid h-[calc(100vh-13rem)] min-h-[540px] grid-cols-[208px_minmax(0,1fr)] gap-4">
+        <div className="grid min-h-[max(540px,calc(100vh-13rem))] grid-cols-[208px_minmax(0,1fr)] gap-4">
           <div className="flex min-h-0 flex-col gap-3">
             <SlotRail value={slot} onChange={changeSlot} counts={counts} activeSlots={activeSlots} />
             {catalog.data ? (
@@ -335,7 +335,9 @@ export function ItemsPage() {
               </div>
             ) : null}
 
-            <div className="min-h-0 flex-1">
+            {/* At least 440 px for the grid: when the composer grows (custom colour),
+                the page scrolls instead of squeezing the list. */}
+            <div className="relative min-h-[440px] flex-1">
               {catalog.isLoading ? (
                 <div className="grid grid-cols-5 gap-3">
                   {Array.from({ length: 15 }, (_, i) => (
@@ -350,14 +352,16 @@ export function ItemsPage() {
                   description={t("empty.description")}
                 />
               ) : (
-                <ItemGrid
-                  items={visible}
-                  selectedId={step === "owned" ? ownedId : wantedId}
-                  disabledIds={disabledIds}
-                  swappedIds={swappedIds}
-                  dimLocked={step === "wanted"}
-                  onSelect={pick}
-                />
+                <div className="absolute inset-0">
+                  <ItemGrid
+                    items={visible}
+                    selectedId={step === "owned" ? ownedId : wantedId}
+                    disabledIds={disabledIds}
+                    swappedIds={swappedIds}
+                    dimLocked={step === "wanted"}
+                    onSelect={pick}
+                  />
+                </div>
               )}
             </div>
           </section>
