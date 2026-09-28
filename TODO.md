@@ -35,3 +35,10 @@ Les choses auxquelles je pense au fur et à mesure qu'il faudrait faire :
 - [ ] Tests en jeu 0.2.3 : swap avec une peinture officielle (ex. boost Standard en Cobalt) ; couleur custom non pure (ex. bleu pâle).
 - [ ] Boost meters (AlphaConsole) : pas faisable en fichiers pour l'instant, ils vivent dans le HUD Scaleform (`GFX_Hud_SF.upk`) ; demande une exploration à part.
 - [ ] Venom / Road Hog / Esper : pas de donneur hybride ; piste = donneur Octane (ClassyLady) avec les textures de carrosserie re-pointées vers celles de la voiture.
+- [ ] Publication grand public (2026-09-28) :
+  1. **Keys** (option retenue) : ne pas les livrer ni les héberger. Page Clés avec 2 choix : « Télécharger » (fichier `aes.txt` de Toga-Files, via `base::security`) ou « Importer mon fichier ». Proposer le téléchargement de lui-même quand des items n'ont pas de clé après une mise à jour du jeu. Validation à la réception : HTTPS + hôte autorisé, taille max, format strict ligne par ligne (nom de package + clé base64 de 32 octets), fusion sans écraser les clés existantes, et surtout ne garder qu'une clé qui **déchiffre vraiment** le package du même nom dans l'install (en-tête et table des noms lisibles). Afficher « N nouvelles clés ».
+  2. **MMR** : à rechercher encore (l'utilisateur n'est pas satisfait des pistes). Pistes vues : API tracker.gg officielle refusée pour Rocket League ; interception réseau hors de question ; Stats API sans MMR ; `Launch.log` écrit `PartyLeaderMMR` / `PartyLeaderTier` / playlist à chaque recherche de match (le sien seulement, valeur interne, conversion ×20+100 à confirmer) ; ballchasing.com (replays seulement). Le navigateur caché tracker.gg reste en attendant.
+  3. Signer l'installeur (SmartScreen, antivirus) : SignPath Foundation (gratuit open source) ou service payant, à étudier.
+  4. Mentions « non affilié à Psyonix / Epic » et « à vos risques » (site, README, premier lancement) ; pas de logo officiel.
+  5. alphaconsole.io : le marketplace lit leur page HTML ; leur demander l'accord.
+  6. Packs communautaires : afficher l'auteur, prévoir un contact pour retrait.
