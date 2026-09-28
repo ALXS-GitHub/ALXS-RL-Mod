@@ -15,7 +15,7 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { useGameStatus } from "@/lib/game";
 import { useFx } from "@/stores/fx";
 import { type Palette, type PaletteDraft, type Rgb, STOCK_ID } from "./api";
-import { ACCENT_COLUMNS, auroraFrom, normalize, PICKER_ROWS, PRIMARY_COLUMNS, toHex } from "./colors";
+import { ACCENT_COLUMNS, auroraFrom, normalize, PICKER_ROWS, PRIMARY_COLUMNS } from "./colors";
 import { ColorEditor } from "./components/ColorEditor";
 import { Generators } from "./components/Generators";
 import { PaletteLibrary } from "./components/PaletteLibrary";
@@ -367,25 +367,6 @@ export function PalettePage() {
               onFillRow={() => fill("row")}
               onFillColumn={() => fill("column")}
             />
-            {draft ? (
-              <div className="border-line border-t px-4 py-3">
-                <p className="mb-2 text-xs text-fg-subtle">{t("editor.preview")}</p>
-                <div className="flex h-10 overflow-hidden rounded-[7px]">
-                  {[
-                    draft.primaryBlue[slot ?? 0],
-                    draft.primaryOrange[slot ?? 0],
-                    draft.accent[slot ?? 0],
-                  ].map((c, i) => (
-                    <div
-                      // biome-ignore lint/suspicious/noArrayIndexKey: fixed trio
-                      key={i}
-                      className="flex-1"
-                      style={{ background: c ? toHex(c) : "transparent" }}
-                    />
-                  ))}
-                </div>
-              </div>
-            ) : null}
           </GlassPanel>
         </div>
       </Section>

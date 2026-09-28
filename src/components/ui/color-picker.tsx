@@ -1,3 +1,4 @@
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import { type KeyboardEvent, type PointerEvent, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -194,5 +195,44 @@ export function ColorPicker({ value, onChange, presets, size = 176, className }:
         </div>
       ) : null}
     </div>
+  );
+}
+
+interface ColorSwatchButtonProps {
+  value: string;
+  onChange: (hex: string) => void;
+  /** Accessible name (also the tooltip). */
+  label: string;
+  presets?: readonly ColorPreset[];
+  className?: string;
+}
+
+/** A colour swatch that opens the colour picker in a popover. */
+export function ColorSwatchButton({ value, onChange, label, presets, className }: ColorSwatchButtonProps) {
+  return (
+    <PopoverPrimitive.Root>
+      <PopoverPrimitive.Trigger asChild>
+        <button
+          type="button"
+          title={label}
+          aria-label={label}
+          className={cn(
+            "size-5 shrink-0 cursor-pointer rounded-[5px] shadow-[inset_0_0_0_1px_rgb(255_255_255/0.18)] outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]",
+            className,
+          )}
+          style={{ background: value }}
+        />
+      </PopoverPrimitive.Trigger>
+      <PopoverPrimitive.Portal>
+        <PopoverPrimitive.Content
+          sideOffset={8}
+          align="start"
+          collisionPadding={12}
+          className="glass-strong z-[70] w-[320px] rounded-lg p-3 outline-none"
+        >
+          <ColorPicker value={value} onChange={onChange} presets={presets} size={140} />
+        </PopoverPrimitive.Content>
+      </PopoverPrimitive.Portal>
+    </PopoverPrimitive.Root>
   );
 }

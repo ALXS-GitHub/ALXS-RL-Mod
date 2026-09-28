@@ -47,7 +47,6 @@
     "fillRow": "Fill row",
     "fillColumn": "Fill column",
     "resetSlot": "Reset to stock",
-    "preview": "Blue · Orange · Accent",
     "note": "Rows are shades, columns are hues — the same layout as the in-game picker. A small dot marks slots changed from stock.",
     "nameLabel": "Name"
   },

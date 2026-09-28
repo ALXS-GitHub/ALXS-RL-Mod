@@ -2,6 +2,7 @@ import { Blend, Dices, Rainbow, RotateCcw, SunMoon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { ColorSwatchButton } from "@/components/ui/color-picker";
 import { Slider } from "@/components/ui/slider";
 import { Tooltip } from "@/components/ui/tooltip";
 import type { Rgb } from "../api";
@@ -39,20 +40,8 @@ export function Generators({ columns, rows, current, stock, onReplace }: Generat
       </Tooltip>
 
       <div className="glass-inset flex h-8 items-center gap-1.5 rounded-sm pr-1 pl-2">
-        <input
-          type="color"
-          value={from}
-          onChange={(e) => setFrom(e.target.value)}
-          className="size-5 cursor-pointer rounded border-0 bg-transparent p-0"
-          aria-label={t("generators.from")}
-        />
-        <input
-          type="color"
-          value={to}
-          onChange={(e) => setTo(e.target.value)}
-          className="size-5 cursor-pointer rounded border-0 bg-transparent p-0"
-          aria-label={t("generators.to")}
-        />
+        <ColorSwatchButton value={from} onChange={setFrom} label={t("generators.from")} />
+        <ColorSwatchButton value={to} onChange={setTo} label={t("generators.to")} />
         <Button
           size="sm"
           variant="ghost"

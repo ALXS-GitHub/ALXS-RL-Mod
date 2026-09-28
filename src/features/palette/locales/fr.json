@@ -47,7 +47,6 @@
     "fillRow": "Remplir la ligne",
     "fillColumn": "Remplir la colonne",
     "resetSlot": "Remettre d'origine",
-    "preview": "Bleu · Orange · Accent",
     "note": "Les lignes sont des nuances, les colonnes des teintes — la même disposition que le nuancier du jeu. Un petit point marque les cases modifiées.",
     "nameLabel": "Nom"
   },
