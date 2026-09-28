@@ -8,7 +8,7 @@ import { GlassCard } from "@/components/ui/glass";
 import { Tooltip } from "@/components/ui/tooltip";
 import { formatRelative } from "@/lib/format";
 import { type Palette, STOCK_ID } from "../api";
-import { toHex } from "../colors";
+import { ACCENT_COLUMNS, PICKER_ROWS, PRIMARY_COLUMNS, toHex } from "../colors";
 
 interface PaletteLibraryProps {
   palettes: readonly Palette[] | undefined;
@@ -21,14 +21,19 @@ interface PaletteLibraryProps {
   onDelete: (p: Palette) => void;
 }
 
-/** Tiny 3-band preview: blue primary · orange primary · accent. */
+/**
+ * Tiny 3-band preview: blue primary · orange primary · accent. Grids are
+ * row-major (shade rows × hue columns): each band shows every column on
+ * the middle shade row, the hues as the in-game picker shows them.
+ */
 function Strip({ p }: { p: Palette }) {
-  const pick = (arr: Palette["accent"], n: number) =>
-    Array.from({ length: n }, (_, i) => arr[Math.floor((i * arr.length) / n)] ?? { r: 0, g: 0, b: 0 });
+  const middle = Math.floor(PICKER_ROWS / 2);
+  const hues = (arr: Palette["accent"], columns: number) =>
+    Array.from({ length: columns }, (_, c) => arr[middle * columns + c] ?? arr[c] ?? { r: 0, g: 0, b: 0 });
   const bands = [
-    pick(p.primaryBlue, 10),
-    pick(p.primaryOrange.length ? p.primaryOrange : p.primaryBlue, 10),
-    pick(p.accent, 15),
+    hues(p.primaryBlue, PRIMARY_COLUMNS),
+    hues(p.primaryOrange.length ? p.primaryOrange : p.primaryBlue, PRIMARY_COLUMNS),
+    hues(p.accent, ACCENT_COLUMNS),
   ];
   return (
     <div className="flex flex-col gap-[3px] overflow-hidden rounded-md">
