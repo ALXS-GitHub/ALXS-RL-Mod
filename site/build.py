@@ -291,7 +291,7 @@ def page(lang):
   <meta name="twitter:title" content="{esc(t['title'])}" />
   <meta name="twitter:description" content="{esc(t['description'])}" />
   <meta name="twitter:image" content="{BASE}assets/og-image.png" />
-  <!-- Google Search Console: paste the verification meta tag here. -->
+  <meta name="google-site-verification" content="Kb-Gvoigv3NTgHJs2SlbKMZcJZoq9qtoNNlRDVpTiys" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap" />
