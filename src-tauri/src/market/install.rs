@@ -55,13 +55,29 @@ pub fn folder_name(title: &str) -> String {
     }
 }
 
-/// Flags items whose pack folder already exists in the library.
+/// Flags what the library already has: each listed variant (a pack may be
+/// installed for one car and not another), or the pack folder.
 pub fn mark_installed(items: &mut [MarketItem]) {
     for item in items {
-        item.installed = library_root(item.kind)
-            .map(|root| root.join(folder_name(&item.title)).is_dir())
-            .unwrap_or(false);
+        if let Ok(root) = library_root(item.kind) {
+            mark_in(item, &root);
+        }
     }
+}
+
+fn mark_in(item: &mut MarketItem, root: &Path) {
+    let dir = root.join(folder_name(&item.title));
+    item.installed_bodies = item
+        .bodies
+        .iter()
+        .filter(|b| dir.join(folder_name(b)).is_dir())
+        .cloned()
+        .collect();
+    item.installed = if item.bodies.is_empty() {
+        dir.is_dir()
+    } else {
+        item.installed_bodies.len() == item.bodies.len()
+    };
 }
 
 /// A fresh, empty staging folder for one download.
@@ -193,7 +209,13 @@ fn variant_name(
                 None => folder_name(entry_name),
             })
         }
-        MarketKind::Ball => get_ci(entry, "Params").map(|_| folder_name(entry_name)),
+        // Ball variants keep their folder name (`Default`, `Zomahx`…) when
+        // the source has one, like the library's own layout.
+        MarketKind::Ball => get_ci(entry, "Params").map(|_| {
+            folder
+                .map(folder_name)
+                .unwrap_or_else(|| folder_name(entry_name))
+        }),
     }
 }
 
@@ -214,6 +236,8 @@ fn manifests(root: &Path) -> Vec<PathBuf> {
 }
 
 /// Normalises the packs found under `src` into `<root>/<folder_name(title)>`.
+/// When the pack is already in the library, only the variants it lacks
+/// (another car, another ball) are added; existing ones are never touched.
 pub fn install_dir(
     src: &Path,
     root: &Path,
@@ -223,12 +247,7 @@ pub fn install_dir(
 ) -> AppResult<InstallReport> {
     let pack = folder_name(title);
     let dest = root.join(&pack);
-    if dest.exists() {
-        return Err(AppError::Conflict(format!(
-            "{pack} is already in your library"
-        )));
-    }
-    // Build next to the destination, then rename: never a half pack.
+    // Build next to the destination, then rename: never a half variant.
     let staging = root.join(format!(".market-{pack}"));
     let _ = std::fs::remove_dir_all(&staging);
     std::fs::create_dir_all(&staging)?;
@@ -281,7 +300,25 @@ pub fn install_dir(
             "no AlphaConsole pack found in the download".into(),
         ));
     }
-    std::fs::rename(&staging, &dest)?;
+    std::fs::create_dir_all(&dest)?;
+    let mut added = Vec::new();
+    for name in variant_dirs {
+        let target = dest.join(&name);
+        if target.exists() {
+            report.skipped += 1;
+            continue;
+        }
+        std::fs::rename(staging.join(&name), &target)?;
+        added.push(name);
+    }
+    let _ = std::fs::remove_dir_all(&staging);
+    if added.is_empty() {
+        return Err(AppError::Conflict(format!(
+            "{pack} is already in your library"
+        )));
+    }
+    report.variants = added.len() as u32;
+    let variant_dirs = added;
 
     if kind == MarketKind::Decal && convert_packs {
         for name in variant_dirs {
@@ -355,6 +392,74 @@ mod tests {
             install_dir(src.path(), root.path(), MarketKind::Decal, "My Decal", true),
             Err(AppError::Conflict(_))
         ));
+    }
+
+    #[test]
+    fn adds_only_the_missing_cars_of_a_pack() {
+        let root = tempfile::tempdir().unwrap();
+        let octane = tempfile::tempdir().unwrap();
+        png(&octane.path().join("d.png"), [9, 9, 9, 255]);
+        std::fs::write(
+            octane.path().join("Octane.json"),
+            r#"{"W (Octane)":{"BodyID":23,"Body":{"Diffuse":"d.png"}}}"#,
+        )
+        .unwrap();
+        install_dir(
+            octane.path(),
+            root.path(),
+            MarketKind::Decal,
+            "Winter Aespa",
+            false,
+        )
+        .unwrap();
+
+        let both = tempfile::tempdir().unwrap();
+        for (car, id) in [("Octane", 23), ("Fennec", 4284)] {
+            let dir = both.path().join(car);
+            std::fs::create_dir_all(&dir).unwrap();
+            png(&dir.join("d.png"), [1, 1, 1, 255]);
+            std::fs::write(
+                dir.join("Template.json"),
+                format!(r#"{{"W ({car})":{{"BodyID":{id},"Body":{{"Diffuse":"d.png"}}}}}}"#),
+            )
+            .unwrap();
+        }
+        let r = install_dir(
+            both.path(),
+            root.path(),
+            MarketKind::Decal,
+            "Winter Aespa",
+            false,
+        )
+        .unwrap();
+        assert_eq!((r.variants, r.skipped), (1, 1));
+        assert!(root
+            .path()
+            .join("Winter Aespa/Fennec/Template.json")
+            .is_file());
+        // The Octane variant already there was left alone.
+        let octane_png = image::open(root.path().join("Winter Aespa/Octane/d.png")).unwrap();
+        assert_eq!(octane_png.to_rgba8().get_pixel(0, 0).0, [9, 9, 9, 255]);
+
+        let mut items = [crate::market::model::MarketItem {
+            source: crate::market::model::MarketSource::RlDesigner,
+            id: "Winter Aespa".into(),
+            kind: MarketKind::Decal,
+            title: "Winter Aespa".into(),
+            author: None,
+            description: None,
+            thumbnail: None,
+            page_url: None,
+            downloads: None,
+            likes: None,
+            bodies: vec!["Octane".into(), "Fennec".into(), "Venom".into()],
+            installed_bodies: Vec::new(),
+            ready: true,
+            installed: false,
+        }];
+        mark_in(&mut items[0], root.path());
+        assert_eq!(items[0].installed_bodies, ["Octane", "Fennec"]);
+        assert!(!items[0].installed, "Venom is still missing");
     }
 
     #[test]

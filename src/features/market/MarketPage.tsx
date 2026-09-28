@@ -49,6 +49,7 @@ function PacksTab({ kind }: { kind: MarketKind }) {
             [
               t("done.variants", { count: r.variants }),
               r.converted ? t("done.converted", { count: r.converted }) : null,
+              r.skipped ? t("done.skipped", { count: r.skipped }) : null,
               r.failed.length ? t("done.failed", { count: r.failed.length }) : null,
             ]
               .filter(Boolean)

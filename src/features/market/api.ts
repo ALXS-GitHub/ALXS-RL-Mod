@@ -24,6 +24,7 @@ export const marketItemSchema = z.object({
   downloads: z.number().nullable(),
   likes: z.number().nullable(),
   bodies: z.array(z.string()),
+  installedBodies: z.array(z.string()),
   ready: z.boolean(),
   installed: z.boolean(),
 });
@@ -40,6 +41,7 @@ export const installReportSchema = z.object({
   pack: z.string(),
   variants: z.number(),
   converted: z.number(),
+  skipped: z.number(),
   failed: z.array(z.string()),
 });
 export type InstallReport = z.infer<typeof installReportSchema>;

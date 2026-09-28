@@ -34,7 +34,9 @@
     "openPage": "Open the page",
     "unknownAuthor": "Unknown author",
     "downloads_one": "{{value}} download",
-    "downloads_other": "{{value}} downloads"
+    "downloads_other": "{{value}} downloads",
+    "addMissing": "Add {{bodies}}",
+    "bodyInstalled": "Already in your library"
   },
   "install": {
     "title": "Install {{name}}",
@@ -51,6 +53,8 @@
     "converted_one": "{{count}} converted",
     "converted_other": "{{count}} converted",
     "failed_one": "{{count}} failed",
-    "failed_other": "{{count}} failed"
+    "failed_other": "{{count}} failed",
+    "skipped_one": "{{count}} already there",
+    "skipped_other": "{{count}} already there"
   }
 }

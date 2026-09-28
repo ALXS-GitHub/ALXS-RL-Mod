@@ -129,6 +129,7 @@ pub fn items(index: &Index, kind: MarketKind, query: &str) -> Vec<MarketItem> {
                 downloads: None,
                 likes: None,
                 bodies: p.variants.iter().map(|v| v.name.clone()).collect(),
+                installed_bodies: Vec::new(),
                 ready: true,
                 installed: false,
             }

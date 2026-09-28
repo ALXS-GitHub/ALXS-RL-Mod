@@ -1,5 +1,5 @@
 import { openUrl } from "@tauri-apps/plugin-opener";
-import { CloudDownload, ExternalLink, Heart, Library } from "lucide-react";
+import { Check, CloudDownload, ExternalLink, Heart, Library } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,8 @@ interface MarketCardProps {
 export function MarketCard({ item, installing, onInstall, onOpenLibrary }: MarketCardProps) {
   const { t } = useTranslation("market");
   const pageUrl = item.pageUrl;
+  const missing = item.bodies.filter((b) => !item.installedBodies.includes(b));
+  const partial = item.installedBodies.length > 0 && missing.length > 0;
   const openPage = pageUrl ? () => void openUrl(pageUrl).catch(notify.error) : undefined;
 
   return (
@@ -60,9 +62,16 @@ export function MarketCard({ item, installing, onInstall, onOpenLibrary }: Marke
         {item.description ? <p className="line-clamp-2 text-xs text-fg-muted">{item.description}</p> : null}
         {item.bodies.length ? (
           <div className="flex flex-wrap gap-1">
-            {item.bodies.map((b) => (
-              <Badge key={b}>{b}</Badge>
-            ))}
+            {item.bodies.map((b) =>
+              item.installedBodies.includes(b) ? (
+                <Badge key={b} tone="success" title={t("card.bodyInstalled")}>
+                  <Check className="size-3" />
+                  {b}
+                </Badge>
+              ) : (
+                <Badge key={b}>{b}</Badge>
+              ),
+            )}
           </div>
         ) : null}
         <div className="mt-auto flex gap-1.5 pt-1">
@@ -74,7 +83,9 @@ export function MarketCard({ item, installing, onInstall, onOpenLibrary }: Marke
           ) : (
             <Button size="sm" variant="primary" className="flex-1" onClick={onInstall} loading={installing}>
               <CloudDownload />
-              {t("card.install")}
+              <span className="truncate">
+                {partial ? t("card.addMissing", { bodies: missing.join(", ") }) : t("card.install")}
+              </span>
             </Button>
           )}
           {openPage ? (

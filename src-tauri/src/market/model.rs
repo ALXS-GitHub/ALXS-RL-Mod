@@ -44,11 +44,14 @@ pub struct MarketItem {
     pub page_url: Option<String>,
     pub downloads: Option<u64>,
     pub likes: Option<u64>,
-    /// Car bodies of the pack's variants, when the source lists them.
+    /// Car bodies (or ball variants) of the pack, when the source lists them.
     pub bodies: Vec<String>,
+    /// Those of `bodies` already in the library.
+    pub installed_bodies: Vec<String>,
     /// Already in the app's real-colour format: no conversion needed.
     pub ready: bool,
-    /// A pack with this name is already in the app's library.
+    /// Everything this item offers is already in the library (every listed
+    /// variant, or the pack folder when the source lists none).
     pub installed: bool,
 }
 
@@ -71,5 +74,7 @@ pub struct InstallReport {
     pub variants: u32,
     /// Variants converted from the AlphaConsole format.
     pub converted: u32,
+    /// Variants skipped because the library already has them.
+    pub skipped: u32,
     pub failed: Vec<String>,
 }

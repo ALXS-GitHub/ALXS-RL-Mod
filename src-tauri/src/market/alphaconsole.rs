@@ -199,6 +199,7 @@ pub fn parse_cards(html: &str, kind: MarketKind) -> Vec<MarketItem> {
             downloads,
             likes,
             bodies: Vec::new(),
+            installed_bodies: Vec::new(),
             ready: false,
             installed: false,
         });

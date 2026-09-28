@@ -34,7 +34,9 @@
     "openPage": "Ouvrir la page",
     "unknownAuthor": "Auteur inconnu",
     "downloads_one": "{{value}} téléchargement",
-    "downloads_other": "{{value}} téléchargements"
+    "downloads_other": "{{value}} téléchargements",
+    "addMissing": "Ajouter {{bodies}}",
+    "bodyInstalled": "Déjà dans ta bibliothèque"
   },
   "install": {
     "title": "Installer {{name}}",
@@ -51,6 +53,8 @@
     "converted_one": "{{count}} convertie",
     "converted_other": "{{count}} converties",
     "failed_one": "{{count}} en échec",
-    "failed_other": "{{count}} en échec"
+    "failed_other": "{{count}} en échec",
+    "skipped_one": "{{count}} déjà présente",
+    "skipped_other": "{{count}} déjà présentes"
   }
 }
