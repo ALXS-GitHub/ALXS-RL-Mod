@@ -47,7 +47,7 @@ function BallCard({
               {t("inGame")}
             </Badge>
           ) : null}
-          {!pack.supported ? <Badge tone="neutral">{t("otherBall", { ball: pack.ball })}</Badge> : null}
+          {!pack.supported ? <Badge tone="neutral">{t("noImage")}</Badge> : null}
         </div>
       </div>
       <div className="flex items-center gap-2 p-3">

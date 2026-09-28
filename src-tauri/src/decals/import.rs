@@ -47,7 +47,7 @@ pub(crate) fn pack_dirs(root: &Path) -> Vec<PathBuf> {
             std::fs::read_dir(p)
                 .map(|rd| {
                     rd.flatten()
-                        .any(|b| b.path().join("Template.json").is_file())
+                        .any(|b| library::manifest_in(&b.path()).is_some())
                 })
                 .unwrap_or(false)
         })
@@ -124,7 +124,7 @@ pub(crate) fn import_from(root: &Path, app: &Path, convert_packs: bool) -> AppRe
         }
         for body in std::fs::read_dir(&dest)?.flatten() {
             let dir = body.path();
-            if !dir.join("Template.json").is_file() {
+            if library::manifest_in(&dir).is_none() {
                 continue;
             }
             match convert::convert_pack_dir(&dir) {

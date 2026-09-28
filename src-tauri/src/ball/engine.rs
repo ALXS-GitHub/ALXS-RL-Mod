@@ -116,7 +116,7 @@ pub fn apply(app: &AppHandle, pack_id: &str) -> AppResult<BallStatus> {
         library::find(pack_id).ok_or_else(|| AppError::NotFound(format!("ball pack {pack_id}")))?;
     if !pack.supported {
         return Err(AppError::Unsupported(format!(
-            "only packs made for the standard ball are supported ({})",
+            "the {} variant of this pack has no image",
             pack.ball
         )));
     }

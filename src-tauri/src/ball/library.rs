@@ -3,8 +3,9 @@
 //! Layout (AlphaConsole's `BallTextures`): `<root>/<Pack>/<Ball>/Template.json`
 //! and a PNG; the template is one object whose single key is the display
 //! name: `{ "Itzy (Default)": { "Group": "Itzy", "Params": { "Diffuse": "diffuse.png" } } }`.
-//! `<Ball>` names the ball the pack was made for; only `Default` (the
-//! standard ball) is supported.
+//! `<Ball>` is only the variant's name (`Default`, `Zomahx`…): the template
+//! names no ball type, and every variant targets the standard ball. A pack
+//! is supported when its image exists.
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
@@ -87,7 +88,9 @@ pub fn scan_root(root: &Path, with_previews: bool) -> Vec<BallPack> {
         };
         for ball in balls.flatten() {
             let dir = ball.path();
-            let template = dir.join("Template.json");
+            let Some(template) = crate::decals::library::manifest_in(&dir) else {
+                continue;
+            };
             let Some((display_name, t)) = std::fs::read_to_string(&template)
                 .ok()
                 .and_then(|raw| parse_template(&raw))
@@ -105,7 +108,7 @@ pub fn scan_root(root: &Path, with_previews: bool) -> Vec<BallPack> {
                 None
             };
             out.push(BallPack {
-                supported: image.is_some() && ball_name.eq_ignore_ascii_case("Default"),
+                supported: image.is_some(),
                 id,
                 pack_name: pack_name.clone(),
                 ball: ball_name,
@@ -154,7 +157,7 @@ mod tests {
     }
 
     #[test]
-    fn scans_ball_packs_and_supports_the_default_ball_only() {
+    fn scans_ball_packs_and_supports_every_variant_with_an_image() {
         let dir = tempfile::tempdir().unwrap();
         let root = dir.path();
         write(
@@ -175,7 +178,7 @@ mod tests {
         assert_eq!(packs.len(), 3);
         assert_eq!(packs[0].display_name, "Itzy (Default)");
         assert!(packs[0].supported);
-        assert!(!packs.iter().find(|p| p.ball == "Zomahx").unwrap().supported);
+        assert!(packs.iter().find(|p| p.ball == "Zomahx").unwrap().supported);
         assert!(
             !packs
                 .iter()

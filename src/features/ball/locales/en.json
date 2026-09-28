@@ -14,7 +14,7 @@
   "apply": "Apply",
   "applied": "\"{{name}}\" applied",
   "appliedHint": "Start a match to see it.",
-  "otherBall": "{{ball}} ball: not supported",
+  "noImage": "Image missing",
   "openFolder": "Open the library folder",
   "blocked": {
     "game": "Rocket League not found — set its folder in Settings.",

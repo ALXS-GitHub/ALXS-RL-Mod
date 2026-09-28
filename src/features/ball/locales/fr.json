@@ -14,7 +14,7 @@
   "apply": "Appliquer",
   "applied": "« {{name}} » appliquée",
   "appliedHint": "Lance un match pour la voir.",
-  "otherBall": "Balle {{ball}} : non prise en charge",
+  "noImage": "Image introuvable",
   "openFolder": "Ouvrir le dossier de la bibliothèque",
   "blocked": {
     "game": "Rocket League est introuvable — indique son dossier dans les Réglages.",

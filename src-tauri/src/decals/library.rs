@@ -216,6 +216,29 @@ pub(crate) fn preview(source: &Path, name: &str, opaque: bool) -> Option<String>
     Some(out.display().to_string())
 }
 
+/// The AlphaConsole manifest of a variant folder: `Template.json`, or a
+/// `<Car> Template.json` as some packs (RL-Designer's Fennec variants…)
+/// name it.
+pub fn manifest_in(dir: &Path) -> Option<PathBuf> {
+    let exact = dir.join("Template.json");
+    if exact.is_file() {
+        return Some(exact);
+    }
+    let mut named: Vec<PathBuf> = std::fs::read_dir(dir)
+        .ok()?
+        .flatten()
+        .map(|e| e.path())
+        .filter(|p| {
+            p.is_file()
+                && p.file_name()
+                    .map(|n| n.to_string_lossy().to_ascii_lowercase())
+                    .is_some_and(|n| n.ends_with("template.json"))
+        })
+        .collect();
+    named.sort();
+    named.into_iter().next()
+}
+
 fn scan_pack(root: &Path, pack_dir: &Path, with_previews: bool, out: &mut Vec<DecalPack>) {
     let Some(pack_name) = pack_dir
         .file_name()
@@ -228,10 +251,9 @@ fn scan_pack(root: &Path, pack_dir: &Path, with_previews: bool, out: &mut Vec<De
     };
     for entry in bodies.flatten() {
         let body_dir = entry.path();
-        let template = body_dir.join("Template.json");
-        if !template.is_file() {
+        let Some(template) = manifest_in(&body_dir) else {
             continue;
-        }
+        };
         let Some((display_name, t)) = std::fs::read_to_string(&template)
             .ok()
             .and_then(|raw| parse_template(&raw))
@@ -453,5 +475,25 @@ mod tests {
         );
         assert_ne!(old, packs[0].id);
         assert_eq!(find(&roots, &old).unwrap().id, packs[0].id);
+    }
+
+    #[test]
+    fn reads_car_named_manifests() {
+        let dir = tempfile::tempdir().unwrap();
+        let fennec = dir.path().join("Winter Aespa/Fennec");
+        write(
+            &fennec.join("Fennec Template.json"),
+            br#"{"Winter Aespa (Fennec)":{"BodyID":4284,"Body":{"Diffuse":"d.png","Skin":"s.png"}}}"#,
+        );
+        assert_eq!(
+            manifest_in(&fennec).unwrap().file_name().unwrap(),
+            "Fennec Template.json"
+        );
+        write(&fennec.join("Template.json"), b"{}");
+        assert_eq!(
+            manifest_in(&fennec).unwrap().file_name().unwrap(),
+            "Template.json"
+        );
+        assert!(manifest_in(dir.path()).is_none());
     }
 }

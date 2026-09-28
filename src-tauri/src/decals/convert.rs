@@ -78,7 +78,8 @@ fn role<'a>(body: &'a serde_json::Map<String, Value>, name: &str) -> Option<&'a 
 /// `1_Diffuse_Skin` / `2_Diffuse_Skin_Mask`. The original files and roles
 /// are kept.
 pub fn convert_pack_dir(dir: &Path) -> AppResult<PackConversion> {
-    let template = dir.join("Template.json");
+    let template = crate::decals::library::manifest_in(dir)
+        .ok_or_else(|| AppError::NotFound(format!("no Template.json in {}", dir.display())))?;
     let raw = std::fs::read_to_string(&template)?;
     let mut doc: Value = serde_json::from_str(raw.trim_start_matches('\u{feff}'))
         .map_err(|e| AppError::InvalidInput(format!("{}: {e}", template.display())))?;
