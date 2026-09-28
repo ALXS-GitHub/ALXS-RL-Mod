@@ -37,7 +37,8 @@
     "teams": {
       "blue": "Principale bleue",
       "orange": "Principale orange",
-      "accent": "Accent"
+      "accent": "Accent",
+      "primary": "Principale (les deux équipes)"
     },
     "slot": "Case {{index}} · {{hex}}",
     "pick": "Choisir une couleur",

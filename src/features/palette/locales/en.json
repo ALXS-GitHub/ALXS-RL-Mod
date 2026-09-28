@@ -37,7 +37,8 @@
     "teams": {
       "blue": "Blue primary",
       "orange": "Orange primary",
-      "accent": "Accent"
+      "accent": "Accent",
+      "primary": "Primary (both teams)"
     },
     "slot": "Slot {{index}} · {{hex}}",
     "pick": "Pick a colour",

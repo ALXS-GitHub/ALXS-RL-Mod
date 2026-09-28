@@ -88,7 +88,9 @@ export function PalettePage() {
       accent: normalize(p.accent, base.accent, ACCENT_COLUMNS * PICKER_ROWS),
     });
     setSelectedId(asCopy ? null : p.id);
-    setLinked(sameColors(blue, orange));
+    const shared = sameColors(blue, orange);
+    setLinked(shared);
+    if (shared) setTeam((cur) => (cur === "orange" ? "blue" : cur));
     setDirty(asCopy);
     setSlot(null);
   };
@@ -173,25 +175,38 @@ export function PalettePage() {
   const engineReady = status.data?.engine === "ready";
   const busy = save.isPending || apply.isPending || restore.isPending;
 
-  const teamOptions = [
-    {
-      value: "blue" as const,
-      label: t("editor.teams.blue"),
-      icon: <span className="size-2.5 rounded-full bg-team-blue" />,
-    },
-    {
-      value: "orange" as const,
-      label: t("editor.teams.orange"),
-      icon: <span className="size-2.5 rounded-full bg-team-orange" />,
-    },
-    {
-      value: "accent" as const,
-      label: t("editor.teams.accent"),
-      icon: (
-        <span className="size-2.5 rounded-full bg-[conic-gradient(#ff5d73,#ffc53d,#3ddc97,#5cc8ff,#7c6cff,#ff5d73)]" />
-      ),
-    },
-  ];
+  const accentOption = {
+    value: "accent" as const,
+    label: t("editor.teams.accent"),
+    icon: (
+      <span className="size-2.5 rounded-full bg-[conic-gradient(#ff5d73,#ffc53d,#3ddc97,#5cc8ff,#7c6cff,#ff5d73)]" />
+    ),
+  };
+  // Linked primaries: one grid for both teams (edited through "blue").
+  const teamOptions = linked
+    ? [
+        {
+          value: "blue" as const,
+          label: t("editor.teams.primary"),
+          icon: (
+            <span className="size-2.5 rounded-full bg-[linear-gradient(90deg,var(--color-team-blue)_50%,var(--color-team-orange)_50%)]" />
+          ),
+        },
+        accentOption,
+      ]
+    : [
+        {
+          value: "blue" as const,
+          label: t("editor.teams.blue"),
+          icon: <span className="size-2.5 rounded-full bg-team-blue" />,
+        },
+        {
+          value: "orange" as const,
+          label: t("editor.teams.orange"),
+          icon: <span className="size-2.5 rounded-full bg-team-orange" />,
+        },
+        accentOption,
+      ];
 
   return (
     <Page>
@@ -308,6 +323,8 @@ export function PalettePage() {
                           const source = team === "orange" ? draft.primaryOrange : draft.primaryBlue;
                           setDraft({ ...draft, primaryBlue: source, primaryOrange: source });
                           setDirty(true);
+                          // The orange tab no longer exists: edit the shared grid.
+                          if (team === "orange") setTeam("blue");
                         }
                       }}
                       aria-label={t("editor.link")}
