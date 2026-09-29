@@ -192,7 +192,7 @@ Errors always serialize as `{ kind: string, message: string }`.
 - `maps_play_offline(id) -> MapSession`
 - `launch_game(with_eac: bool) -> LaunchResult`
 - `stats_status() -> StatsStatus` · `stats_enable()` · `stats_disable()` (on by default: enabled at startup unless the user turned it off, `config.statsApiOptOut`)
-- `tracker_session() -> SessionState` · `tracker_reset()`
+- `tracker_session() -> SessionState` · `tracker_reset()` · `tracker_history() -> Vec<MatchRecord>` (every recorded match, oldest first, from `stats/history.jsonl`; records carry `startedAt`, `playlistId` (Stats API `Game.PlaylistId`) and `teamSize` since 2026-09-29; the Stats tab aggregates them in `features/tracker/history.ts`)
 - Personal edition only (`--features personal`, `docs/PERSONAL_EDITION.md`): `mmr_lookup(platform, player) -> MmrProfile` (refused with `RatingsDisabled` until `tracker.onlineRatings` is on) · `ratings_state() -> RatingsState` · event `personal://ratings`. The tracker calls the personal edition only through `stats::hooks`.
 - `overlay_open()` · `overlay_close()`
 - `replays_list() -> Vec<ReplayFile>` · `bakkesmod_status() -> BakkesStatus`

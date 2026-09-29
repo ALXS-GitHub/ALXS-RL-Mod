@@ -71,6 +71,69 @@
   },
   "tabs": {
     "session": "Session",
-    "settings": "Settings"
+    "settings": "Settings",
+    "stats": "Stats"
+  },
+  "history": {
+    "empty": "No match recorded yet",
+    "emptyHint": "Every match you finish with the tracker on is recorded here (Stats API, nothing leaves your PC).",
+    "source": "Your matches recorded by the tracker, stored on your PC only.",
+    "period": "Period",
+    "periods": {
+      "7d": "7 days",
+      "30d": "30 days",
+      "90d": "90 days",
+      "all": "All"
+    },
+    "allPlaylists": "All playlists",
+    "playlistId": "Playlist {{id}}",
+    "playlists": {
+      "1": "Duel",
+      "2": "Doubles",
+      "3": "Standard",
+      "4": "Chaos",
+      "6": "Private match",
+      "10": "Ranked Duel",
+      "11": "Ranked Doubles",
+      "13": "Ranked Standard",
+      "15": "Snow Day",
+      "17": "Hoops",
+      "18": "Rumble",
+      "22": "Tournament",
+      "23": "Dropshot",
+      "27": "Ranked Hoops",
+      "28": "Ranked Rumble",
+      "29": "Ranked Dropshot",
+      "30": "Ranked Snow Day",
+      "34": "Tournament"
+    },
+    "noneInFilter": "No match in this period / playlist.",
+    "matches": "Matches",
+    "winRate": "Win rate",
+    "record": "Wins–losses",
+    "recordHint": "{{wins}} W · {{losses}} L",
+    "bestStreak": "Best streak",
+    "avgScore": "Avg. score",
+    "avgGoals": "Avg. goals",
+    "avgSaves": "Avg. saves",
+    "mvps": "MVP",
+    "perDay": "Results per day",
+    "perWeek": "Results per week",
+    "wins": "wins",
+    "losses": "losses",
+    "form_one": "Score, average of the last match",
+    "form_other": "Score, average of the last {{count}} matches",
+    "rollingAverage_one": "average (last match)",
+    "rollingAverage_other": "average (last {{count}})",
+    "matchScore": "this match",
+    "byArena": "By arena",
+    "byDayPart": "By time of day",
+    "dayParts": {
+      "night": "Night (0–6 h)",
+      "morning": "Morning (6–12 h)",
+      "afternoon": "Afternoon (12–18 h)",
+      "evening": "Evening (18–24 h)"
+    },
+    "bestSessions": "Best sessions"
   }
 }

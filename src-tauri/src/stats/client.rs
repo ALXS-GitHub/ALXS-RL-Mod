@@ -58,6 +58,30 @@ pub fn persist(state: &SessionState) {
     }
 }
 
+/// Every recorded match, oldest first (`stats/history.jsonl`; unreadable
+/// lines are skipped). Capped to the last [`HISTORY_READ_CAP`] matches.
+pub fn load_history() -> Vec<MatchRecord> {
+    let Some(path) = paths::data_subdir("stats")
+        .ok()
+        .map(|d| d.join("history.jsonl"))
+    else {
+        return Vec::new();
+    };
+    let Ok(text) = std::fs::read_to_string(&path) else {
+        return Vec::new();
+    };
+    let mut out: Vec<MatchRecord> = text
+        .lines()
+        .filter_map(|l| serde_json::from_str(l).ok())
+        .collect();
+    if out.len() > HISTORY_READ_CAP {
+        out.drain(..out.len() - HISTORY_READ_CAP);
+    }
+    out
+}
+
+const HISTORY_READ_CAP: usize = 20_000;
+
 fn append_history(rec: &MatchRecord) {
     let Ok(dir) = paths::data_subdir("stats") else {
         return;

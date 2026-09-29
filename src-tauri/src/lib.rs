@@ -192,6 +192,7 @@ pub fn run() {
             stats::commands::stats_disable,
             stats::commands::tracker_session,
             stats::commands::tracker_reset,
+            stats::commands::tracker_history,
             stats::commands::overlay_open,
             stats::commands::overlay_close,
             // Personal edition only (docs/PERSONAL_EDITION.md).

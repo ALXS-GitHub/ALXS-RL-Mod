@@ -6,6 +6,7 @@ import { type SessionState, type StatsStatus, sessionStateSchema, trackerApi } f
 export const trackerKeys = {
   status: ["tracker", "stats-status"] as const,
   session: ["tracker", "session"] as const,
+  history: (recorded: number) => ["tracker", "history", recorded] as const,
 };
 
 export function useStatsStatus() {
@@ -17,6 +18,17 @@ export function useTrackerSession() {
   const qc = useQueryClient();
   useTauriEvent(EVENTS.trackerSession, sessionStateSchema, (s) => qc.setQueryData(trackerKeys.session, s));
   return useQuery({ queryKey: trackerKeys.session, queryFn: trackerApi.session });
+}
+
+/** Every recorded match; reloads when the session records a new one. */
+export function useMatchHistory() {
+  const session = useTrackerSession();
+  const recorded = session.data?.matches.length ?? 0;
+  return useQuery({
+    queryKey: trackerKeys.history(recorded),
+    queryFn: trackerApi.history,
+    placeholderData: (previous) => previous,
+  });
 }
 
 function useSetStatus() {

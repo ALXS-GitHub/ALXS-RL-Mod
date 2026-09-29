@@ -71,6 +71,69 @@
   },
   "tabs": {
     "session": "Session",
-    "settings": "Réglages"
+    "settings": "Réglages",
+    "stats": "Stats"
+  },
+  "history": {
+    "empty": "Aucun match enregistré pour l'instant",
+    "emptyHint": "Chaque match terminé avec le tracker actif est enregistré ici (Stats API, rien ne quitte ton PC).",
+    "source": "Tes matchs enregistrés par le tracker, gardés uniquement sur ton PC.",
+    "period": "Période",
+    "periods": {
+      "7d": "7 jours",
+      "30d": "30 jours",
+      "90d": "90 jours",
+      "all": "Tout"
+    },
+    "allPlaylists": "Toutes les playlists",
+    "playlistId": "Playlist {{id}}",
+    "playlists": {
+      "1": "Duel",
+      "2": "Doubles",
+      "3": "Standard",
+      "4": "Chaos",
+      "6": "Match privé",
+      "10": "Duel classé",
+      "11": "Doubles classé",
+      "13": "Standard classé",
+      "15": "Snow Day",
+      "17": "Hoops",
+      "18": "Rumble",
+      "22": "Tournoi",
+      "23": "Dropshot",
+      "27": "Hoops classé",
+      "28": "Rumble classé",
+      "29": "Dropshot classé",
+      "30": "Snow Day classé",
+      "34": "Tournoi"
+    },
+    "noneInFilter": "Aucun match sur cette période / playlist.",
+    "matches": "Matchs",
+    "winRate": "Victoires",
+    "record": "Victoires–défaites",
+    "recordHint": "{{wins}} V · {{losses}} D",
+    "bestStreak": "Meilleure série",
+    "avgScore": "Score moyen",
+    "avgGoals": "Buts / match",
+    "avgSaves": "Arrêts / match",
+    "mvps": "MVP",
+    "perDay": "Résultats par jour",
+    "perWeek": "Résultats par semaine",
+    "wins": "victoires",
+    "losses": "défaites",
+    "form_one": "Score, moyenne du dernier match",
+    "form_other": "Score, moyenne des {{count}} derniers matchs",
+    "rollingAverage_one": "moyenne (dernier match)",
+    "rollingAverage_other": "moyenne ({{count}} derniers)",
+    "matchScore": "ce match",
+    "byArena": "Par arène",
+    "byDayPart": "Par moment de la journée",
+    "dayParts": {
+      "night": "Nuit (0–6 h)",
+      "morning": "Matin (6–12 h)",
+      "afternoon": "Après-midi (12–18 h)",
+      "evening": "Soir (18–24 h)"
+    },
+    "bestSessions": "Meilleures sessions"
   }
 }

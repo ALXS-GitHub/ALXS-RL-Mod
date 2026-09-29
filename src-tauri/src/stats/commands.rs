@@ -88,6 +88,14 @@ pub fn tracker_session(state: State<'_, StatsState>) -> AppResult<SessionState> 
         .map_err(|_| AppError::Internal("tracker lock poisoned".into()))
 }
 
+/// Every recorded match, oldest first (the "Stats" tab).
+#[tauri::command]
+pub async fn tracker_history() -> AppResult<Vec<crate::stats::tracker::MatchRecord>> {
+    tauri::async_runtime::spawn_blocking(client::load_history)
+        .await
+        .map_err(|e| AppError::Internal(e.to_string()))
+}
+
 /// Starts a new session (counters, streak, history of this session).
 #[tauri::command]
 pub fn tracker_reset(app: AppHandle, state: State<'_, StatsState>) -> AppResult<SessionState> {

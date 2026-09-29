@@ -1,12 +1,13 @@
-import { Activity, Radio, TrendingUp, Trophy } from "lucide-react";
+import { Activity, BarChart3, Radio, TrendingUp, Trophy } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Page, PageHeader } from "@/components/ui/layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SessionView } from "./components/SessionView";
+import { StatsView } from "./components/StatsView";
 import { ConnectionBadge, TrackerSettings } from "./components/TrackerSettings";
 
-type Tab = "session" | "mmr" | "settings";
+type Tab = "session" | "stats" | "mmr" | "settings";
 
 // Personal edition only (docs/PERSONAL_EDITION.md): dropped from public builds.
 const MmrView = __ALXS_PERSONAL__
@@ -31,6 +32,10 @@ export function TrackerPage() {
             <Trophy />
             {t("tabs.session")}
           </TabsTrigger>
+          <TabsTrigger value="stats">
+            <BarChart3 />
+            {t("tabs.stats")}
+          </TabsTrigger>
           {MmrView ? (
             <TabsTrigger value="mmr">
               <TrendingUp />
@@ -44,6 +49,9 @@ export function TrackerPage() {
         </TabsList>
         <TabsContent value="session">
           <SessionView onOpenTracker={() => setTab("settings")} />
+        </TabsContent>
+        <TabsContent value="stats">
+          <StatsView />
         </TabsContent>
         {MmrView ? (
           <TabsContent value="mmr">

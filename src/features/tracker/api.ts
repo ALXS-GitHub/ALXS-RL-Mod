@@ -47,6 +47,10 @@ export const matchRecordSchema = z.object({
   overtime: z.boolean(),
   you: playerLineSchema.nullable(),
   mvp: z.boolean(),
+  /** Missing on matches recorded before 2026-09-29. */
+  startedAt: z.string().nullable().optional(),
+  playlistId: z.number().nullable().optional(),
+  teamSize: z.number().nullable().optional(),
 });
 export type MatchRecord = z.infer<typeof matchRecordSchema>;
 
@@ -93,6 +97,7 @@ export const trackerApi = {
   statsDisable: () => call("stats_disable", {}, statsStatusSchema),
   session: () => call("tracker_session", {}, sessionStateSchema),
   resetSession: () => call("tracker_reset", {}, sessionStateSchema),
+  history: () => call("tracker_history", {}, z.array(matchRecordSchema)),
   overlayOpen: () => call("overlay_open", {}, statsStatusSchema),
   overlayClose: () => call("overlay_close", {}, statsStatusSchema),
 };

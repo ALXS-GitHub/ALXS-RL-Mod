@@ -57,6 +57,10 @@ pub struct Game {
     pub has_target: bool,
     #[serde(rename = "Target")]
     pub target: Option<PlayerRef>,
+    /// Playlist of the match (1 Duel, 2 Doubles, 3 Standard, 10/11/13 their
+    /// ranked versions…). Community-documented field of `UpdateState.Game`.
+    #[serde(rename = "PlaylistId")]
+    pub playlist_id: Option<i32>,
 }
 
 #[derive(Debug, Clone, Deserialize, Default, PartialEq)]

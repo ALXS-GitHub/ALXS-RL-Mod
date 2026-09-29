@@ -69,6 +69,8 @@ pub struct LiveMatch {
     pub players: Vec<PlayerLine>,
     pub started_at: Option<DateTime<Utc>>,
     pub ended: bool,
+    #[serde(default)]
+    pub playlist_id: Option<i32>,
     /// How often each player was the camera target outside replays.
     #[serde(skip)]
     target_counts: HashMap<String, u32>,
@@ -88,6 +90,21 @@ pub struct MatchRecord {
     pub you: Option<PlayerLine>,
     /// Highest score of the winning team.
     pub mvp: bool,
+    /// When the match started (first update seen). `None` on older records.
+    #[serde(default)]
+    pub started_at: Option<DateTime<Utc>>,
+    /// Stats API `PlaylistId`. `None` on older records.
+    #[serde(default)]
+    pub playlist_id: Option<i32>,
+    /// Players per team (1 for 1v1…). `None` on older records.
+    #[serde(default)]
+    pub team_size: Option<u8>,
+}
+
+/// Players per team of a match (the bigger team).
+fn team_size(players: &[PlayerLine]) -> Option<u8> {
+    let count = |team: i32| players.iter().filter(|p| p.team == team).count();
+    u8::try_from(count(0).max(count(1))).ok().filter(|n| *n > 0)
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
@@ -219,6 +236,7 @@ impl Tracker {
         }
         let g = &u.game;
         live.arena = g.arena.clone().or(live.arena);
+        live.playlist_id = g.playlist_id.or(live.playlist_id);
         live.time_seconds = g.time_seconds;
         live.overtime = g.overtime;
         live.replay = g.replay;
@@ -294,6 +312,9 @@ impl Tracker {
             overtime: live.overtime,
             you: live.you.clone(),
             mvp,
+            started_at: live.started_at,
+            playlist_id: live.playlist_id,
+            team_size: team_size(&live.players),
         });
         Change::MatchRecorded
     }
@@ -375,8 +396,11 @@ impl Tracker {
             blue_score: live.blue_score,
             orange_score: live.orange_score,
             overtime: live.overtime,
-            you: live.you,
             mvp: false,
+            started_at: live.started_at,
+            playlist_id: live.playlist_id,
+            team_size: team_size(&live.players),
+            you: live.you,
         });
         Change::MatchRecorded
     }
@@ -472,6 +496,16 @@ mod tests {
         assert_eq!(t.state.matches[0].result, MatchResult::Loss);
         assert_eq!(t.state.totals.goals, 8);
         assert_eq!(t.state.you_name.as_deref(), Some("Me"));
+        let last = &t.state.matches[0];
+        assert_eq!(last.team_size, Some(2));
+        assert!(last.started_at.is_some());
+    }
+
+    #[test]
+    fn older_records_still_load() {
+        let old = r#"{"guid":"a","arena":"Stadium_P","endedAt":"2026-09-28T20:41:55Z","result":"win","yourTeam":0,"blueScore":4,"orangeScore":1,"overtime":false,"you":null,"mvp":true}"#;
+        let rec: MatchRecord = serde_json::from_str(old).unwrap();
+        assert_eq!((rec.playlist_id, rec.team_size), (None, None));
     }
 
     #[test]
