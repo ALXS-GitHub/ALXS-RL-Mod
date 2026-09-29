@@ -23,9 +23,13 @@
     "presentHint_one": "{{count}} key loaded — item swaps and custom decals are enabled.",
     "presentHint_other": "{{count}} keys loaded — item swaps and custom decals are enabled.",
     "missingHint": "Without keys.txt, item swaps and custom decals are disabled. Maps, palette and tracker still work.",
-    "dropIn": "Add keys.txt",
-    "dropInHint": "Pick your keys.txt (it is copied into the app data folder), or drop it there yourself.",
-    "import": "Import keys.txt"
+    "dropIn": "Your own keys.txt",
+    "dropInHint": "Merged with the keys you already have (copied to the app's data folder).",
+    "import": "Import my file",
+    "download": "Community keys",
+    "downloadHint": "Downloads the key list maintained by the modding community (Toga-Files on GitHub). Every line is checked, then merged with your keys: none is ever removed.",
+    "downloadAction": "Download / update",
+    "source": "See the list"
   },
   "appearance": {
     "title": "Appearance",

@@ -1,18 +1,30 @@
 import { open } from "@tauri-apps/plugin-dialog";
-import { CheckCircle2, FileKey2, ShieldAlert } from "lucide-react";
+import { openUrl } from "@tauri-apps/plugin-opener";
+import { CheckCircle2, Download, ExternalLink, FileKey2, ShieldAlert } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { notify } from "@/components/ui/toast";
-import { useImportKeys, useKeysStatus } from "@/features/settings/api";
+import { type KeysUpdate, useDownloadKeys, useImportKeys, useKeysStatus } from "@/features/settings/api";
 import { useConfig, useUpdateConfig } from "@/lib/game";
 
-/** Picks a keys.txt and imports it; shared by the welcome dialog and Settings. */
-export function useKeysPicker() {
+/**
+ * The two ways to get keys, shared by the welcome dialog, Items and
+ * Settings: download the community list, or import your own file.
+ */
+export function useKeysActions() {
   const { t } = useTranslation();
   const importKeys = useImportKeys();
+  const downloadKeys = useDownloadKeys();
+  const keys = useKeysStatus();
+  const report = (u: KeysUpdate) => {
+    if (u.added === 0) notify.success(t("welcome.keys.upToDate", { count: u.total }));
+    else if (u.unlocked > 0)
+      notify.success(t("welcome.keys.addedUnlocked", { count: u.added, items: u.unlocked }));
+    else notify.success(t("welcome.keys.added", { count: u.added }));
+  };
   const pick = async () => {
     const path = await open({
       multiple: false,
@@ -21,12 +33,19 @@ export function useKeysPicker() {
       filters: [{ name: "keys.txt", extensions: ["txt"] }],
     });
     if (typeof path !== "string") return;
-    importKeys.mutate(path, {
-      onSuccess: (s) => notify.success(t("welcome.keys.imported", { count: s.count })),
-      onError: notify.error,
-    });
+    importKeys.mutate(path, { onSuccess: report, onError: notify.error });
   };
-  return { pick, busy: importKeys.isPending };
+  const download = () => downloadKeys.mutate(undefined, { onSuccess: report, onError: notify.error });
+  const openSource = () => {
+    if (keys.data) void openUrl(keys.data.communityPage).catch(notify.error);
+  };
+  return {
+    pick,
+    importing: importKeys.isPending,
+    download,
+    downloading: downloadKeys.isPending,
+    openSource,
+  };
 }
 
 /**
@@ -38,7 +57,7 @@ export function WelcomeDialog() {
   const config = useConfig();
   const update = useUpdateConfig();
   const keys = useKeysStatus();
-  const { pick, busy } = useKeysPicker();
+  const actions = useKeysActions();
   const [step, setStep] = useState<"warning" | "keys">("warning");
   const [accepted, setAccepted] = useState(false);
 
@@ -64,10 +83,16 @@ export function WelcomeDialog() {
                 {keys.data?.present ? t("welcome.done") : t("welcome.later")}
               </Button>
               {keys.data?.present ? null : (
-                <Button variant="primary" loading={busy} onClick={() => void pick()}>
-                  <FileKey2 />
-                  {t("welcome.keys.import")}
-                </Button>
+                <>
+                  <Button variant="secondary" loading={actions.importing} onClick={() => void actions.pick()}>
+                    <FileKey2 />
+                    {t("welcome.keys.import")}
+                  </Button>
+                  <Button variant="primary" loading={actions.downloading} onClick={actions.download}>
+                    <Download />
+                    {t("welcome.keys.download")}
+                  </Button>
+                </>
               )}
             </>
           )
@@ -100,6 +125,14 @@ export function WelcomeDialog() {
             <p>{t("welcome.keys.why")}</p>
             <p>{t("welcome.keys.where")}</p>
             <p>{t("welcome.keys.updates")}</p>
+            <button
+              type="button"
+              onClick={actions.openSource}
+              className="flex w-fit items-center gap-1.5 text-xs text-fg-subtle underline-offset-2 hover:text-fg hover:underline"
+            >
+              <ExternalLink className="size-3" />
+              {t("welcome.keys.source")}
+            </button>
             <div className="flex items-center gap-2">
               {keys.data?.present ? (
                 <Badge tone="success" dot>

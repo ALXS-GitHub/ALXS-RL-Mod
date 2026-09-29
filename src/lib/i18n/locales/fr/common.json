@@ -169,15 +169,21 @@
       "title": "Clés des packages (keys.txt)",
       "subtitle": "Nécessaires aux swaps d'items, aux decals custom et à la balle.",
       "why": "Rocket League chiffre une partie de ses fichiers de packages. Pour lire et échanger des items, l'app a besoin des clés AES listées dans un fichier keys.txt (une clé par ligne).",
-      "where": "L'app ne peut pas fournir ces clés. Elles sont partagées par la communauté de modding Rocket League (par exemple avec des outils de packages comme RLUPKTool) : récupère un keys.txt à jour, puis importe-le ici.",
-      "updates": "Les mises à jour du jeu ajoutent de nouvelles clés : si de nouveaux items ne marchent pas après une mise à jour, importe un keys.txt plus récent. Les maps, palettes et le tracker marchent sans clés.",
-      "import": "Importer keys.txt",
+      "where": "L'app ne fournit pas ces clés. Télécharge-les en un clic : la liste tenue par la communauté de modding Rocket League (Toga-Files) est vérifiée ligne par ligne, puis fusionnée avec tes clés. Tu peux aussi importer ton propre keys.txt.",
+      "updates": "Les mises à jour du jeu ajoutent de nouvelles clés : quand de nouveaux items ne sont pas lisibles, la page Items propose de les mettre à jour. Les maps, palettes et le tracker marchent sans clés.",
+      "import": "Importer mon fichier",
       "pick": "Choisis ton keys.txt",
-      "imported_one": "{{count}} clé importée",
-      "imported_other": "{{count}} clés importées",
       "present_one": "{{count}} clé chargée",
       "present_other": "{{count}} clés chargées",
-      "missing": "Pas encore de clés"
+      "missing": "Pas encore de clés",
+      "download": "Télécharger les clés",
+      "source": "Voir la liste sur GitHub (Toga-Files)",
+      "added_one": "{{count}} nouvelle clé ajoutée",
+      "added_other": "{{count}} nouvelles clés ajoutées",
+      "addedUnlocked_one": "{{count}} nouvelle clé · {{items}} items débloqués",
+      "addedUnlocked_other": "{{count}} nouvelles clés · {{items}} items débloqués",
+      "upToDate_one": "Clés déjà à jour ({{count}} clé)",
+      "upToDate_other": "Clés déjà à jour ({{count}} clés)"
     }
   },
   "update": {

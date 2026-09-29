@@ -123,6 +123,8 @@ pub fn run() {
             // engine: keys, thumbnails, palette, decals
             upk::commands::keys_status,
             upk::commands::keys_import,
+            upk::commands::keys_download,
+            upk::commands::keys_dismiss_update,
             upk::commands::thumbnail_get,
             palette::commands::palette_status,
             palette::commands::palette_stock,

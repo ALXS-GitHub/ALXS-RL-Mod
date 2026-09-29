@@ -156,7 +156,7 @@ Errors always serialize as `{ kind: string, message: string }`.
 - event `game://status` (`RunningState`, emitted on change)
 
 ### engine slice (upk / palette / decals / thumbnails)
-- `keys_status() -> KeysStatus` · `keys_import(path) -> KeysStatus` (copies a user-chosen keys.txt to the app data folder; the app never ships keys)
+- `keys_status() -> KeysStatus` · `keys_import(path) -> KeysUpdate` (merges a user-chosen keys.txt) · `keys_download() -> KeysUpdate` (community list `upk::keys::COMMUNITY_URL`, Toga-Files `aes.txt`, via `Purpose::Keys`; strict line-by-line validation, 1 MB cap, merged into `%LOCALAPPDATA%\ALXS-RL-Mod\keys.txt`, never removes a key; rebuilds the catalog and reports `added` / `unlocked` items) · `keys_dismiss_update() -> KeysStatus` (hides the Items-page update suggestion until the next game build; `keys-meta.json`). The app never ships keys.
 - `thumbnail_get(package: String) -> Option<String>` (absolute PNG path, cached)
 - `palette_status() -> PaletteStatus` · `palette_stock() -> Palette`
 - `palette_list() -> Vec<Palette>` · `palette_save(palette) -> Palette` · `palette_delete(id)`

@@ -43,8 +43,8 @@ en un clic.
    L'installeur n'est pas encore signé : si Windows SmartScreen s'affiche, clique sur
    *Informations complémentaires* → *Exécuter quand même*.
 2. Lance l'app : elle trouve ton installation Epic Games de Rocket League.
-3. Importe un `keys.txt` (voir ci-dessous) pour activer les swaps, les stickers et la balle.
-   Les maps, les palettes et le tracker marchent sans.
+3. Clique sur *Télécharger les clés* (voir ci-dessous) pour activer les swaps, les stickers
+   et la balle. Les maps, les palettes et le tracker marchent sans.
 
 L'app se met à jour toute seule à chaque nouvelle version.
 
@@ -52,10 +52,12 @@ L'app se met à jour toute seule à chaque nouvelle version.
 
 Rocket League chiffre une partie de ses packages. Pour lire et échanger des items, il faut
 les clés AES de ces packages, une clé base64 par ligne, dans un fichier `keys.txt`.
-**L'app ne fournit pas ces clés.** Elles sont partagées par la communauté de modding Rocket
-League (par exemple avec des outils de packages comme RLUPKTool). Récupère un fichier à jour,
-puis importe-le depuis l'écran d'accueil ou *Réglages → Fichiers du jeu*. Après une mise à
-jour du jeu, les nouveaux items peuvent demander un fichier plus récent.
+**L'app ne fournit pas ces clés.** En un clic (écran d'accueil, *Items* ou *Réglages →
+Fichiers du jeu*), elle télécharge la liste tenue par la communauté de modding,
+[Toga-Files](https://github.com/ShinyEmii/Toga-Files), vérifie chaque ligne et la fusionne
+avec les clés que tu as déjà (aucune n'est jamais supprimée). Tu peux aussi importer ton
+propre `keys.txt`. Après une mise à jour du jeu, la page *Items* propose de mettre les clés à
+jour quand de nouveaux items ne sont pas lisibles.
 
 ## FAQ
 

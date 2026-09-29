@@ -23,9 +23,13 @@
     "presentHint_one": "{{count}} clé chargée — swaps d'items et decals custom activés.",
     "presentHint_other": "{{count}} clés chargées — swaps d'items et decals custom activés.",
     "missingHint": "Sans keys.txt, les swaps d'items et les decals custom sont désactivés. Maps, palette et tracker fonctionnent quand même.",
-    "dropIn": "Ajouter keys.txt",
-    "dropInHint": "Choisis ton keys.txt (il est copié dans le dossier de données de l'app), ou dépose-le toi-même dans ce dossier.",
-    "import": "Importer keys.txt"
+    "dropIn": "Ton propre keys.txt",
+    "dropInHint": "Fusionné avec les clés que tu as déjà (copié dans le dossier de données de l'app).",
+    "import": "Importer mon fichier",
+    "download": "Clés de la communauté",
+    "downloadHint": "Télécharge la liste de clés tenue par la communauté de modding (Toga-Files sur GitHub). Chaque ligne est vérifiée, puis fusionnée avec tes clés : aucune n'est jamais supprimée.",
+    "downloadAction": "Télécharger / mettre à jour",
+    "source": "Voir la liste"
   },
   "appearance": {
     "title": "Apparence",

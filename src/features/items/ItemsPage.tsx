@@ -1,7 +1,7 @@
-import { FileKey2, Lock, PackageSearch, RefreshCw, Sparkles } from "lucide-react";
+import { Download, FileKey2, Lock, PackageSearch, RefreshCw, Sparkles, X } from "lucide-react";
 import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useKeysPicker } from "@/components/shell/WelcomeDialog";
+import { useKeysActions } from "@/components/shell/WelcomeDialog";
 import { Button } from "@/components/ui/button";
 import { EmptyState, ErrorState, Skeleton } from "@/components/ui/feedback";
 import { SearchInput } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import { Segmented } from "@/components/ui/segmented";
 import { Select } from "@/components/ui/select";
 import { notify } from "@/components/ui/toast";
 import { Tooltip } from "@/components/ui/tooltip";
+import { useDismissKeysUpdate, useKeysStatus } from "@/features/settings/api";
 import { formatNumber } from "@/lib/format";
 import { useUi } from "@/stores/ui";
 import type { ActiveSwap, CatalogItem, Slot } from "./api";
@@ -37,7 +38,9 @@ export function ItemsPage() {
   const swaps = useSwaps();
   const refresh = useRefreshCatalog();
   const apply = useApplySwap();
-  const keysPicker = useKeysPicker();
+  const keysActions = useKeysActions();
+  const keys = useKeysStatus();
+  const dismissKeysUpdate = useDismissKeysUpdate();
 
   const [slot, setSlot] = useState<Slot>("decal");
   const [step, setStep] = useState<PickStep>("owned");
@@ -50,6 +53,13 @@ export function ItemsPage() {
   const deferredSearch = useDeferredValue(search);
 
   const items = catalog.data?.items;
+  const lockedCount = useMemo(() => items?.filter((i) => i.locked).length ?? 0, [items]);
+  // After a game patch, new items may need keys the community list has already.
+  const suggestKeyUpdate =
+    !!catalog.data?.fromGame &&
+    lockedCount > 0 &&
+    !!keys.data &&
+    keys.data.checkedBuild !== catalog.data.build;
   const byId = useMemo(() => new Map(items?.map((i) => [i.id, i])), [items]);
   const owned = ownedId !== null ? byId.get(ownedId) : undefined;
   const wanted = wantedId !== null ? byId.get(wantedId) : undefined;
@@ -243,14 +253,51 @@ export function ItemsPage() {
             <p className="text-xs text-fg-muted">{t("noKeys.description")}</p>
           </div>
           <Button
-            variant="primary"
+            variant="secondary"
             size="sm"
-            loading={keysPicker.busy}
-            onClick={() => void keysPicker.pick()}
+            loading={keysActions.importing}
+            onClick={() => void keysActions.pick()}
           >
             <FileKey2 />
             {t("noKeys.import")}
           </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            loading={keysActions.downloading}
+            onClick={keysActions.download}
+          >
+            <Download />
+            {t("noKeys.download")}
+          </Button>
+        </div>
+      ) : suggestKeyUpdate ? (
+        <div className="flex items-center gap-3 rounded-lg border border-line bg-white/[0.02] px-3.5 py-2.5">
+          <Lock className="size-4 shrink-0 text-fg-muted" />
+          <div className="min-w-0 flex-1">
+            <p className="text-[13px] font-medium">{t("keysUpdate.title", { count: lockedCount })}</p>
+            <p className="text-xs text-fg-muted">{t("keysUpdate.description")}</p>
+          </div>
+          <Button
+            variant="primary"
+            size="sm"
+            loading={keysActions.downloading}
+            onClick={keysActions.download}
+          >
+            <Download />
+            {t("keysUpdate.download")}
+          </Button>
+          <Tooltip content={t("keysUpdate.dismiss")}>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label={t("keysUpdate.dismiss")}
+              loading={dismissKeysUpdate.isPending}
+              onClick={() => dismissKeysUpdate.mutate(undefined, { onError: notify.error })}
+            >
+              <X />
+            </Button>
+          </Tooltip>
         </div>
       ) : null}
 

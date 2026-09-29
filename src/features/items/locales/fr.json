@@ -119,8 +119,9 @@
   },
   "noKeys": {
     "title": "La liste des items a besoin de ton keys.txt",
-    "description": "Rocket League chiffre les fichiers qui listent ses items. Importe un keys.txt de la communauté pour les lire — le README explique où le trouver.",
-    "import": "Importer keys.txt"
+    "description": "Rocket League chiffre les fichiers qui listent ses items. Télécharge la liste de clés de la communauté (vérifiée, puis fusionnée) ou importe ton propre keys.txt.",
+    "import": "Importer mon fichier",
+    "download": "Télécharger les clés"
   },
   "color": {
     "label": "Couleur",
@@ -150,5 +151,12 @@
       "custom": "Couleur personnalisée {{hex}}",
       "paint": "Peinture : {{name}}"
     }
+  },
+  "keysUpdate": {
+    "title_one": "{{count}} item n'est pas lisible avec tes clés",
+    "title_other": "{{count}} items ne sont pas lisibles avec tes clés",
+    "description": "Une mise à jour du jeu a peut-être ajouté des clés : la liste de la communauté les a en général sous quelques jours.",
+    "download": "Mettre à jour les clés",
+    "dismiss": "Masquer jusqu'à la prochaine mise à jour du jeu"
   }
 }

@@ -1,7 +1,7 @@
 //! Outbound network policy.
 //!
 //! The app is local-first: the only network calls are explicit user actions
-//! against a short allowlist (map sources, MMR lookup). Every request goes
+//! against a short allowlist (map sources, marketplace, key list, MMR lookup). Every request goes
 //! through [`http_client`] + [`ensure_allowed`] so the policy lives in one
 //! place and can be audited at a glance.
 
@@ -22,12 +22,16 @@ pub enum Purpose {
     Browse,
     /// Marketplace listings and downloads (decal and ball packs).
     Market,
+    /// Community AES key list (`upk::keys::COMMUNITY_URL`).
+    Keys,
 }
 
 const MAP_HOSTS: &[&str] = &["bakkesplugins.com", "lethamyr.com", "rocketleaguemaps.us"];
 /// AlphaConsole's library (pages + `s3.` file bucket) and RL-Designer's
 /// GitHub repo (raw files; `market::rl_designer` also pins the path).
 const MARKET_HOSTS: &[&str] = &["alphaconsole.io", "raw.githubusercontent.com"];
+/// GitHub raw files (the key list URL itself is a constant).
+const KEY_HOSTS: &[&str] = &["raw.githubusercontent.com"];
 const RATING_HOSTS: &[&str] = &[
     "api.tracker.gg",
     "tracker.gg",
@@ -50,6 +54,7 @@ fn hosts_for(purpose: Purpose) -> &'static [&'static str] {
         Purpose::Ratings => RATING_HOSTS,
         Purpose::Browse => BROWSE_HOSTS,
         Purpose::Market => MARKET_HOSTS,
+        Purpose::Keys => KEY_HOSTS,
     }
 }
 

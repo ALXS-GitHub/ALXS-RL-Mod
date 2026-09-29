@@ -169,15 +169,21 @@
       "title": "Package keys (keys.txt)",
       "subtitle": "Needed for item swaps, custom decals and the ball.",
       "why": "Rocket League encrypts part of its package files. To read and swap items, the app needs the AES keys listed in a keys.txt file (one key per line).",
-      "where": "The app cannot ship these keys. They are shared by the Rocket League modding community (for example alongside package tools like RLUPKTool): get an up-to-date keys.txt, then import it here.",
-      "updates": "Game updates add new keys: if new items don't work after an update, import a newer keys.txt. Maps, palettes and the tracker work without keys.",
-      "import": "Import keys.txt",
+      "where": "The app does not ship these keys. Download them in one click: the list maintained by the Rocket League modding community (Toga-Files) is checked line by line, then merged with your keys. You can also import your own keys.txt.",
+      "updates": "Game updates add new keys: when new items can't be read, the Items page suggests updating them. Maps, palettes and the tracker work without keys.",
+      "import": "Import my file",
       "pick": "Choose your keys.txt",
-      "imported_one": "{{count}} key imported",
-      "imported_other": "{{count}} keys imported",
       "present_one": "{{count}} key loaded",
       "present_other": "{{count}} keys loaded",
-      "missing": "No keys yet"
+      "missing": "No keys yet",
+      "download": "Download keys",
+      "source": "See the list on GitHub (Toga-Files)",
+      "added_one": "{{count}} new key added",
+      "added_other": "{{count}} new keys added",
+      "addedUnlocked_one": "{{count}} new key · {{items}} items unlocked",
+      "addedUnlocked_other": "{{count}} new keys · {{items}} items unlocked",
+      "upToDate_one": "Keys already up to date ({{count}} key)",
+      "upToDate_other": "Keys already up to date ({{count}} keys)"
     }
   },
   "update": {

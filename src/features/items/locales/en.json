@@ -119,8 +119,9 @@
   },
   "noKeys": {
     "title": "The item list needs your keys.txt",
-    "description": "Rocket League encrypts the files that list its items. Import a community keys.txt to read them — see the README for where to get one.",
-    "import": "Import keys.txt"
+    "description": "Rocket League encrypts the files that list its items. Download the community key list (checked, then merged) or import your own keys.txt.",
+    "import": "Import my file",
+    "download": "Download keys"
   },
   "color": {
     "label": "Colour",
@@ -150,5 +151,12 @@
       "custom": "Custom colour {{hex}}",
       "paint": "Paint: {{name}}"
     }
+  },
+  "keysUpdate": {
+    "title_one": "{{count}} item can't be read with your keys",
+    "title_other": "{{count}} items can't be read with your keys",
+    "description": "A game update may have added new keys: the community list usually has them within a few days.",
+    "download": "Update keys",
+    "dismiss": "Hide until the next game update"
   }
 }

@@ -60,8 +60,8 @@ update or when you uninstall the app.
    The installer is not code-signed yet: if Windows SmartScreen shows up, click
    *More info* → *Run anyway*.
 2. Start the app: it finds your Epic Games install of Rocket League.
-3. Import a `keys.txt` (see below) to enable item swaps, decals and the ball. Maps, palettes
-   and the tracker work without it.
+3. Click *Download keys* (see below) to enable item swaps, decals and the ball. Maps,
+   palettes and the tracker work without them.
 
 The app updates itself when a new version is released.
 
@@ -69,9 +69,12 @@ The app updates itself when a new version is released.
 
 Rocket League encrypts part of its packages. Reading and swapping items needs the AES keys
 of those packages, one base64 key per line, in a `keys.txt` file. **The app does not ship
-these keys.** They are shared by the Rocket League modding community (for example alongside
-package tools such as RLUPKTool). Get an up-to-date file, then import it from the welcome
-screen or *Settings → Game files*. After a game update, new items may need a newer file.
+these keys.** In one click (welcome screen, *Items* or *Settings → Game files*) it downloads
+the list maintained by the modding community,
+[Toga-Files](https://github.com/ShinyEmii/Toga-Files), checks every line and merges it
+with the keys you already have (none is ever removed). You can also import your own
+`keys.txt`. After a game update, the *Items* page suggests updating the keys when new items
+can't be read.
 
 ## FAQ
 

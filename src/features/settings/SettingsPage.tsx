@@ -3,6 +3,8 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { revealItemInDir } from "@tauri-apps/plugin-opener";
 import {
   Cpu,
+  Download,
+  ExternalLink,
   FileArchive,
   FileKey2,
   FolderOpen,
@@ -19,7 +21,7 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { useKeysPicker } from "@/components/shell/WelcomeDialog";
+import { useKeysActions } from "@/components/shell/WelcomeDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ErrorState, Skeleton } from "@/components/ui/feedback";
@@ -66,7 +68,7 @@ export function SettingsPage() {
   const game = useGameStatus();
   const info = useAppInfo();
   const keys = useKeysStatus();
-  const keysPicker = useKeysPicker();
+  const keysActions = useKeysActions();
   const requestUpdateCheck = useUi((st) => st.requestUpdateCheck);
   const update = useUpdateConfig();
   const setDir = useSetInstallDir();
@@ -166,12 +168,22 @@ export function SettingsPage() {
               </Badge>
             )}
           </Field>
+          <Field label={t("keys.download")} description={t("keys.downloadHint")}>
+            <Button size="sm" variant="ghost" onClick={keysActions.openSource}>
+              <ExternalLink />
+              {t("keys.source")}
+            </Button>
+            <Button size="sm" loading={keysActions.downloading} onClick={keysActions.download}>
+              <Download />
+              {t("keys.downloadAction")}
+            </Button>
+          </Field>
           <Field label={t("keys.dropIn")} description={t("keys.dropInHint")}>
             <Button
               size="sm"
               variant="secondary"
-              loading={keysPicker.busy}
-              onClick={() => void keysPicker.pick()}
+              loading={keysActions.importing}
+              onClick={() => void keysActions.pick()}
             >
               <FileKey2 />
               {t("keys.import")}

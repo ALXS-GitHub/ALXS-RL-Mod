@@ -7,23 +7,54 @@ export const keysStatusSchema = z.object({
   present: z.boolean(),
   count: z.number(),
   source: z.string().nullable().optional(),
+  /** Game build the community list was last checked for. */
+  checkedBuild: z.string().nullable().optional(),
+  communityPage: z.string(),
 });
 export type KeysStatus = z.infer<typeof keysStatusSchema>;
+
+/** Result of a download or an import (keys are merged, never removed). */
+export const keysUpdateSchema = z.object({
+  added: z.number(),
+  total: z.number(),
+  /** Catalog items readable now that were not before. */
+  unlocked: z.number(),
+  status: keysStatusSchema,
+});
+export type KeysUpdate = z.infer<typeof keysUpdateSchema>;
 
 export function useKeysStatus() {
   return useQuery({ queryKey: ["keysStatus"], queryFn: () => call("keys_status", {}, keysStatusSchema) });
 }
 
-/** Imports a keys.txt chosen by the user (copied to the app data folder). */
-export function useImportKeys() {
+function useKeysMutation<T>(fn: (arg: T) => Promise<KeysUpdate>) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (path: string) => call("keys_import", { path }, keysStatusSchema),
-    onSuccess: (status) => {
-      qc.setQueryData(["keysStatus"], status);
+    mutationFn: fn,
+    onSuccess: (update) => {
+      qc.setQueryData(["keysStatus"], update.status);
       // Catalog locks and decal status depend on the keys.
       void qc.invalidateQueries();
     },
+  });
+}
+
+/** Merges the keys of a file chosen by the user. */
+export function useImportKeys() {
+  return useKeysMutation((path: string) => call("keys_import", { path }, keysUpdateSchema));
+}
+
+/** Downloads the community key list (validated, then merged). */
+export function useDownloadKeys() {
+  return useKeysMutation(() => call("keys_download", {}, keysUpdateSchema));
+}
+
+/** Hides the "update your keys" suggestion until the next game build. */
+export function useDismissKeysUpdate() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => call("keys_dismiss_update", {}, keysStatusSchema),
+    onSuccess: (status) => qc.setQueryData(["keysStatus"], status),
   });
 }
 

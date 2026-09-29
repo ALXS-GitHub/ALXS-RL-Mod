@@ -5,8 +5,11 @@ Rocket League encrypts the name / import / export tables of most cooked
 list (`keys.txt`, one base64 key per line) to rename packages (item swaps)
 and to read textures (thumbnails, custom decals).
 
-`keys.txt` is **not committed** (see `.gitignore`). The app looks for it, in
-order:
+`keys.txt` is **not committed** (see `.gitignore`) and never shipped. Users
+get it from the app: *Download* fetches the community list (`aes.txt` of
+<https://github.com/ShinyEmii/Toga-Files>), *Import* takes their own file.
+Both are validated and merged (existing keys are kept). The app looks for it,
+in order:
 
 1. `%LOCALAPPDATA%\ALXS-RL-Mod\keys.txt` (user drop-in, wins),
 2. `src-tauri/resources/keys/keys.txt` (dev builds, read from disk).
