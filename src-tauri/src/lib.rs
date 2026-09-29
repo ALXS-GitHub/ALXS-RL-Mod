@@ -154,6 +154,7 @@ pub fn run() {
             swap::commands::swap_apply,
             swap::commands::swap_paints,
             swap::commands::swap_item_paints,
+            swap::commands::swap_color_preview,
             swap::commands::swap_restore,
             swap::commands::swap_restore_all,
             swap::commands::swap_history,

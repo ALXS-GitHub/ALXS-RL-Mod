@@ -14,7 +14,12 @@ fn main() {
     let original = std::fs::read(&path).unwrap();
     let pkg = alxs_rl_mod_lib::upk::Package::open(original.clone(), &ring).unwrap();
     let body = pkg.body().unwrap();
-    let (patch, stats) = alxs_rl_mod_lib::upk::recolor::recolor_patch(&pkg, &body, target);
+    let (patch, stats) = alxs_rl_mod_lib::upk::recolor::recolor_patch(
+        &pkg,
+        &body,
+        target,
+        alxs_rl_mod_lib::upk::recolor::ColorMode::Tint,
+    );
     println!("{stats:?}");
     let mut out = pkg.header_bytes().unwrap();
     let blocks = patch.apply(&mut out, &body.map).unwrap();

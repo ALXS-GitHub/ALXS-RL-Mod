@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import type { CatalogItem } from "../api";
 import { itemLabel } from "../constants";
-import { ItemColorOptions, type PaintOption } from "./ItemColorOptions";
+import { type ItemColor, ItemColorOptions, type PaintOption } from "./ItemColorOptions";
 import { ItemThumb } from "./ItemThumb";
 
 export type PickStep = "owned" | "wanted";
@@ -18,10 +18,9 @@ interface SwapComposerProps {
   wanted: CatalogItem | undefined;
   step: PickStep;
   onStepChange: (step: PickStep) => void;
-  paint: number;
-  /** Custom colour (`#rrggbb`), `null` = none. */
-  color: string | null;
-  onColorChange: (next: { paint: number; color: string | null }) => void;
+  /** Paint, custom colour (`#rrggbb`, `null` = none) and its mode. */
+  itemColor: ItemColor;
+  onColorChange: (next: ItemColor) => void;
   /** Paints the shown item accepts (empty: not paintable). */
   paints: readonly PaintOption[];
   onApply: () => void;
@@ -82,8 +81,7 @@ export function SwapComposer({
   wanted,
   step,
   onStepChange,
-  paint,
-  color,
+  itemColor,
   onColorChange,
   paints,
   onApply,
@@ -93,7 +91,7 @@ export function SwapComposer({
   const { t } = useTranslation("items");
   // An item can replace itself only to be recoloured.
   const recolourOnly = Boolean(owned && wanted && owned.id === wanted.id);
-  const coloured = paint > 0 || color !== null;
+  const coloured = itemColor.paint > 0 || itemColor.color !== null;
   const ready = Boolean(owned && wanted) && mode !== "unchanged" && (!recolourOnly || coloured);
   return (
     <div className="glass flex flex-col gap-3 rounded-lg p-3">
@@ -111,7 +109,7 @@ export function SwapComposer({
       </div>
       {wanted ? (
         <div className="flex flex-col gap-1.5 border-line border-t pt-3">
-          <ItemColorOptions paint={paint} color={color} onChange={onColorChange} paints={paints} />
+          <ItemColorOptions {...itemColor} onChange={onColorChange} paints={paints} itemId={wanted.id} />
           {recolourOnly ? <p className="text-[11px] text-fg-subtle">{t("color.selfHint")}</p> : null}
         </div>
       ) : null}

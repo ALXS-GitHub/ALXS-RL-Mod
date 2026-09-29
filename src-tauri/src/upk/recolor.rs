@@ -1,7 +1,12 @@
-//! Recolouring an item (experimental): every colour the package carries as
-//! data takes the target's hue, and its saturation and brightness are
-//! scaled by the target's (a pure colour such as `#ff0000` keeps them, so
-//! HDR glows and fades behave as before). Greys stay grey.
+//! Recolouring an item: every colour the package carries as data moves to
+//! the target. Two modes ([`ColorMode`]):
+//! - **tint**: the target's hue; saturation and brightness scaled by the
+//!   target's (a pure colour such as `#ff0000` keeps them, so HDR glows and
+//!   fades behave as before). Greys stay grey.
+//! - **exact**: the target's hue and saturation (in linear colour, as the
+//!   engine renders), brightness scaled by the target's. Material colours
+//!   that are grey move too. Meant to go with neutral colour textures
+//!   (`swap::texture_color`), so the item really shows the target.
 //!
 //! Colours that are data (and can therefore change without touching the
 //! game's compiled shaders):
@@ -17,6 +22,8 @@
 
 use std::collections::HashSet;
 
+use serde::{Deserialize, Serialize};
+
 use crate::upk::chunks::StreamPatch;
 use crate::upk::package::{Body, Package};
 use crate::upk::props::{self, Prop};
@@ -24,6 +31,17 @@ use crate::upk::reader::{read_i32, read_u32};
 
 /// Below this chroma / value ratio a colour counts as grey and is kept.
 const GREY: f32 = 0.04;
+
+/// How a custom colour is applied (see the module doc).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum ColorMode {
+    /// The item shows the target colour (colour textures made neutral).
+    Exact,
+    /// Only the data colours move (swaps saved before the modes existed).
+    #[default]
+    Tint,
+}
 
 /// A recolour target: hue in degrees, saturation and value in 0..=1.
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -42,6 +60,20 @@ impl Target {
         }
         let n = u32::from_str_radix(raw, 16).ok()?;
         let rgb = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(|c| c as f32 / 255.0);
+        Some(Self::from_rgb(rgb))
+    }
+
+    /// The same colour in linear light (what material colours hold).
+    pub fn linear(self) -> Self {
+        let hex = self.to_hex();
+        let n = u32::from_str_radix(&hex[1..], 16).unwrap_or(0);
+        let rgb =
+            [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(|c| srgb_to_linear(c as f32 / 255.0));
+        Self::from_rgb(rgb)
+    }
+
+    /// HSV of an RGB triple in 0..=1.
+    pub fn from_rgb(rgb: [f32; 3]) -> Self {
         let max = rgb.iter().copied().fold(0.0, f32::max);
         let min = rgb.iter().copied().fold(1.0, f32::min);
         let d = max - min;
@@ -54,11 +86,11 @@ impl Target {
         } else {
             60.0 * ((rgb[0] - rgb[1]) / d + 4.0)
         };
-        Some(Self {
+        Self {
             hue,
             saturation: if max == 0.0 { 0.0 } else { d / max },
             value: max,
-        })
+        }
     }
 
     /// `#rrggbb` of this colour.
@@ -97,9 +129,47 @@ pub fn colorize(rgb: [f32; 3], target: Target) -> [f32; 3] {
     }
     let value = max * target.value.clamp(0.0, 1.0);
     let saturation = (max - min) / max * target.saturation.clamp(0.0, 1.0);
+    hsv_to_rgb(target.hue, saturation, value)
+}
+
+/// sRGB → linear (IEC 61966-2-1).
+pub fn srgb_to_linear(c: f32) -> f32 {
+    if c <= 0.04045 {
+        c / 12.92
+    } else {
+        ((c + 0.055) / 1.055).powf(2.4)
+    }
+}
+
+/// Linear → sRGB.
+pub fn linear_to_srgb(c: f32) -> f32 {
+    if c <= 0.003_130_8 {
+        c * 12.92
+    } else {
+        1.055 * c.powf(1.0 / 2.4) - 0.055
+    }
+}
+
+/// `rgb` with the target's hue and saturation, its value (max, HDR
+/// included) scaled by the target's. Greys move too when `greys` is set;
+/// black and non-finite values never do.
+pub fn colorize_exact(rgb: [f32; 3], target: Target, greys: bool) -> [f32; 3] {
+    let max = rgb.iter().copied().fold(f32::MIN, f32::max);
+    let min = rgb.iter().copied().fold(f32::MAX, f32::min);
+    if !max.is_finite() || max <= 0.0 || (!greys && (max - min) / max < GREY) {
+        return rgb;
+    }
+    hsv_to_rgb(
+        target.hue,
+        target.saturation.clamp(0.0, 1.0),
+        max * target.value.clamp(0.0, 1.0),
+    )
+}
+
+fn hsv_to_rgb(hue: f32, saturation: f32, value: f32) -> [f32; 3] {
     let chroma = value * saturation;
     let min = value - chroma;
-    let h = target.hue.rem_euclid(360.0) / 60.0;
+    let h = hue.rem_euclid(360.0) / 60.0;
     let x = chroma * (1.0 - ((h % 2.0) - 1.0).abs());
     let (r, g, b) = match h as u32 {
         0 => (chroma, x, 0.0),
@@ -127,13 +197,15 @@ fn f32_at(buf: &[u8], pos: usize) -> Option<f32> {
 struct Recolor<'a> {
     data: &'a [u8],
     target: Target,
+    mode: ColorMode,
     patch: StreamPatch,
     stats: RecolorStats,
 }
 
 impl Recolor<'_> {
-    /// Recolours the RGB triple at `pos`; true when it changed.
-    fn triple(&mut self, pos: usize) -> bool {
+    /// Recolours the RGB triple at `pos`; true when it changed. `material`:
+    /// a material colour (greys move too in the exact mode).
+    fn triple(&mut self, pos: usize, material: bool) -> bool {
         let (Some(r), Some(g), Some(b)) = (
             f32_at(self.data, pos),
             f32_at(self.data, pos + 4),
@@ -141,7 +213,10 @@ impl Recolor<'_> {
         ) else {
             return false;
         };
-        let out = colorize([r, g, b], self.target);
+        let out = match self.mode {
+            ColorMode::Tint => colorize([r, g, b], self.target),
+            ColorMode::Exact => colorize_exact([r, g, b], self.target, material),
+        };
         if out == [r, g, b] {
             return false;
         }
@@ -169,7 +244,7 @@ impl Recolor<'_> {
             // [min, max] then RGB triples.
             if n >= 5 && (n - 2) % 3 == 0 {
                 for k in 0..(n - 2) / 3 {
-                    changed |= self.triple(table.value_pos + 4 + (2 + k * 3) * 4);
+                    changed |= self.triple(table.value_pos + 4 + (2 + k * 3) * 4, false);
                 }
             }
         }
@@ -184,7 +259,7 @@ impl Recolor<'_> {
                 && matches!(p.name.as_str(), "Constant" | "Min" | "Max")
                 && p.size == 12
             {
-                changed |= self.triple(p.value_pos);
+                changed |= self.triple(p.value_pos, false);
             }
         }
         changed
@@ -206,7 +281,7 @@ impl Recolor<'_> {
             if let Some(value) = props::find(&param, "ParameterValue")
                 .filter(|p| p.inner.as_deref() == Some("LinearColor") && p.size == 16)
             {
-                changed |= self.triple(value.value_pos);
+                changed |= self.triple(value.value_pos, true);
             }
         }
         changed
@@ -224,10 +299,20 @@ fn property_block(data: &[u8], pos: usize, pkg: &Package) -> Option<Vec<Prop>> {
 }
 
 /// Builds the edits that move every data colour of `pkg` to `target`.
-pub fn recolor_patch(pkg: &Package, body: &Body, target: Target) -> (StreamPatch, RecolorStats) {
+/// In the exact mode, `target` is taken as sRGB and converted to linear.
+pub fn recolor_patch(
+    pkg: &Package,
+    body: &Body,
+    target: Target,
+    mode: ColorMode,
+) -> (StreamPatch, RecolorStats) {
     let mut r = Recolor {
         data: &body.data,
-        target,
+        target: match mode {
+            ColorMode::Tint => target,
+            ColorMode::Exact => target.linear(),
+        },
+        mode,
         patch: StreamPatch::new(),
         stats: RecolorStats::default(),
     };
@@ -343,6 +428,38 @@ mod tests {
         assert!((t.hue - 37.0).abs() < 1.0);
         assert!(Target::from_hex("#12345").is_none());
         assert!(Target::from_hex("#gggggg").is_none());
+    }
+
+    #[test]
+    fn exact_takes_the_target_saturation_and_moves_material_greys() {
+        let red = Target::from_hex("#ff0000").unwrap();
+        // Gold (low saturation) -> fully saturated red, same brightness.
+        let out = colorize_exact([0.75, 0.67, 0.48], red, false);
+        assert!(close(out, [0.75, 0.0, 0.0]), "{out:?}");
+        // A grey material colour moves; a grey particle colour does not.
+        assert!(close(
+            colorize_exact([0.5, 0.5, 0.5], red, true),
+            [0.5, 0.0, 0.0]
+        ));
+        assert!(close(
+            colorize_exact([0.5, 0.5, 0.5], red, false),
+            [0.5, 0.5, 0.5]
+        ));
+        // Black target: black.
+        let black = Target::from_hex("#000000").unwrap();
+        assert!(close(
+            colorize_exact([0.75, 0.67, 0.48], black, true),
+            [0.0; 3]
+        ));
+    }
+
+    #[test]
+    fn linear_target_matches_srgb_decoding() {
+        let pale = Target::from_hex("#80c0ff").unwrap().linear();
+        let rgb = hsv_to_rgb(pale.hue, pale.saturation, pale.value);
+        let expected = [0x80, 0xc0, 0xff].map(|c| srgb_to_linear(c as f32 / 255.0));
+        assert!(close(rgb, expected), "{rgb:?} vs {expected:?}");
+        assert!((linear_to_srgb(srgb_to_linear(0.5)) - 0.5).abs() < 1e-5);
     }
 
     #[test]

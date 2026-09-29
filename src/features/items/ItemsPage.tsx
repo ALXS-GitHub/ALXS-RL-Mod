@@ -13,7 +13,7 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { useDismissKeysUpdate, useKeysStatus } from "@/features/settings/api";
 import { formatNumber } from "@/lib/format";
 import { useUi } from "@/stores/ui";
-import type { ActiveSwap, CatalogItem, Slot } from "./api";
+import type { ActiveSwap, CatalogItem, ColorBlend, Slot } from "./api";
 import { HistoryDialog } from "./components/HistoryDialog";
 import { IntegrityBanner } from "./components/IntegrityBanner";
 import { ItemGrid } from "./components/ItemGrid";
@@ -48,6 +48,8 @@ export function ItemsPage() {
   const [wantedId, setWantedId] = useState<number | null>(null);
   const [paint, setPaint] = useState(0);
   const [color, setColor] = useState<string | null>(null);
+  // Custom colour mode: exact by default (older swaps keep their tint).
+  const [blend, setBlend] = useState<ColorBlend>("exact");
   const [search, setSearch] = useState("");
   const [bodyFilter, setBodyFilter] = useState<BodyFilter>("auto");
   const deferredSearch = useDeferredValue(search);
@@ -141,6 +143,7 @@ export function ItemsPage() {
     setWantedId(swap.request.wantedId);
     setPaint(swap.request.paint ?? 0);
     setColor(swap.request.color ?? null);
+    setBlend(swap.request.colorMode ?? (swap.request.color ? "tint" : "exact"));
     setStep("wanted");
     setSearch("");
     setBodyFilter("auto");
@@ -184,7 +187,8 @@ export function ItemsPage() {
     ? "new"
     : activeForOwned.request.wantedId === wantedId &&
         (activeForOwned.request.paint ?? 0) === paint &&
-        (activeForOwned.request.color ?? null) === color
+        (activeForOwned.request.color ?? null) === color &&
+        (color === null || (activeForOwned.request.colorMode ?? "tint") === blend)
       ? "unchanged"
       : "update";
 
@@ -213,7 +217,14 @@ export function ItemsPage() {
   const onApply = () => {
     if (!owned || !wanted) return;
     // The pick stays: the composer then shows it as the active swap.
-    apply.mutate({ slot, ownedId: owned.id, wantedId: wanted.id, paint: paint > 0 ? paint : null, color });
+    apply.mutate({
+      slot,
+      ownedId: owned.id,
+      wantedId: wanted.id,
+      paint: paint > 0 ? paint : null,
+      color,
+      colorMode: color ? blend : undefined,
+    });
   };
 
   const bodyOptions = [
@@ -329,11 +340,11 @@ export function ItemsPage() {
               wanted={wanted}
               step={step}
               onStepChange={setStep}
-              paint={paint}
-              color={color}
+              itemColor={{ paint, color, blend }}
               onColorChange={(next) => {
                 setPaint(next.paint);
                 setColor(next.color);
+                setBlend(next.blend);
               }}
               paints={paintOptions}
               onApply={onApply}

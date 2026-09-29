@@ -49,10 +49,14 @@ export const swapRequestSchema = z.object({
   ownedId: z.number(),
   wantedId: z.number(),
   paint: z.number().nullable().optional(),
-  /** Custom colour `#rrggbb` (experimental recolour). */
+  /** Custom colour `#rrggbb`. */
   color: z.string().nullable().optional(),
+  /** How the custom colour is applied (missing = tint, older swaps). */
+  colorMode: z.enum(["exact", "tint"]).optional(),
 });
 export type SwapRequest = z.infer<typeof swapRequestSchema>;
+/** Custom colour mode: `exact` (colour textures made neutral) or `tint`. */
+export type ColorBlend = NonNullable<SwapRequest["colorMode"]>;
 
 export const activeSwapSchema = z.object({
   id: z.string(),
@@ -96,6 +100,8 @@ export const itemsApi = {
   history: () => call("swap_history", {}, z.array(swapEventSchema)),
   paints: () => call("swap_paints", {}, z.array(paintInfoSchema)),
   itemPaints: (itemId: number) => call("swap_item_paints", { itemId }, z.array(z.number())),
+  colorPreview: (wantedId: number, color: string, mode: ColorBlend) =>
+    call("swap_color_preview", { wantedId, color, mode }, z.string().nullable()),
   integrityCheck: () => call("integrity_check", {}, integrityReportSchema),
   integrityReapply: () => call("integrity_reapply", {}, integrityReportSchema),
   /** Absolute path of a cached PNG thumbnail (engine slice), or null. */

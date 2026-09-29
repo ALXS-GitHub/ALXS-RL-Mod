@@ -9,6 +9,7 @@ pub mod engine;
 pub mod paint;
 pub mod rules;
 pub mod state;
+pub mod texture_color;
 
 use tauri::AppHandle;
 

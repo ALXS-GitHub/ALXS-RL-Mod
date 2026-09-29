@@ -26,10 +26,14 @@ pub struct SwapRequest {
     /// `None`/0 = unpainted.
     #[serde(default)]
     pub paint: Option<u8>,
-    /// Custom colour (`#rrggbb`, experimental): every data colour of the
-    /// shown item recoloured towards it. See `upk::recolor`.
+    /// Custom colour (`#rrggbb`): the shown item recoloured towards it.
+    /// See `upk::recolor` and `swap::texture_color`.
     #[serde(default)]
     pub color: Option<String>,
+    /// How `color` is applied. Missing on swaps saved before the modes
+    /// existed: those keep the tint they were made with.
+    #[serde(default)]
+    pub color_mode: crate::upk::recolor::ColorMode,
     /// Earlier prototype: a hue in degrees. Read only, turned into `color`.
     #[serde(default, skip_serializing)]
     pub tint: Option<u16>,
@@ -164,6 +168,20 @@ mod tests {
     }
 
     #[test]
+    fn legacy_colour_swaps_keep_the_tint_mode() {
+        let old: SwapRequest = serde_json::from_str(
+            r##"{"slot":"boost","ownedId":1,"wantedId":2,"color":"#ff0000"}"##,
+        )
+        .unwrap();
+        assert_eq!(old.color_mode, crate::upk::recolor::ColorMode::Tint);
+        let new: SwapRequest = serde_json::from_str(
+            r##"{"slot":"boost","ownedId":1,"wantedId":2,"color":"#ff0000","colorMode":"exact"}"##,
+        )
+        .unwrap();
+        assert_eq!(new.color_mode, crate::upk::recolor::ColorMode::Exact);
+    }
+
+    #[test]
     fn history_is_capped() {
         let mut s = SwapState::default();
         let swap = ActiveSwap {
@@ -174,6 +192,7 @@ mod tests {
                 wanted_id: 2,
                 paint: None,
                 color: None,
+                color_mode: Default::default(),
                 tint: None,
             },
             owned_label: "a".into(),

@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { notify } from "@/components/ui/toast";
 import { isTauri } from "@/lib/ipc";
-import { type CatalogItem, itemsApi, type SwapRequest } from "./api";
+import { type CatalogItem, type ColorBlend, itemsApi, type SwapRequest } from "./api";
 
 export const itemsKeys = {
   catalog: ["catalog"] as const,
@@ -14,6 +14,7 @@ export const itemsKeys = {
   thumbnail: (pkg: string) => ["thumbnail", pkg] as const,
   paints: ["paints"] as const,
   itemPaints: (id: number) => ["paints", "item", id] as const,
+  colorPreview: (id: number, color: string, mode: string) => ["colorPreview", id, color, mode] as const,
 };
 
 /** The game's paints (read once per app run). */
@@ -32,6 +33,17 @@ export function useItemPaints(itemId: number | null) {
     queryFn: () => itemsApi.itemPaints(itemId ?? 0),
     enabled: itemId !== null,
     staleTime: 10 * 60_000,
+  });
+}
+
+/** Flat preview of an item in a custom colour (`null`: no colour texture). */
+export function useColorPreview(itemId: number | null, color: string | null, mode: ColorBlend) {
+  return useQuery({
+    queryKey: itemsKeys.colorPreview(itemId ?? 0, color ?? "", mode),
+    queryFn: () => itemsApi.colorPreview(itemId ?? 0, color ?? "", mode),
+    enabled: itemId !== null && color !== null,
+    staleTime: Number.POSITIVE_INFINITY,
+    placeholderData: (previous) => previous,
   });
 }
 

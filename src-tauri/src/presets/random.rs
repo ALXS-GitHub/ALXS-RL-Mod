@@ -89,6 +89,7 @@ pub fn random_loadout(
             wanted_id: pick.id,
             paint: None,
             color: None,
+            color_mode: Default::default(),
             tint: None,
         });
     }

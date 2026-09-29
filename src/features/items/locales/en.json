@@ -150,7 +150,17 @@
     "badge": {
       "custom": "Custom colour {{hex}}",
       "paint": "Paint: {{name}}"
-    }
+    },
+    "blendLabel": "Mode",
+    "blends": {
+      "exact": "Exact colour",
+      "tint": "Tint"
+    },
+    "blendHints": {
+      "exact": "The item takes exactly this colour: colours painted into its textures are made neutral first (a few MB, removed with the swap).",
+      "tint": "Only the item's colour values move: light and fast, but a colour painted into a texture shows through (gold wheels turn orange in red)."
+    },
+    "preview": "Preview (flat, without lighting)"
   },
   "keysUpdate": {
     "title_one": "{{count}} item can't be read with your keys",

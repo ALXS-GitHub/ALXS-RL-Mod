@@ -7,8 +7,9 @@ use crate::base::error::{AppError, AppResult};
 use crate::catalog::{self, CatalogItem, CatalogSnapshot};
 use crate::game::writer::{self, Owner, Placement};
 use crate::game::{fingerprint, install, ReapplyOutcome};
-use crate::swap::rules;
 use crate::swap::state::{self, ActiveSwap, SwapEventKind, SwapRequest};
+use crate::swap::{rules, texture_color};
+use crate::upk::recolor::ColorMode;
 
 fn lookup<'a>(snap: &'a CatalogSnapshot, id: u32, role: &str) -> AppResult<&'a CatalogItem> {
     snap.get(id)
@@ -99,10 +100,34 @@ pub fn apply_with_id(app: &AppHandle, req: &SwapRequest, id: &str) -> AppResult<
     if let Some(id) = paint {
         out = apply_paint(out, &keys, &install, &build, id)?;
     }
+    let mut cache = None;
     if let Some(target) = req.custom_color() {
-        out = recolor(out, &keys, target)?;
+        let mut textures_changed = false;
+        if req.color_mode == ColorMode::Exact {
+            // Colour painted into textures: make them neutral first. On
+            // failure the material colours still move (as in the tint mode).
+            match texture_color::neutralize(
+                &out,
+                &keys,
+                &install.cooked_dir,
+                &owned.package,
+                target,
+            ) {
+                Ok(n) => {
+                    textures_changed = !n.textures.is_empty();
+                    out = n.package;
+                    cache = n.cache;
+                }
+                Err(err) => tracing::warn!(%err, "colour textures kept"),
+            }
+        }
+        out = recolor(out, &keys, target, req.color_mode, textures_changed)?;
     }
 
+    if let Some((name, bytes)) = &cache {
+        let path = install.cooked_dir.join(format!("{name}.tfc"));
+        writer::install_file(app, Owner::Swap, id, &path, Placement::NewFile, bytes)?;
+    }
     let target = install.cooked_dir.join(&owned.package);
     writer::install_file(app, Owner::Swap, id, &target, Placement::RootReplace, &out)?;
 
@@ -208,15 +233,22 @@ pub fn item_paints(app: &AppHandle, item_id: u32) -> AppResult<Vec<u8>> {
     })
 }
 
-/// Recolours every data colour of the package towards `target` (experimental).
+/// Recolours every data colour of the package towards `target`.
+/// `textures_changed`: the colour already went into the textures, so an
+/// item without colour values is fine.
 fn recolor(
     bytes: Vec<u8>,
     keys: &crate::upk::KeyRing,
     target: crate::upk::recolor::Target,
+    mode: ColorMode,
+    textures_changed: bool,
 ) -> AppResult<Vec<u8>> {
-    let pkg = crate::upk::Package::open(bytes, keys)?;
+    let pkg = crate::upk::Package::open(bytes.clone(), keys)?;
     let body = pkg.body()?;
-    let (patch, stats) = crate::upk::recolor::recolor_patch(&pkg, &body, target);
+    let (patch, stats) = crate::upk::recolor::recolor_patch(&pkg, &body, target, mode);
+    if stats.colors == 0 && textures_changed {
+        return Ok(bytes);
+    }
     if stats.colors == 0 {
         return Err(AppError::Unsupported(
             "this item has no colour the app can change".into(),
@@ -229,15 +261,61 @@ fn recolor(
         colors = stats.colors,
         exports = stats.exports,
         ?target,
+        ?mode,
         "item recoloured"
     );
     Ok(out)
+}
+
+/// Flat preview of `wanted_id` in `color` (`mode`), as a PNG data URL;
+/// `None` when the item has no colour texture (or no keys yet).
+pub fn color_preview(
+    app: &AppHandle,
+    wanted_id: u32,
+    color: &str,
+    mode: ColorMode,
+) -> AppResult<Option<String>> {
+    use base64::prelude::{Engine as _, BASE64_STANDARD};
+    let target = crate::upk::recolor::Target::from_hex(color)
+        .ok_or_else(|| AppError::InvalidInput("color must be #rrggbb".into()))?;
+    let snap = catalog::snapshot(app)?;
+    let wanted = lookup(&snap, wanted_id, "wanted")?;
+    let install = install::current_install(app)?;
+    let keys = crate::upk::keys::ring(app);
+    if keys.is_empty() {
+        return Ok(None);
+    }
+    let bytes = stock_bytes(&install, &wanted.package)?;
+    let Some(img) = texture_color::preview(&bytes, &keys, &install.cooked_dir, target, mode)?
+    else {
+        return Ok(None);
+    };
+    let mut png = std::io::Cursor::new(Vec::new());
+    img.write_to(&mut png, image::ImageFormat::Png)
+        .map_err(|e| AppError::Internal(e.to_string()))?;
+    Ok(Some(format!(
+        "data:image/png;base64,{}",
+        BASE64_STANDARD.encode(png.into_inner())
+    )))
 }
 
 /// Applies a new swap, replacing any active swap on the same owned package.
 pub fn apply(app: &AppHandle, req: &SwapRequest) -> AppResult<ActiveSwap> {
     let id = uuid::Uuid::new_v4().to_string();
     let swap = apply_with_id(app, req, &id)?;
+    // Files of the superseded swap the new one did not overwrite (e.g. the
+    // texture cache of an exact colour) go back to stock.
+    let superseded: Vec<String> = state::load()?
+        .active
+        .iter()
+        .filter(|a| a.id != id && a.target_package.eq_ignore_ascii_case(&swap.target_package))
+        .map(|a| a.id.clone())
+        .collect();
+    for old in &superseded {
+        if let Err(err) = writer::restore_owner(app, Owner::Swap, Some(old)) {
+            tracing::warn!(%err, swap = %old, "leftover files of a replaced swap kept");
+        }
+    }
     state::update(|s| {
         // The write layer kept the original backup; the old swap is superseded.
         s.active

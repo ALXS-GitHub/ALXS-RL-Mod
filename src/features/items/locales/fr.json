@@ -150,7 +150,17 @@
     "badge": {
       "custom": "Couleur personnalisée {{hex}}",
       "paint": "Peinture : {{name}}"
-    }
+    },
+    "blendLabel": "Mode",
+    "blends": {
+      "exact": "Couleur exacte",
+      "tint": "Teinte"
+    },
+    "blendHints": {
+      "exact": "L'item prend exactement cette couleur : les couleurs peintes dans ses textures sont d'abord neutralisées (quelques Mo, supprimés avec le swap).",
+      "tint": "Seules les valeurs de couleur de l'item changent : léger et rapide, mais une couleur peinte dans une texture ressort (des jantes dorées deviennent orange en rouge)."
+    },
+    "preview": "Aperçu (à plat, sans éclairage)"
   },
   "keysUpdate": {
     "title_one": "{{count}} item n'est pas lisible avec tes clés",

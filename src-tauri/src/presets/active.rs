@@ -144,6 +144,7 @@ mod tests {
             wanted_id: wanted,
             paint,
             color: None,
+            color_mode: Default::default(),
             tint: None,
         }
     }

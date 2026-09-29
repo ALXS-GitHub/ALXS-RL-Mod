@@ -112,6 +112,7 @@ pub fn from_wire(wire: ShareV1) -> Preset {
                 wanted_id,
                 paint: (paint > 0 && paint <= crate::swap::paint::MAX_PAINT_ID).then_some(paint),
                 color: None,
+                color_mode: Default::default(),
                 tint: None,
             })
         })

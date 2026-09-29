@@ -123,7 +123,8 @@ upk::keys::KeyRing::load(app) -> AppResult<KeyRing>              // empty ring =
 upk::summary::PackageSummary::parse(&[u8]) -> Result<_, UpkError>
 upk::rename::{Rename, rename_package(&[u8], &[Rename], &KeyRing, target_key: Option<AesKey>) -> Result<Vec<u8>, UpkError>}  // re-keys for the target name
 upk::rename::package_key(&[u8], &KeyRing) -> Option<AesKey>
-upk::recolor::recolor_patch(&Package, &Body, hue) -> (StreamPatch, RecolorStats)  // data colours → one hue
+upk::recolor::recolor_patch(&Package, &Body, Target, ColorMode) -> (StreamPatch, RecolorStats)  // data colours → target (tint | exact)
+swap::texture_color::neutralize(bytes, ring, cooked, package, Target) -> NeutralTextures  // colour textures neutral (or baked) in our own .tfc
 upk::Package::{open, header_bytes, seal}                         // seal = re-encrypt CTR chunks (fully encrypted packages)
 upk::rename::can_decrypt(&[u8], &KeyRing) -> bool
 upk::chunks::{ChunkedBody}                                        // read/patch RL chunked-zlib blocks
@@ -170,8 +171,8 @@ Errors always serialize as `{ kind: string, message: string }`.
 
 ### catalog slice (catalog / swap / presets / integrity)
 - `catalog_get() -> CatalogSnapshot` · `catalog_refresh() -> CatalogSnapshot`
-- `swap_list() -> Vec<ActiveSwap>` · `swap_apply(req: SwapRequest) -> ActiveSwap` (`SwapRequest.paint`: official paint = the game's PaintID, baked into the item's paint parameters by `swap::paint`; `SwapRequest.color`: custom `#rrggbb`, experimental recolour through `upk::recolor`; owned == wanted is allowed with a paint or a colour)
-- `swap_paints() -> Vec<PaintInfo>` (the game's paints, read from `TAGame.upk` `PaintDB`) · `swap_item_paints(item_id) -> Vec<u8>` (PaintIDs the item accepts and that can be baked into its file; empty = not paintable)
+- `swap_list() -> Vec<ActiveSwap>` · `swap_apply(req: SwapRequest) -> ActiveSwap` (`SwapRequest.paint`: official paint = the game's PaintID, baked into the item's paint parameters by `swap::paint`; `SwapRequest.color`: custom `#rrggbb` + `colorMode` (`exact`: colour textures made neutral by `swap::texture_color`, written to a per-item `.tfc` removed with the swap; `tint`: data colours only, default for older swaps), see `docs_rl/item_recolor.md`; owned == wanted is allowed with a paint or a colour)
+- `swap_paints() -> Vec<PaintInfo>` (the game's paints, read from `TAGame.upk` `PaintDB`) · `swap_item_paints(item_id) -> Vec<u8>` (PaintIDs the item accepts and that can be baked into its file; empty = not paintable) · `swap_color_preview(wanted_id, color, mode) -> Option<String>` (PNG data URL of the item's colour texture in that colour; `None` without a colour texture)
 - `swap_restore(id) -> ()` · `swap_restore_all() -> u32` · `swap_history() -> Vec<SwapEvent>`
 - `presets_list() -> Vec<Preset>` · `presets_save(preset) -> Preset` · `presets_delete(id)`
 - `presets_apply(id) -> PresetApplyReport` · `presets_capture(name) -> Preset`

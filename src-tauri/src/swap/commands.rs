@@ -47,6 +47,17 @@ pub async fn swap_item_paints(app: AppHandle, item_id: u32) -> AppResult<Vec<u8>
     blocking(move || engine::item_paints(&app, item_id)).await
 }
 
+/// Flat preview of an item in a custom colour (PNG data URL, or `None`).
+#[tauri::command]
+pub async fn swap_color_preview(
+    app: AppHandle,
+    wanted_id: u32,
+    color: String,
+    mode: crate::upk::recolor::ColorMode,
+) -> AppResult<Option<String>> {
+    blocking(move || engine::color_preview(&app, wanted_id, &color, mode)).await
+}
+
 /// Newest first.
 #[tauri::command]
 pub fn swap_history() -> AppResult<Vec<SwapEvent>> {
