@@ -1,16 +1,10 @@
 import { LoaderCircle, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/cn";
-import type { LobbyRating } from "../api";
-
-function teamAverage(players: LobbyRating[]): number | null {
-  const rated = players.filter((p) => p.rating != null);
-  if (rated.length === 0) return null;
-  return Math.round(rated.reduce((sum, p) => sum + (p.rating ?? 0), 0) / rated.length);
-}
+import { type LobbyRating, teamAverage } from "../api";
 
 function PlayerRow({ p }: { p: LobbyRating }) {
-  const { t } = useTranslation("tracker");
+  const { t } = useTranslation("personal");
   return (
     <li className="flex h-8 items-center gap-2.5 text-[13px]">
       {p.tierIcon ? (
@@ -36,13 +30,13 @@ function PlayerRow({ p }: { p: LobbyRating }) {
 }
 
 function TeamColumn({ team, players }: { team: 0 | 1; players: LobbyRating[] }) {
-  const { t } = useTranslation("tracker");
+  const { t } = useTranslation("personal");
   const avg = teamAverage(players);
   return (
     <div className="min-w-0 flex-1">
       <div className="mb-1 flex items-center justify-between text-xs">
         <span className={cn("font-medium", team === 0 ? "text-[#9cc1ff]" : "text-[#ffbe8f]")}>
-          {team === 0 ? t("live.blue") : t("live.orange")}
+          {team === 0 ? t("lobby.blue") : t("lobby.orange")}
         </span>
         <span className="text-fg-subtle tabular-nums">
           {avg != null ? t("lobby.average", { value: avg }) : "—"}
@@ -59,7 +53,7 @@ function TeamColumn({ team, players }: { team: 0 | 1; players: LobbyRating[] }) 
 
 /** MMR of the players of the current match (Stats API ids → tracker.gg). */
 export function LobbyPanel({ lobby }: { lobby: LobbyRating[] }) {
-  const { t } = useTranslation("tracker");
+  const { t } = useTranslation("personal");
   if (lobby.length === 0) return null;
   const blue = lobby.filter((p) => p.team === 0);
   const orange = lobby.filter((p) => p.team === 1);
@@ -77,5 +71,3 @@ export function LobbyPanel({ lobby }: { lobby: LobbyRating[] }) {
     </div>
   );
 }
-
-export { teamAverage };

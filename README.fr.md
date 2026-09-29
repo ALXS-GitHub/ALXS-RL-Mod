@@ -32,7 +32,7 @@ en un clic.
 | **Palettes de couleurs** | Remplace les nuanciers principal et d'accent du jeu par ta propre palette. |
 | **Maps Workshop** | Une bibliothèque de maps de la communauté (bakkesplugins, Lethamyr, tes fichiers). Une map remplace une arène Labs, même jeu lancé, et l'originale revient en un clic. |
 | **Presets** | Enregistre un loadout complet (swaps, palette, sticker, map) et passe de l'un à l'autre en un clic ; partage-le avec un code. |
-| **Tracker de match** | Bilan de session, match en direct et overlay en jeu via la Stats API officielle du jeu. MMR et rangs du lobby via tracker.gg en option. |
+| **Tracker de match** | Bilan de session, match en direct et overlay en jeu via la Stats API officielle du jeu. |
 | **Import BakkesMod** | Récupère tes maps Workshop, tes packs de stickers AlphaConsole et tes balles, convertis en stickers en vraies couleurs si tu veux. |
 | **Sûr par conception** | Sauvegarde de chaque fichier, « restaurer le jeu d'origine » en un clic, reconstruction automatique après une mise à jour du jeu, mises à jour automatiques de l'app. |
 

@@ -94,7 +94,7 @@ export function Sidebar() {
           <div className="flex min-w-0 items-center gap-1.5 px-1.5 text-[11px] text-fg-subtle">
             <ShieldCheck className="size-3.5 shrink-0" />
             <span className="truncate">
-              v{info?.version ?? "…"} · {t("app.noInjection")}
+              v{info?.version ?? "…"} · {__ALXS_PERSONAL__ ? t("personal:edition") : t("app.noInjection")}
             </span>
           </div>
         ) : null}

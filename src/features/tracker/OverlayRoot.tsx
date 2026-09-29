@@ -1,14 +1,18 @@
 import { invoke } from "@tauri-apps/api/core";
 import { Flame, GripVertical, Snowflake } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/cn";
 import { EVENTS, useTauriEvent } from "@/lib/events";
 import { appConfigSchema } from "@/lib/game";
 import { setLocale } from "@/lib/i18n";
-import { arenaLabel, formatClock, type SessionState, sessionStateSchema, topMmrDelta } from "./api";
-import { teamAverage } from "./components/LobbyPanel";
+import { arenaLabel, formatClock, type SessionState, sessionStateSchema } from "./api";
+
+// Personal edition only (docs/PERSONAL_EDITION.md): team MMR and your MMR.
+const OverlayRatings = __ALXS_PERSONAL__
+  ? lazy(() => import("@/personal/tracker").then((m) => ({ default: m.OverlayRatings })))
+  : null;
 
 /**
  * Tracker HUD for the transparent always-on-top overlay window.
@@ -41,10 +45,6 @@ export function OverlayRoot() {
   useTauriEvent(EVENTS.trackerSession, sessionStateSchema, setS);
 
   const live = s?.live && !s.live.ended ? s.live : null;
-  // Average MMR per team (lobby lookups), shown under the score.
-  const blueAvg = teamAverage((s?.lobby ?? []).filter((p) => p.team === 0));
-  const orangeAvg = teamAverage((s?.lobby ?? []).filter((p) => p.team === 1));
-  const mmr = s ? topMmrDelta(s.mmr) : null;
   const streak = s?.streak ?? 0;
 
   return (
@@ -95,11 +95,7 @@ export function OverlayRoot() {
                   </span>
                   <span className="text-[#ff9a52]">{live.orangeScore}</span>
                 </div>
-                <span className="mt-1 flex items-center gap-2 text-[11px] text-white/45 tabular-nums">
-                  {blueAvg != null ? <span className="text-[#9cc1ff]">{blueAvg}</span> : null}
-                  <span>{arenaLabel(live.arena)}</span>
-                  {orangeAvg != null ? <span className="text-[#ffbe8f]">{orangeAvg}</span> : null}
-                </span>
+                <span className="mt-1 text-[11px] text-white/45">{arenaLabel(live.arena)}</span>
               </motion.div>
             ) : (
               <motion.span
@@ -115,25 +111,10 @@ export function OverlayRoot() {
           </AnimatePresence>
         </div>
 
-        {mmr ? (
-          <>
-            <div data-tauri-drag-region className="h-12 w-px bg-white/10" />
-            <div data-tauri-drag-region className="flex items-center gap-2">
-              {mmr.tierIcon ? <img src={mmr.tierIcon} alt="" className="size-9 object-contain" /> : null}
-              <div className="flex flex-col items-end">
-                <span className="text-lg font-semibold tabular-nums leading-none">{mmr.latest}</span>
-                <span
-                  className={cn(
-                    "text-xs font-semibold tabular-nums",
-                    mmr.delta > 0 ? "text-[#3ddc97]" : mmr.delta < 0 ? "text-[#ff5d73]" : "text-white/40",
-                  )}
-                >
-                  {mmr.delta > 0 ? "+" : ""}
-                  {mmr.delta} MMR
-                </span>
-              </div>
-            </div>
-          </>
+        {OverlayRatings ? (
+          <Suspense fallback={null}>
+            <OverlayRatings live={Boolean(live)} />
+          </Suspense>
         ) : null}
       </div>
     </div>

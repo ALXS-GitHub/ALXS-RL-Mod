@@ -5,12 +5,11 @@ use tauri::{AppHandle, State};
 
 use crate::base::error::{AppError, AppResult};
 use crate::game::watcher;
-use crate::stats::client;
 use crate::stats::ini::{self, IniSettings};
-use crate::stats::mmr::{self, MmrProfile};
 use crate::stats::overlay;
 use crate::stats::tracker::{Connection, SessionState};
 use crate::stats::StatsState;
+use crate::stats::{client, hooks};
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -102,12 +101,8 @@ pub fn tracker_reset(app: AppHandle, state: State<'_, StatsState>) -> AppResult<
         t.state.clone()
     };
     client::emit_session(&app, &state.0);
+    hooks::on_session_reset(&app);
     Ok(snapshot)
-}
-
-#[tauri::command]
-pub async fn mmr_lookup(app: AppHandle, platform: String, player: String) -> AppResult<MmrProfile> {
-    mmr::lookup(&app, &platform, &player).await
 }
 
 // Async on purpose: creating or destroying a window from a synchronous

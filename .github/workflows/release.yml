@@ -32,6 +32,18 @@ jobs:
       - name: Install frontend dependencies
         run: bun install --frozen-lockfile
 
+      # Releases are the public edition only: no `personal` feature, no
+      # ALXS_EDITION, no MMR code in the bundle (docs/PERSONAL_EDITION.md).
+      - name: Public edition guard
+        shell: bash
+        run: |
+          if [ -n "${ALXS_EDITION:-}" ]; then echo "::error::ALXS_EDITION must not be set for a release"; exit 1; fi
+          bun run build
+          if grep -rlE "personal://ratings|mmr_lookup|ratings_state|tracker\.(gg|network)" dist; then
+            echo "::error::personal edition code found in the public bundle"
+            exit 1
+          fi
+
       - name: Build and publish the draft release
         uses: tauri-apps/tauri-action@v0
         env:
@@ -50,3 +62,11 @@ jobs:
           releaseDraft: true
           prerelease: false
           includeUpdaterJson: true
+
+      - name: Public binary guard
+        shell: bash
+        run: |
+          if grep -c "api.tracker.gg" src-tauri/target/release/alxs-rl-mod.exe; then
+            echo "::error::the released binary contains the personal edition"
+            exit 1
+          fi

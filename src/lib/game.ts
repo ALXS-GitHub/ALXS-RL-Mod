@@ -19,13 +19,13 @@ export const appConfigSchema = z.object({
   fxPauseWhenGameFocused: z.boolean(),
   autoReapplyAfterUpdate: z.boolean(),
   restoreMapsOnGameExit: z.boolean(),
-  tracker: z.object({
-    platform: z.string().nullable(),
-    playerId: z.string().nullable(),
-    favorites: z.array(z.object({ platform: z.string(), playerId: z.string() })).default([]),
-    /** tracker.gg lookups (MMR, lobby ranks): off until turned on. */
-    onlineRatings: z.boolean().default(false),
-  }),
+  /** `playerId` tells the tracker which player is you. The personal edition
+   * adds its own fields (src/personal/api.ts), kept as they come. */
+  tracker: z
+    .object({
+      playerId: z.string().nullable().default(null),
+    })
+    .passthrough(),
   /** The user turned the Stats API off (it is on by default). */
   statsApiOptOut: z.boolean().default(false),
   decalLibraryFolders: z.array(z.string()),

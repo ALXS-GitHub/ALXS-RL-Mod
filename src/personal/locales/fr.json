@@ -1,0 +1,48 @@
+{
+  "mmr": {
+    "title": "MMR",
+    "placeholder": "Pseudo Epic, ID Steam…",
+    "lookup": "Rechercher",
+    "hint": "Données publiques de tracker.gg.",
+    "empty": "Indique ta plateforme et ton ID pour voir tes rangs.",
+    "unranked": "Non classé",
+    "session": "cette session",
+    "openTracker": "Ouvrir sur tracker.gg",
+    "platforms": {
+      "epic": "Epic",
+      "steam": "Steam",
+      "psn": "PlayStation",
+      "xbl": "Xbox",
+      "switch": "Switch"
+    },
+    "favorite": "Ajouter aux favoris",
+    "unfavorite": "Retirer des favoris",
+    "setMine": "Définir comme mon profil",
+    "off": {
+      "title": "Classements en ligne désactivés",
+      "body": "Le MMR, les rangs et les rangs du lobby viennent des pages publiques de tracker.gg (lues par l'app comme le ferait un navigateur). Ce n'est pas une API officielle : active-le seulement si ça te convient. Rien n'est envoyé à part les pseudos que tu recherches.",
+      "enable": "Activer les classements en ligne"
+    }
+  },
+  "lobby": {
+    "title": "Joueurs de la partie",
+    "average": "moy. {{value}}",
+    "loading": "Recherche",
+    "unavailable": "privé / n.d.",
+    "source": "Rangs issus des profils publics tracker.gg, reliés aux identifiants que la Stats API donne pour chaque joueur.",
+    "blue": "Bleu",
+    "orange": "Orange"
+  },
+  "tabs": {
+    "mmr": "MMR"
+  },
+  "stats": {
+    "mmr": "MMR (session)",
+    "mmrHint": "Renseigne ton profil dans l'onglet MMR"
+  },
+  "edition": "Édition perso",
+  "noUpdates": "Édition perso : pas de mise à jour automatique. Recompile-la depuis les sources (docs/PERSONAL_EDITION.md).",
+  "errors": {
+    "RatingsDisabled": "Les classements en ligne sont désactivés : active-les dans l'onglet MMR pour utiliser tracker.gg."
+  }
+}

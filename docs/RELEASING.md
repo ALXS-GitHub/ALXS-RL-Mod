@@ -18,6 +18,9 @@ update themselves from the latest published release.
 
 ## Cutting a release
 
+Releases are always the **public edition**: never set `ALXS_EDITION` nor the
+`personal` feature (the workflow checks it, see `docs/PERSONAL_EDITION.md`).
+
 1. Bump the version in `package.json`, `src-tauri/Cargo.toml` and
    `src-tauri/tauri.conf.json` (same `X.Y.Z` everywhere), commit.
 2. Tag and push: `git tag vX.Y.Z && git push origin main vX.Y.Z`.

@@ -12,7 +12,12 @@ between modules (IPC command names, write layer, conventions).
   (fake ranks, titles, name spoof…) are out of scope by design.
 - **Local first.** The catalog comes from the user's install only (nothing
   bundled, see `catalog::game_db`). Network calls only on explicit user action, only through
-  `base::security` (allowlist: map sources, tracker.gg).
+  `base::security` (allowlist: map sources, marketplace, key list).
+- **No MMR in public builds.** Everything MMR (tracker.gg) lives in
+  `src-tauri/src/personal/` + `src/personal/`, compiled only with
+  `--features personal` / `ALXS_EDITION=personal` for the maintainer's own
+  build. Never import it outside the gates, never ship or upload that build.
+  See `docs/PERSONAL_EDITION.md`.
 - **Reversible.** Game files are written only through `game::writer`
   (manifest + content-addressed backups + hash checks). Prefer the
   `CookedPCConsole/mods/` override over replacing stock files.
@@ -37,7 +42,8 @@ between modules (IPC command names, write layer, conventions).
 ## Commands
 
 - `bun install` then `bun run app` (Tauri dev) · `bun run prod` (installer)
-- `bun run typecheck` · `bun run lint` · `cd src-tauri && cargo test`
+- Personal edition (local only): `bun run app:personal` · `bun run prod:personal`
+- `bun run typecheck` · `bun run lint` · `cd src-tauri && cargo test` (also `--features personal`)
 
 ## Game-format knowledge
 

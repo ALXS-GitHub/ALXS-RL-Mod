@@ -49,7 +49,8 @@ pub enum AppError {
     #[error("Blocked by security policy: {0}")]
     NotAllowed(String),
 
-    /// Online ratings (tracker.gg) are turned off in the tracker settings.
+    /// Online ratings (tracker.gg) are turned off — personal edition only.
+    #[cfg(feature = "personal")]
     #[error("Online ratings are turned off")]
     RatingsDisabled,
 
@@ -83,6 +84,7 @@ impl AppError {
             AppError::Conflict(_) => "Conflict",
             AppError::InvalidInput(_) => "InvalidInput",
             AppError::NotAllowed(_) => "NotAllowed",
+            #[cfg(feature = "personal")]
             AppError::RatingsDisabled => "RatingsDisabled",
             AppError::Network(_) => "Network",
             AppError::Io(_) => "Io",

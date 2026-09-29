@@ -32,16 +32,23 @@ pub enum FxQuality {
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(rename_all = "camelCase", default)]
 pub struct TrackerConfig {
-    /// `epic` | `steam` | `psn` | `xbl` | `switch`
-    pub platform: Option<String>,
+    /// Your in-game name or platform id: tells the tracker which player is
+    /// you (falls back to the camera target).
     pub player_id: Option<String>,
+    // Personal edition only (docs/PERSONAL_EDITION.md): tracker.gg profile.
+    /// `epic` | `steam` | `psn` | `xbl` | `switch`
+    #[cfg(feature = "personal")]
+    pub platform: Option<String>,
     /// Players followed from the MMR tab (one click to look them up).
+    #[cfg(feature = "personal")]
     pub favorites: Vec<FavoritePlayer>,
-    /// Online ratings (MMR, lobby ranks) come from tracker.gg's public
-    /// pages; off until the user turns them on.
+    /// Online ratings (MMR, lobby ranks) come from tracker.gg; off until
+    /// the user turns them on.
+    #[cfg(feature = "personal")]
     pub online_ratings: bool,
 }
 
+#[cfg(feature = "personal")]
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(rename_all = "camelCase", default)]
 pub struct FavoritePlayer {
@@ -49,11 +56,18 @@ pub struct FavoritePlayer {
     pub player_id: String,
 }
 
+#[cfg(feature = "personal")]
 pub const MAX_FAVORITES: usize = 30;
 
 impl TrackerConfig {
+    #[cfg(not(feature = "personal"))]
+    fn normalized(self) -> Self {
+        self
+    }
+
     /// Trims ids, drops empty ones and duplicates (same platform, id
     /// ignoring case), keeps at most [`MAX_FAVORITES`].
+    #[cfg(feature = "personal")]
     fn normalized(mut self) -> Self {
         let mut seen = std::collections::HashSet::new();
         self.favorites = self
@@ -212,6 +226,7 @@ pub fn config_update(app: AppHandle, patch: AppConfigPatch) -> AppResult<AppConf
 mod tests {
     use super::*;
 
+    #[cfg(feature = "personal")]
     #[test]
     fn favorites_are_cleaned() {
         let fav = |p: &str, id: &str| FavoritePlayer {

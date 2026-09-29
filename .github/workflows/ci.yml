@@ -39,9 +39,22 @@ jobs:
           bun run lint
           bunx vitest run
 
+      # Public builds must not contain the personal edition (MMR / tracker.gg,
+      # docs/PERSONAL_EDITION.md).
+      - name: Public bundle guard
+        run: |
+          bun run build
+          if grep -rlE "personal://ratings|mmr_lookup|ratings_state|tracker\.(gg|network)" dist; then
+            echo "::error::personal edition code found in the public bundle"
+            exit 1
+          fi
+
       - name: Backend
         working-directory: src-tauri
         run: |
           cargo fmt --check
           cargo clippy --all-targets -- -D warnings
           cargo test --lib
+          # The personal edition must keep compiling (never shipped).
+          cargo clippy --all-targets --features personal -- -D warnings
+          cargo test --lib --features personal

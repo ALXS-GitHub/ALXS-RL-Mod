@@ -7,7 +7,6 @@ use std::collections::HashMap;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use crate::stats::lobby::{tracker_target, LobbyRating, LobbyStatus};
 use crate::stats::protocol::{Player, StatsMessage, UpdateState};
 
 const MAX_HISTORY: usize = 100;
@@ -103,15 +102,6 @@ pub struct Totals {
     pub mvps: i32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-#[serde(rename_all = "camelCase")]
-pub struct MmrLine {
-    pub playlist: String,
-    pub baseline: i64,
-    pub latest: i64,
-    pub tier_icon: Option<String>,
-}
-
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "camelCase")]
 pub enum Connection {
@@ -136,12 +126,9 @@ pub struct SessionState {
     pub totals: Totals,
     pub matches: Vec<MatchRecord>,
     pub live: Option<LiveMatch>,
-    pub mmr: Vec<MmrLine>,
     pub connection: Connection,
     /// Player name we attribute "you" to.
     pub you_name: Option<String>,
-    /// MMR of the players of the current (or last) match.
-    pub lobby: Vec<LobbyRating>,
 }
 
 impl Default for SessionState {
@@ -155,15 +142,13 @@ impl Default for SessionState {
             totals: Totals::default(),
             matches: Vec::new(),
             live: None,
-            mmr: Vec::new(),
             connection: Connection::Idle,
             you_name: None,
-            lobby: Vec::new(),
         }
     }
 }
 
-/// Which way `apply` changed the state (drives persistence / MMR refresh).
+/// Which way `apply` changed the state (drives persistence and the hooks).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Change {
     None,
@@ -184,19 +169,10 @@ impl Tracker {
 
     pub fn reset(&mut self) {
         let connection = self.state.connection;
-        let mmr = std::mem::take(&mut self.state.mmr);
         self.state = SessionState {
             connection,
             ..Default::default()
         };
-        // Restart the MMR delta from the latest known values.
-        self.state.mmr = mmr
-            .into_iter()
-            .map(|l| MmrLine {
-                baseline: l.latest,
-                ..l
-            })
-            .collect();
     }
 
     fn resolve_you<'a>(&self, live: &LiveMatch, players: &'a [Player]) -> Option<&'a Player> {
@@ -266,70 +242,6 @@ impl Tracker {
         }
         self.state.live = Some(live);
         Change::Live
-    }
-
-    /// Aligns the lobby with the players of the live match and returns the
-    /// entries that still need a lookup. Players who left are dropped;
-    /// players without a tracker profile are marked unavailable at once.
-    pub fn sync_lobby(&mut self) -> Vec<LobbyRating> {
-        let Some(live) = self.state.live.as_ref() else {
-            return Vec::new();
-        };
-        let current: Vec<&PlayerLine> = live
-            .players
-            .iter()
-            .filter(|p| p.primary_id.is_some())
-            .collect();
-        if current.is_empty() {
-            return Vec::new();
-        }
-        let keys: Vec<&str> = current
-            .iter()
-            .filter_map(|p| p.primary_id.as_deref())
-            .collect();
-        self.state.lobby.retain(|e| keys.contains(&e.key.as_str()));
-        let mut to_lookup = Vec::new();
-        for p in current {
-            let key = p.primary_id.clone().unwrap_or_default();
-            if let Some(existing) = self.state.lobby.iter_mut().find(|e| e.key == key) {
-                existing.team = p.team;
-                continue;
-            }
-            let status = if tracker_target(&key, &p.name).is_some() {
-                LobbyStatus::Pending
-            } else {
-                LobbyStatus::Unavailable
-            };
-            let entry = LobbyRating {
-                key,
-                name: p.name.clone(),
-                team: p.team,
-                status,
-                ..Default::default()
-            };
-            if status == LobbyStatus::Pending {
-                to_lookup.push(entry.clone());
-            }
-            self.state.lobby.push(entry);
-        }
-        to_lookup
-    }
-
-    /// Stores a finished lookup (ignored if the player already left).
-    pub fn set_lobby_rating(&mut self, rating: LobbyRating) {
-        if let Some(e) = self.state.lobby.iter_mut().find(|e| e.key == rating.key) {
-            let team = e.team;
-            *e = LobbyRating { team, ..rating };
-        }
-    }
-
-    /// Players per team in the live match (1 for 1v1, 2 for 2v2…).
-    pub fn team_size(&self) -> usize {
-        self.state.live.as_ref().map_or(3, |l| {
-            let blue = l.players.iter().filter(|p| p.team == 0).count();
-            let orange = l.players.iter().filter(|p| p.team == 1).count();
-            blue.max(orange).max(1)
-        })
     }
 
     /// Closes the live match into a record. `winner` = team number.
@@ -467,24 +379,6 @@ impl Tracker {
             mvp: false,
         });
         Change::MatchRecorded
-    }
-
-    /// Merges a fresh MMR lookup: first value per playlist becomes the baseline.
-    pub fn merge_mmr(&mut self, ratings: &[(String, i64, Option<String>)]) {
-        for (playlist, rating, icon) in ratings {
-            match self.state.mmr.iter_mut().find(|l| l.playlist == *playlist) {
-                Some(line) => {
-                    line.latest = *rating;
-                    line.tier_icon = icon.clone().or(line.tier_icon.take());
-                }
-                None => self.state.mmr.push(MmrLine {
-                    playlist: playlist.clone(),
-                    baseline: *rating,
-                    latest: *rating,
-                    tier_icon: icon.clone(),
-                }),
-            }
-        }
     }
 }
 
@@ -646,56 +540,5 @@ mod tests {
         let mut t = Tracker::new(SessionState::default(), Some("mate".into()));
         play(&mut t, "a", 0, 1, 0, Some(0));
         assert_eq!(t.state.matches[0].you.as_ref().unwrap().name, "Mate");
-    }
-
-    #[test]
-    fn mmr_baseline_and_reset() {
-        let mut t = Tracker::new(SessionState::default(), None);
-        t.merge_mmr(&[("Ranked Doubles 2v2".into(), 1000, None)]);
-        t.merge_mmr(&[("Ranked Doubles 2v2".into(), 1012, Some("icon".into()))]);
-        assert_eq!(
-            (t.state.mmr[0].baseline, t.state.mmr[0].latest),
-            (1000, 1012)
-        );
-        play(&mut t, "a", 0, 1, 0, Some(0));
-        t.reset();
-        assert_eq!(t.state.wins, 0);
-        assert_eq!(t.state.mmr[0].baseline, 1012);
-    }
-    #[test]
-    fn lobby_follows_the_players_of_the_match() {
-        let mut t = Tracker::new(SessionState::default(), None);
-        let player = |name: &str, id: &str, team: i32| PlayerLine {
-            name: name.into(),
-            primary_id: Some(id.into()),
-            team,
-            ..Default::default()
-        };
-        t.state.live = Some(LiveMatch {
-            players: vec![
-                player("A", "Epic|1|0", 0),
-                player("B", "Steam|76561198000000001|0", 1),
-                player("Bot", "Unknown|0|0", 1),
-            ],
-            ..Default::default()
-        });
-        let todo = t.sync_lobby();
-        assert_eq!(todo.len(), 2);
-        assert_eq!(t.state.lobby.len(), 3);
-        assert!(t.sync_lobby().is_empty(), "no duplicate lookups");
-        t.set_lobby_rating(LobbyRating {
-            key: "Epic|1|0".into(),
-            status: LobbyStatus::Ok,
-            rating: Some(1500),
-            ..Default::default()
-        });
-        assert_eq!(t.state.lobby[0].rating, Some(1500));
-        assert_eq!(t.state.lobby[0].team, 0, "team is kept from the match");
-        if let Some(l) = t.state.live.as_mut() {
-            l.players.retain(|p| p.name != "B");
-        }
-        t.sync_lobby();
-        assert_eq!(t.state.lobby.len(), 2);
-        assert_eq!(t.team_size(), 1);
     }
 }

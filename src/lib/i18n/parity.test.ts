@@ -15,6 +15,8 @@ function baseKeys(obj: unknown): string[] {
 }
 
 const features = import.meta.glob<{ default: unknown }>("/src/features/*/locales/*.json", { eager: true });
+// Personal edition strings (loaded at runtime by src/personal/i18n.ts).
+const personal = import.meta.glob<{ default: unknown }>("/src/personal/locales/*.json", { eager: true });
 
 function namespaces(): Map<string, { en?: unknown; fr?: unknown }> {
   const map = new Map<string, { en?: unknown; fr?: unknown }>([["common", { en: commonEn, fr: commonFr }]]);
@@ -24,6 +26,13 @@ function namespaces(): Map<string, { en?: unknown; fr?: unknown }> {
     const entry = map.get(m[1]) ?? {};
     entry[m[2] as "en" | "fr"] = mod.default;
     map.set(m[1], entry);
+  }
+  for (const [path, mod] of Object.entries(personal)) {
+    const m = /\/personal\/locales\/(en|fr)\.json$/.exec(path);
+    if (!m?.[1]) continue;
+    const entry = map.get("personal") ?? {};
+    entry[m[1] as "en" | "fr"] = mod.default;
+    map.set("personal", entry);
   }
   return map;
 }

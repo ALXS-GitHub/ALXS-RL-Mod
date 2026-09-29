@@ -11,16 +11,14 @@ import { Select } from "@/components/ui/select";
 import { notify } from "@/components/ui/toast";
 import { Tooltip } from "@/components/ui/tooltip";
 import { cn } from "@/lib/cn";
-import { type AppConfig, useConfig, useUpdateConfig } from "@/lib/game";
-import { PLATFORMS, type Platform } from "../api";
-import { useMmrLookup, useTrackerSession } from "../queries";
+import { useConfig, useUpdateConfig } from "@/lib/game";
+import { type PersonalTracker, PLATFORMS, type Platform, personalTrackerSchema } from "../api";
+import { useMmrLookup, useRatings } from "../queries";
 
 interface Target {
   platform: Platform;
   player: string;
 }
-
-type TrackerConfig = AppConfig["tracker"];
 
 function isPlatform(v: string | null | undefined): v is Platform {
   return Boolean(v && (PLATFORMS as readonly string[]).includes(v));
@@ -49,7 +47,7 @@ function PlayerChip({
   onRemove?: () => void;
   removeLabel?: string;
 }) {
-  const { t } = useTranslation("tracker");
+  const { t } = useTranslation("personal");
   return (
     <span
       className={cn(
@@ -82,14 +80,14 @@ function PlayerChip({
 
 /** The "MMR" tab: tracker.gg lookup, your profile and favorite players. */
 export function MmrView() {
-  const { t } = useTranslation("tracker");
+  const { t } = useTranslation("personal");
   const { data: config } = useConfig();
   const updateConfig = useUpdateConfig();
-  const { data: session } = useTrackerSession();
+  const { data: ratings } = useRatings();
   const [platform, setPlatform] = useState<Platform>("epic");
   const [player, setPlayer] = useState("");
   const [submitted, setSubmitted] = useState<Target | null>(null);
-  const tracker = config?.tracker;
+  const tracker = config ? personalTrackerSchema.parse(config.tracker) : undefined;
   const favorites = tracker?.favorites ?? [];
 
   const show = useCallback((target: Target) => {
@@ -109,7 +107,7 @@ export function MmrView() {
 
   const lookup = useMmrLookup(submitted?.platform ?? null, submitted?.player ?? null);
 
-  const saveTracker = (next: Partial<TrackerConfig>) => {
+  const saveTracker = (next: Partial<PersonalTracker>) => {
     if (!tracker) return;
     updateConfig.mutate({ tracker: { ...tracker, ...next } });
   };
@@ -133,7 +131,7 @@ export function MmrView() {
     });
   };
 
-  const deltas = new Map((session?.mmr ?? []).map((l) => [l.playlist, l.latest - l.baseline]));
+  const deltas = new Map((ratings?.mmr ?? []).map((l) => [l.playlist, l.latest - l.baseline]));
   const profileUrl = submitted
     ? `https://rocketleague.tracker.network/rocket-league/profile/${submitted.platform}/${encodeURIComponent(submitted.player)}/overview`
     : null;

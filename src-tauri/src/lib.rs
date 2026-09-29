@@ -20,6 +20,8 @@ pub mod swap;
 pub mod extras;
 pub mod maps;
 pub mod market;
+#[cfg(feature = "personal")]
+pub mod personal;
 pub mod stats;
 
 use std::sync::RwLock;
@@ -51,8 +53,9 @@ pub fn run() {
             }
         }));
     }
-    // Release builds only: dev builds have no signed update to install.
-    #[cfg(not(debug_assertions))]
+    // Release builds only: dev builds have no signed update to install, and
+    // the personal edition must never be replaced by a public release.
+    #[cfg(all(not(debug_assertions), not(feature = "personal")))]
     {
         builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
     }
@@ -188,12 +191,16 @@ pub fn run() {
             stats::commands::stats_disable,
             stats::commands::tracker_session,
             stats::commands::tracker_reset,
-            stats::commands::mmr_lookup,
             stats::commands::overlay_open,
             stats::commands::overlay_close,
+            // Personal edition only (docs/PERSONAL_EDITION.md).
+            #[cfg(feature = "personal")]
+            personal::commands::mmr_lookup,
+            #[cfg(feature = "personal")]
+            personal::commands::ratings_state,
         ])
-        // Closing the main window quits the app: the hidden tracker.gg
-        // browser and the overlay are helper windows and must not keep a
+        // Closing the main window quits the app: the overlay (and, in the
+        // personal edition, the hidden tracker.gg browser) are helper windows and must not keep a
         // windowless process alive (a new launch would be handed to it and
         // show nothing).
         .on_window_event(|window, event| {

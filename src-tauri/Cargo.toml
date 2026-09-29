@@ -16,6 +16,11 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
 
+[features]
+# Personal edition: MMR features (tracker.gg lookups), never in public
+# releases. See docs/PERSONAL_EDITION.md.
+personal = []
+
 [dependencies]
 # App framework
 tauri = { version = "2", features = ["protocol-asset"] }

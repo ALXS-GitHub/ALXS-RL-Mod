@@ -8,8 +8,15 @@ import { defineConfig } from "vite";
 const DEV_HOST = "127.0.0.1";
 const DEV_PORT = 1420;
 
+// Personal edition (docs/PERSONAL_EDITION.md): `ALXS_EDITION=personal` at
+// build time. The public build sees a literal `false`, so every
+// `__ALXS_PERSONAL__ ? lazy(() => import("@/personal/…")) : null` gate and
+// the code behind it are dropped from the bundle.
+const PERSONAL = process.env.ALXS_EDITION === "personal";
+
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  define: { __ALXS_PERSONAL__: JSON.stringify(PERSONAL) },
   resolve: {
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
   },

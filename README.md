@@ -37,7 +37,7 @@ can be undone in one click.
 | **Color palettes** | Replace the game's primary and accent color pickers with your own palette. |
 | **Workshop maps** | A library of community maps (bakkesplugins, Lethamyr, your own files). A map replaces a Labs arena, even while the game runs, and the original comes back in one click. |
 | **Presets** | Save a whole loadout (swaps, palette, decal, map) and switch in one click; share it with a code. |
-| **Match tracker** | Session record, live match and an in-game overlay from the game's official Stats API. Optional MMR and lobby ranks from tracker.gg. |
+| **Match tracker** | Session record, live match and an in-game overlay from the game's official Stats API. |
 | **BakkesMod import** | Bring your Workshop maps, AlphaConsole decal packs and balls into the app, converted to real-color decals if you want. |
 | **Safe by design** | Backups for every file, "restore the stock game" in one click, automatic rebuild after game updates, auto-updates of the app itself. |
 
@@ -91,8 +91,8 @@ palette, decals and ball automatically (you can turn that off in Settings).
 the app: the uninstaller puts the original files back first.
 
 **Where are my files?** `%LOCALAPPDATA%\ALXS-RL-Mod` (backups, libraries, logs, settings).
-Nothing is sent anywhere; network calls only happen when you download a map, look up a
-rank on tracker.gg (optional) or check for app updates.
+Nothing is sent anywhere; network calls only happen when you download a map, a pack or
+the keys, or check for app updates.
 
 ## Build from source
 
@@ -123,7 +123,6 @@ Never share your `keys.txt`.
 - AlphaConsole and its community of pack creators for the decal pack format.
 - The Rocket League modding community for the package format research and tools (RLUPKTool).
 - [bakkesplugins.com](https://bakkesplugins.com) and [Lethamyr](https://lethamyr.com) for the community maps.
-- [tracker.gg](https://rocketleague.tracker.network) for public rank data (optional feature).
 
 ## Disclaimer
 

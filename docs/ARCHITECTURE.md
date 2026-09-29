@@ -11,8 +11,9 @@ the official Stats API.
 
 1. **Local first.** The item catalog is built from the user's own install
    (`CookedPCConsole/`) + a bundled product list. No catalog API, no CDN.
-   Outbound HTTPS is limited to an allowlist of safe hosts (tracker.gg,
-   bakkesplugins, Lethamyr) and only on explicit user action.
+   Outbound HTTPS is limited to an allowlist of safe hosts (map sources,
+   marketplace, key list) and only on explicit user action. No MMR in the
+   public edition (see `docs/PERSONAL_EDITION.md`).
 2. **Never intercept the game.** No certificates, no hosts file, no proxy.
    Spoof features that need traffic interception (fake ranks, titles, name…)
    are out of scope by design.
@@ -60,7 +61,8 @@ src-tauri/
   src/ball/              custom ball texture (standard ball, AlphaConsole BallTextures packs)
   src/maps/              map library, sources, Labs arena swap, offline sessions
   src/market/            marketplace: AlphaConsole + RL-Designer decal/ball packs → libraries
-  src/stats/             Stats API (ini + websocket), session tracker, MMR, overlay
+  src/stats/             Stats API (ini + websocket), session tracker, overlay, hooks
+  src/personal/          personal edition only (`--features personal`): MMR via tracker.gg
   src/extras/            replays, BakkesMod (offline) detection, launch
 ```
 
@@ -190,7 +192,7 @@ Errors always serialize as `{ kind: string, message: string }`.
 - `launch_game(with_eac: bool) -> LaunchResult`
 - `stats_status() -> StatsStatus` · `stats_enable()` · `stats_disable()` (on by default: enabled at startup unless the user turned it off, `config.statsApiOptOut`)
 - `tracker_session() -> SessionState` · `tracker_reset()`
-- `mmr_lookup(platform, player) -> Vec<PlaylistRating>` — refused with `RatingsDisabled` until `tracker.onlineRatings` is turned on (tracker.gg pages are not an official API)
+- Personal edition only (`--features personal`, `docs/PERSONAL_EDITION.md`): `mmr_lookup(platform, player) -> MmrProfile` (refused with `RatingsDisabled` until `tracker.onlineRatings` is on) · `ratings_state() -> RatingsState` · event `personal://ratings`. The tracker calls the personal edition only through `stats::hooks`.
 - `overlay_open()` · `overlay_close()`
 - `replays_list() -> Vec<ReplayFile>` · `bakkesmod_status() -> BakkesStatus`
 - events `maps://download`, `stats://event`, `tracker://session`
@@ -223,7 +225,7 @@ Errors always serialize as `{ kind: string, message: string }`.
 | foundation | `base/`, `game/` (minus launch), `lib.rs`, configs | `app/`, `components/`, `lib/`, `stores/`, `styles/`, `features/home`, `features/settings` |
 | engine | `upk/`, `palette/`, `decals/` | `features/palette`, `features/decals` |
 | catalog | `catalog/`, `swap/`, `presets/`, `integrity/` | `features/items`, `features/presets` |
-| play | `maps/`, `stats/`, `extras/` | `features/maps`, `features/play` (launch), `features/tracker` (session, MMR, overlay), `features/extras` |
+| play | `maps/`, `stats/`, `extras/` | `features/maps`, `features/play` (launch), `features/tracker` (session, overlay; MMR in `src/personal`, personal edition only), `features/extras` |
 
 Slices never edit files owned by another slice. Needed changes to shared
 files (`lib.rs`, `Cargo.toml`, `package.json`, `components/ui`) are reported
@@ -352,10 +354,12 @@ failures: {feature, message}[], checkedAt: RFC3339 }`, emitted on
   from the asset name (FNV-1a, high bit set). Psyonix's numeric product ids
   are not in the local files; the few that matter (bodies, for AlphaConsole
   `BodyID`) are constants in `decals::targets`.
-- **MMR** comes from tracker.gg public profiles, loaded in a hidden WebView2
-  window (`stats::browser`): a real browser, so Cloudflare is not bypassed.
+- **MMR** exists only in the personal edition (`docs/PERSONAL_EDITION.md`):
+  tracker.gg forbids automated access and has no Rocket League API, so the
+  public releases have none. It comes from tracker.gg profiles, loaded in a
+  hidden WebView2 window (`personal::browser`).
   The remote page has no capability; results come back through an
   intercepted navigation to `https://alxs-result.invalid/`. Lobby players
-  are resolved from the Stats API `PrimaryId` (`stats::lobby`). Reading the
+  are resolved from the Stats API `PrimaryId` (`personal::lobby`). Reading the
   game's own traffic (what VelocityRL does) is out of scope: it needs a
   trusted MITM certificate and impersonating the game client.

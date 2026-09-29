@@ -29,6 +29,9 @@ export function UpdateDialog() {
 
   const runCheck = useCallback(
     async (manual: boolean) => {
+      // The personal edition never updates itself: a public release would
+      // replace it (docs/PERSONAL_EDITION.md).
+      if (__ALXS_PERSONAL__) return;
       try {
         const update = await check();
         if (update) setPhase({ kind: "available", update });

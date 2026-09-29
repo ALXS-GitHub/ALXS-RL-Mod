@@ -117,7 +117,13 @@ export const NAV: readonly NavItem[] = [
     labelKey: "nav.tracker",
     icon: Activity,
     section: "stats",
-    keywords: ["tracker", "mmr", "overlay", "stats", "session", "rank", "rang"],
+    keywords: [
+      "tracker",
+      "overlay",
+      "stats",
+      "session",
+      ...(__ALXS_PERSONAL__ ? ["mmr", "rank", "rang"] : []),
+    ],
   },
   {
     to: "/extras",

@@ -29,13 +29,17 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; img-src 'self' asset: http://asset.localhost data: blob: https://trackercdn.com https://cdn.bakkesplugins.com https://bakkesplugins.com https://lethamyr.com https://s3.alphaconsole.io https://raw.githubusercontent.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost; script-src 'self'",
+      "csp": "default-src 'self'; img-src 'self' asset: http://asset.localhost data: blob: https://cdn.bakkesplugins.com https://bakkesplugins.com https://lethamyr.com https://s3.alphaconsole.io https://raw.githubusercontent.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost; script-src 'self'",
       "assetProtocol": {
         "enable": true,
         "scope": [
           "$LOCALDATA/ALXS-RL-Mod/**"
         ]
-      }
+      },
+      "capabilities": [
+        "default",
+        "overlay"
+      ]
     }
   },
   "bundle": {

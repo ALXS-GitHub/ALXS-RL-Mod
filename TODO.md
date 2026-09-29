@@ -10,7 +10,7 @@ Les choses auxquelles je pense au fur et à mesure qu'il faudrait faire :
 - [ ] Voir si c'est possible aussi du coup de pouvoir choisir sur quel item on fait le swap (plutot que le defaut vortex et standard (et pour le sticker je sais pas.))
 - [ ] Option pour enlever le bruit des crossbar
 - [ ] Plugin pour la vitesse de la balle (mais ça je pense impossible à faire sans injection)
-- [ ] Travailler l'overlay et le display des stats (aussi display mmr? -> déjà implémenté normalement mais il faut juste verrifier et améliorer)
+- [ ] Travailler l'overlay et le display des stats (le MMR n'existe plus que dans l'édition perso, voir `docs/PERSONAL_EDITION.md`)
 - [x] decal balle custom (page Balle, à tester en jeu)
 - [x] Decals custom « full color » — fait le 2026-09-27 : stickers hybrides (zones peintes + vraies couleurs), validés en jeu sur l'Octane. Les anciennes notes de `docs_rl/custom_decals*.md` sont dépassées.
 - [ ] Tests en jeu à faire (2026-09-27), un par un, jeu fermé pour appliquer :
@@ -37,7 +37,7 @@ Les choses auxquelles je pense au fur et à mesure qu'il faudrait faire :
 - [ ] Venom / Road Hog / Esper : pas de donneur hybride ; piste = donneur Octane (ClassyLady) avec les textures de carrosserie re-pointées vers celles de la voiture.
 - [ ] Publication grand public (2026-09-28) :
   1. [fait 2026-09-29] **Keys** (option retenue) : ne pas les livrer ni les héberger. Page Clés avec 2 choix : « Télécharger » (fichier `aes.txt` de Toga-Files, via `base::security`) ou « Importer mon fichier ». Proposer le téléchargement de lui-même quand des items n'ont pas de clé après une mise à jour du jeu. Validation à la réception : HTTPS + hôte autorisé, taille max, format strict ligne par ligne (nom de package + clé base64 de 32 octets), fusion sans écraser les clés existantes, et surtout ne garder qu'une clé qui **déchiffre vraiment** le package du même nom dans l'install (en-tête et table des noms lisibles). Afficher « N nouvelles clés ».
-  2. **MMR** : à rechercher encore (l'utilisateur n'est pas satisfait des pistes). Pistes vues : API tracker.gg officielle refusée pour Rocket League ; interception réseau hors de question ; Stats API sans MMR ; `Launch.log` écrit `PartyLeaderMMR` / `PartyLeaderTier` / playlist à chaque recherche de match (le sien seulement, valeur interne, conversion ×20+100 à confirmer) ; ballchasing.com (replays seulement). Le navigateur caché tracker.gg reste en attendant.
+  2. [décidé 2026-09-29] **MMR** : retiré des releases publiques (aucune source autorisée : tracker.gg interdit le scraping et n'a pas d'API Rocket League ; proxy façon Velocity exclu). Gardé pour l'usage perso dans l'édition perso (`--features personal`, `bun run prod:personal`), détails et garde-fous CI dans `docs/PERSONAL_EDITION.md`.
   3. Signer l'installeur (SmartScreen, antivirus) : SignPath Foundation (gratuit open source) ou service payant, à étudier.
   4. Mentions « non affilié à Psyonix / Epic » et « à vos risques » (site, README, premier lancement) ; pas de logo officiel.
   5. alphaconsole.io : le marketplace lit leur page HTML ; leur demander l'accord.

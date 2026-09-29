@@ -1,12 +1,12 @@
 //! Match tracker built on the official Stats API: enabling it (user ini),
-//! the WebSocket client, the session tracker, MMR lookups and the overlay.
+//! the WebSocket client, the session tracker and the overlay.
+//! MMR features are not here: they live in the personal edition
+//! (`crate::personal`, `--features personal`), reached through `hooks`.
 
-pub mod browser;
 pub mod client;
 pub mod commands;
+pub mod hooks;
 pub mod ini;
-pub mod lobby;
-pub mod mmr;
 pub mod overlay;
 pub mod protocol;
 pub mod tracker;
@@ -30,6 +30,7 @@ pub fn init(app: &AppHandle) -> AppResult<()> {
     )));
     app.manage(StatsState(shared.clone()));
     client::spawn(app.clone(), shared);
+    hooks::init(app);
     enable_by_default(app);
     Ok(())
 }

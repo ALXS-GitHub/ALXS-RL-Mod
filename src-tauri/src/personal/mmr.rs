@@ -1,7 +1,7 @@
 //! Public MMR lookup on tracker.gg (read-only, no login).
 //!
 //! tracker.gg sits behind Cloudflare, which rejects plain HTTP clients, so
-//! the lookup runs in a hidden real browser (`stats::browser`) that opens the
+//! the lookup runs in a hidden real browser (`personal::browser`) that opens the
 //! public profile page like the user would. No protection is bypassed.
 
 use serde::Serialize;
@@ -9,7 +9,7 @@ use tauri::AppHandle;
 
 use crate::base::error::{AppError, AppResult};
 use crate::base::security::{ensure_allowed, Purpose};
-use crate::stats::browser;
+use crate::personal::browser;
 
 const API: &str = "https://api.tracker.gg/api/v2/rocket-league/standard/profile";
 const PAGE: &str = "https://rocketleague.tracker.network/rocket-league/profile";

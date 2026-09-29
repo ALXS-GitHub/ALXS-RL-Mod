@@ -1,7 +1,8 @@
 //! Outbound network policy.
 //!
 //! The app is local-first: the only network calls are explicit user actions
-//! against a short allowlist (map sources, marketplace, key list, MMR lookup). Every request goes
+//! against a short allowlist (map sources, marketplace, key list; tracker.gg
+//! MMR lookups only in the personal edition). Every request goes
 //! through [`http_client`] + [`ensure_allowed`] so the policy lives in one
 //! place and can be audited at a glance.
 
@@ -16,7 +17,8 @@ use crate::base::error::{AppError, AppResult};
 pub enum Purpose {
     /// Community map listings and downloads.
     Maps,
-    /// Public MMR lookup (read-only, no login).
+    /// tracker.gg MMR lookups — personal edition only.
+    #[cfg(feature = "personal")]
     Ratings,
     /// Opening a link in the user's browser.
     Browse,
@@ -32,11 +34,23 @@ const MAP_HOSTS: &[&str] = &["bakkesplugins.com", "lethamyr.com", "rocketleaguem
 const MARKET_HOSTS: &[&str] = &["alphaconsole.io", "raw.githubusercontent.com"];
 /// GitHub raw files (the key list URL itself is a constant).
 const KEY_HOSTS: &[&str] = &["raw.githubusercontent.com"];
+#[cfg(feature = "personal")]
 const RATING_HOSTS: &[&str] = &[
     "api.tracker.gg",
     "tracker.gg",
     "rocketleague.tracker.network",
 ];
+#[cfg(not(feature = "personal"))]
+const BROWSE_HOSTS: &[&str] = &[
+    "rocketleague.com",
+    "bakkesplugins.com",
+    "lethamyr.com",
+    "ballchasing.com",
+    "github.com",
+    "alphaconsole.io",
+];
+/// Personal edition: tracker.gg profiles can be opened too.
+#[cfg(feature = "personal")]
 const BROWSE_HOSTS: &[&str] = &[
     "rocketleague.com",
     "bakkesplugins.com",
@@ -51,6 +65,7 @@ const BROWSE_HOSTS: &[&str] = &[
 fn hosts_for(purpose: Purpose) -> &'static [&'static str] {
     match purpose {
         Purpose::Maps => MAP_HOSTS,
+        #[cfg(feature = "personal")]
         Purpose::Ratings => RATING_HOSTS,
         Purpose::Browse => BROWSE_HOSTS,
         Purpose::Market => MARKET_HOSTS,
@@ -124,6 +139,8 @@ mod tests {
         assert!(ensure_allowed("https://127.0.0.1/", Purpose::Maps).is_err());
         assert!(ensure_allowed("https://u:p@bakkesplugins.com", Purpose::Maps).is_err());
         assert!(ensure_allowed("https://api.tracker.gg/x", Purpose::Maps).is_err());
+        #[cfg(not(feature = "personal"))]
+        assert!(ensure_allowed("https://tracker.gg/x", Purpose::Browse).is_err());
         assert!(
             ensure_allowed("https://s3.alphaconsole.io/uploads/x.zip", Purpose::Market).is_ok()
         );

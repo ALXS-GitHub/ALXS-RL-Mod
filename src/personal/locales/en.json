@@ -1,0 +1,48 @@
+{
+  "mmr": {
+    "title": "MMR",
+    "placeholder": "Epic name, Steam ID…",
+    "lookup": "Look up",
+    "hint": "Public data from tracker.gg.",
+    "empty": "Enter your platform and ID to see your ranks.",
+    "unranked": "Unranked",
+    "session": "this session",
+    "openTracker": "Open on tracker.gg",
+    "platforms": {
+      "epic": "Epic",
+      "steam": "Steam",
+      "psn": "PlayStation",
+      "xbl": "Xbox",
+      "switch": "Switch"
+    },
+    "favorite": "Add to favorites",
+    "unfavorite": "Remove from favorites",
+    "setMine": "Set as my profile",
+    "off": {
+      "title": "Online ratings are off",
+      "body": "MMR, ranks and lobby ranks come from tracker.gg's public pages (read by the app like a browser would). This is not an official API: turn it on only if you're fine with that. Nothing is sent except the player ids you look up.",
+      "enable": "Turn on online ratings"
+    }
+  },
+  "lobby": {
+    "title": "Players in this match",
+    "average": "avg {{value}}",
+    "loading": "Looking up",
+    "unavailable": "private / n.a.",
+    "source": "Ranks from tracker.gg public profiles, matched with the ids the Stats API gives for each player.",
+    "blue": "Blue",
+    "orange": "Orange"
+  },
+  "tabs": {
+    "mmr": "MMR"
+  },
+  "stats": {
+    "mmr": "MMR (session)",
+    "mmrHint": "Set your profile in the MMR tab"
+  },
+  "edition": "Personal edition",
+  "noUpdates": "Personal edition: no automatic updates. Rebuild it from the sources (docs/PERSONAL_EDITION.md).",
+  "errors": {
+    "RatingsDisabled": "Online ratings are off: turn them on in the MMR tab to use tracker.gg."
+  }
+}

@@ -284,10 +284,14 @@ export function SettingsPage() {
             <span className="font-mono text-sm tabular-nums text-fg-muted">
               {info.data ? `v${info.data.version}${info.data.debug ? " · dev" : ""}` : "…"}
             </span>
-            <Button size="sm" variant="secondary" onClick={requestUpdateCheck}>
-              <RefreshCw />
-              {t("about.checkUpdates")}
-            </Button>
+            {__ALXS_PERSONAL__ ? (
+              <span className="text-xs text-fg-subtle">{t("personal:noUpdates")}</span>
+            ) : (
+              <Button size="sm" variant="secondary" onClick={requestUpdateCheck}>
+                <RefreshCw />
+                {t("about.checkUpdates")}
+              </Button>
+            )}
           </Field>
           <Field label={t("about.data")} description={info.data?.dataDir}>
             <Button

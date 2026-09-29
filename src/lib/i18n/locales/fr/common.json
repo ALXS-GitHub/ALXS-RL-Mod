@@ -107,8 +107,7 @@
     "Io": "Erreur disque.",
     "Serde": "Données corrompues.",
     "Internal": "Erreur inattendue.",
-    "Validation": "Réponse inattendue du cœur de l'app.",
-    "RatingsDisabled": "Les classements en ligne sont désactivés : active-les dans l'onglet MMR pour utiliser tracker.gg."
+    "Validation": "Réponse inattendue du cœur de l'app."
   },
   "fx": {
     "pausedByGame": "Effets visuels en pause pendant que tu joues"

@@ -1,0 +1,21 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "personal",
+  "description": "Personal edition only (docs/PERSONAL_EDITION.md): open tracker.gg profiles. Not enabled by tauri.conf.json.",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "https://rocketleague.tracker.network/*"
+        },
+        {
+          "url": "https://tracker.gg/*"
+        }
+      ]
+    }
+  ]
+}

@@ -107,8 +107,7 @@
     "Io": "Disk error.",
     "Serde": "Corrupted data.",
     "Internal": "Unexpected error.",
-    "Validation": "Unexpected answer from the app core.",
-    "RatingsDisabled": "Online ratings are off: turn them on in the MMR tab to use tracker.gg."
+    "Validation": "Unexpected answer from the app core."
   },
   "fx": {
     "pausedByGame": "Visual effects paused while you play"

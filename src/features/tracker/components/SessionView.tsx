@@ -1,5 +1,6 @@
 import { Crown, Flame, Info, RotateCcw, Snowflake, Trophy } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,16 +9,13 @@ import { Stat } from "@/components/ui/layout";
 import { Tooltip } from "@/components/ui/tooltip";
 import { cn } from "@/lib/cn";
 import { formatDateTime, formatRelative } from "@/lib/format";
-import {
-  arenaLabel,
-  formatClock,
-  type LiveMatch,
-  type MatchRecord,
-  type SessionState,
-  topMmrDelta,
-} from "../api";
+import { arenaLabel, formatClock, type LiveMatch, type MatchRecord, type SessionState } from "../api";
 import { useResetSession, useStatsStatus, useTrackerSession } from "../queries";
-import { LobbyPanel } from "./LobbyPanel";
+
+// Personal edition only (docs/PERSONAL_EDITION.md): your MMR and the lobby ranks.
+const SessionRatings = __ALXS_PERSONAL__
+  ? lazy(() => import("@/personal/tracker").then((m) => ({ default: m.SessionRatings })))
+  : null;
 
 function WinRing({ wins, losses }: { wins: number; losses: number }) {
   const { t } = useTranslation("tracker");
@@ -187,7 +185,6 @@ function MatchPill({ m }: { m: MatchRecord }) {
 
 function SessionBody({ s }: { s: SessionState }) {
   const { t } = useTranslation("tracker");
-  const mmr = topMmrDelta(s.mmr);
   const played = s.matches.length;
   return (
     <div className="flex flex-col gap-5">
@@ -201,12 +198,7 @@ function SessionBody({ s }: { s: SessionState }) {
           <Stat label={t("stats.bestStreak")} value={s.bestStreak} hint={<StreakBadge streak={s.streak} />} />
           <Stat label={t("stats.avgScore")} value={played ? Math.round(s.totals.score / played) : "—"} />
           <Stat label={t("stats.shots")} value={s.totals.shots} />
-          <Stat
-            label={t("stats.mmr")}
-            value={mmr ? `${mmr.delta >= 0 ? "+" : ""}${mmr.delta}` : "—"}
-            tone={mmr ? (mmr.delta >= 0 ? "success" : "danger") : "default"}
-            hint={mmr ? `${mmr.playlist} · ${mmr.latest}` : t("stats.mmrHint")}
-          />
+          <Stat label={t("stats.demos")} value={s.totals.demos} />
         </div>
       </div>
 
@@ -222,7 +214,11 @@ function SessionBody({ s }: { s: SessionState }) {
         ) : null}
       </AnimatePresence>
 
-      <LobbyPanel lobby={s.lobby} />
+      {SessionRatings ? (
+        <Suspense fallback={null}>
+          <SessionRatings />
+        </Suspense>
+      ) : null}
 
       <div>
         <div className="mb-2 flex items-center justify-between">
@@ -245,7 +241,7 @@ function SessionBody({ s }: { s: SessionState }) {
   );
 }
 
-/** The "Session" tab: this session's record, live match, lobby and matches. */
+/** The "Session" tab: this session's record, live match and matches. */
 export function SessionView({ onOpenTracker }: { onOpenTracker: () => void }) {
   const { t } = useTranslation("tracker");
   const session = useTrackerSession();

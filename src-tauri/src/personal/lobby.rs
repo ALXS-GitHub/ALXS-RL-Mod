@@ -3,11 +3,11 @@
 //! The Stats API gives every player's `PrimaryId` (`Epic|<id>|0`,
 //! `Steam|<steamid64>|0`, `PS4|…`, `XboxOne|…`, `Switch|…`). That is mapped to
 //! a tracker.gg profile and looked up through the hidden browser. Pure
-//! helpers live here; `client.rs` schedules the lookups.
+//! helpers live here; `personal::service` schedules the lookups.
 
 use serde::{Deserialize, Serialize};
 
-use crate::stats::mmr::PlaylistRating;
+use crate::personal::mmr::PlaylistRating;
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "camelCase")]

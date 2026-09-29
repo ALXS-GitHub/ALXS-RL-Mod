@@ -4,6 +4,9 @@ import "./styles/globals.css";
 import "./lib/i18n";
 import { App } from "./app/App";
 
+// Personal edition only (docs/PERSONAL_EDITION.md): its strings, used by the shell too.
+if (__ALXS_PERSONAL__) void import("./personal/i18n");
+
 /**
  * Two windows share this bundle:
  * - the main app (default),
