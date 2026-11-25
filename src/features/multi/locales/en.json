@@ -23,7 +23,10 @@
     "rocketPlugin": {
       "missing": "Not installed: add it from BakkesMod's plugin manager.",
       "loaded": "Installed and loaded.",
-      "notLoaded": "Installed but not loaded at start-up (plugins.cfg): enable it in BakkesMod."
+      "notLoaded": "Installed but not loaded at start-up (plugins.cfg): enable it in BakkesMod.",
+      "install": "Install",
+      "installerOpened": "BakkesMod's plugin installer is open",
+      "installerHint": "Confirm the installation there, then refresh this list."
     },
     "rcon": {
       "label": "Remote control",
@@ -49,20 +52,32 @@
   },
   "host": {
     "title": "Host a game",
-    "description": "Installs the map, starts the game and BakkesMod, opens the game on Rocket Plugin, then gives you a code for your friends.",
+    "description": "Pick a map and the Labs arena it replaces. The app installs it (unless it is already there), starts the game and BakkesMod, opens the game on Rocket Plugin, then gives you a code for your friends.",
     "pickMap": "Choose a map",
     "noMaps": "Your map library is empty: add a map in Maps first.",
     "target": "Replaces the {{arena}} arena",
-    "cta": "Host"
+    "cta": "Host",
+    "map": "Map",
+    "arena": "Arena replaced",
+    "alreadyThere": "Already installed over {{arena}}: nothing to rewrite.",
+    "willInstall": "Will be installed over the {{arena}} arena while you play.",
+    "arenaShared": "The arena is in the invite code: your friends' app uses the same one. If someone installs the map by hand, tell them which arena."
   },
   "join": {
     "title": "Join a friend",
-    "description": "Paste the code from the host: the app installs the same map, starts the game and BakkesMod, then joins.",
+    "description": "Paste the code from the host. The app checks you have the same map and offers the download if needed; Join then installs it over the host's arena, starts the game and BakkesMod, and connects.",
     "paste": "Paste",
     "from": "Hosted by {{host}} ({{address}})",
-    "autoDownload": "Downloaded from bakkesplugins if you do not have it.",
-    "needsFile": "Imported map: you need the same file in your library (ask the host).",
-    "cta": "Join"
+    "cta": "Join",
+    "arenaHint": "Arena chosen by the host",
+    "alreadyThere": "Already installed over {{arena}}: nothing to reinstall.",
+    "inLibrary": "In your library ({{name}}): installed over {{arena}} when you join.",
+    "missingDownload": "Not in your library. It is on bakkesplugins: download it first.",
+    "missingImport": "Not in your library and the host imported it from a file: ask them for it, then import it in Maps.",
+    "download": "Download the map",
+    "downloading": "Downloading… {{percent}} %",
+    "downloaded": "\"{{name}}\" added to your library",
+    "openMaps": "Open Maps"
   },
   "session": {
     "role": {
@@ -70,7 +85,6 @@
       "join": "Joining"
     },
     "phase": {
-      "downloadingMap": "Downloading the map",
       "installingMap": "Installing the map",
       "launchingGame": "Starting the game",
       "startingBakkes": "Starting BakkesMod",
@@ -108,5 +122,42 @@
     },
     "copy": "Copy the policy",
     "open": "Open Access controls"
+  },
+  "guide": {
+    "title": "Installation guide",
+    "subtitle": "for you and your friends",
+    "steps": {
+      "tailscale": {
+        "title": "Tailscale (every player)",
+        "link": "Download",
+        "body": "Install Tailscale and sign in with a personal account (Google, Microsoft, GitHub…).\nThe host invites the others from the admin console: Users → Invite users. Each friend accepts with their own account, then installs Tailscale and signs in.\nThe host locks the tailnet down with the policy of the \"Lock Tailscale down to the game\" section below.\nCheck: every PC shows up in \"Tailnet devices\" on this page, and \"tailscale ping <pc name>\" answers."
+      },
+      "bakkes": {
+        "title": "BakkesMod (every player)",
+        "link": "Download",
+        "body": "Download BakkesModSetup.exe from the latest release, install it, then start it once: it updates itself.\nBakkesMod only works when the game runs without Easy Anti-Cheat: this page starts the game that way for you.\nAfter a Rocket League update, wait for BakkesMod's own update before playing (its window says it is out of date meanwhile)."
+      },
+      "rocketPlugin": {
+        "title": "Rocket Plugin (every player)",
+        "link": "bakkesplugins page",
+        "body": "Click Install next to Rocket Plugin in \"Before playing\": BakkesMod's plugin installer opens and asks you to confirm.\nWithout it, open the plugin's bakkesplugins page and use its Install button.\nIn game, BakkesMod (F2) → Plugins shows whether Rocket Plugin is enabled; its own window has a key you can set there."
+      },
+      "app": {
+        "title": "ALXS-RL-Mod (every player)",
+        "body": "Each player needs this app, ideally the same version: it installs the map, starts everything and turns the invite code into a connection.\nOn each PC, open this page once: the checklist must be all green before hosting or joining."
+      },
+      "maps": {
+        "title": "The map",
+        "body": "The host adds maps in the Maps page (bakkesplugins download or file import).\nEveryone needs the exact same file. Maps from bakkesplugins: friends get a Download button after pasting the code. Imported maps: the host sends the file, friends import it in Maps.\nThe host chooses which Labs arena the map replaces. It travels in the invite code, so the friends' app uses the same arena automatically.\nA map already installed over that arena is not rewritten."
+      },
+      "play": {
+        "title": "Playing",
+        "body": "Host: choose the map and the arena, click Host, wait for \"Rocket Plugin command sent\", then copy the invite code and send it.\nFriends: paste the code, download the map if asked, then click Join.\nWhen the game closes, the stock arena comes back (if enabled in Settings)."
+      },
+      "trouble": {
+        "title": "If something goes wrong",
+        "body": "\"Finish in the game\": open the BakkesMod console (F6) and paste the command shown.\nFriends time out: the host must already be in the game; Windows' firewall must allow Rocket League on the network type Tailscale uses; try \"tailscale ping\".\n\"Content mismatch\": not the same map file on both sides — get the host's file."
+      }
+    }
   }
 }

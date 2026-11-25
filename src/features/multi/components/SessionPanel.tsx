@@ -9,7 +9,7 @@ import { cn } from "@/lib/cn";
 import type { MultiSession, Phase } from "../api";
 import { useCancelSession } from "../queries";
 
-/** Automatic steps, in order (`downloadingMap` only happens when joining). */
+/** Automatic steps, in order. */
 const STEPS: readonly Phase[] = [
   "installingMap",
   "launchingGame",
@@ -19,7 +19,6 @@ const STEPS: readonly Phase[] = [
 ];
 
 function stepIndex(phase: Phase): number {
-  if (phase === "downloadingMap") return 0;
   return STEPS.indexOf(phase);
 }
 
@@ -76,10 +75,7 @@ export function SessionPanel({ session }: { session: MultiSession }) {
         {STEPS.map((step, i) => {
           const isDone = done || i < current;
           const isCurrent = !done && !stopped && i === current;
-          const label =
-            step === "installingMap" && session.phase === "downloadingMap"
-              ? t("session.phase.downloadingMap")
-              : t(`session.phase.${step}`);
+          const label = t(`session.phase.${step}`);
           return (
             <li
               key={step}

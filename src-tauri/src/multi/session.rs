@@ -2,8 +2,9 @@
 //! game over Tailscale.
 //!
 //! Steps (run in the background, progress on `multi://session`):
-//! 1. resolve the map (join: from the library, else downloaded from
-//!    bakkesplugins) and install it over the Labs arena (`maps::session`);
+//! 1. install the map over the Labs arena the host picked (`maps::session`;
+//!    nothing is rewritten when that map is already on that arena). Joining
+//!    never downloads: the page offers the download first ([`check`]);
 //! 2. set up BakkesMod's RCON if the game is not running yet;
 //! 3. start the game without EAC, then BakkesMod's injector (the app never
 //!    injects anything itself);
@@ -25,8 +26,8 @@ use crate::base::error::{AppError, AppResult};
 use crate::extras::launch;
 use crate::game::writer::{self, Owner, Placement};
 use crate::game::{install, watcher};
-use crate::maps::model::{MapEntry, MapOrigin, RemoteSource};
-use crate::maps::{library, session as maps_session, sources};
+use crate::maps::model::{normalize_target, MapEntry, MapOrigin, RemoteSource, DEFAULT_TARGET};
+use crate::maps::{library, session as maps_session};
 use crate::multi::invite::{self, Invite, InviteMap};
 use crate::multi::tailscale::{self, TailscaleState};
 use crate::multi::{bakkes_cfg, rcon};
@@ -49,7 +50,6 @@ pub enum Role {
 #[derive(Debug, Clone, Copy, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum Phase {
-    DownloadingMap,
     InstallingMap,
     LaunchingGame,
     StartingBakkes,
@@ -199,7 +199,9 @@ fn new_session(role: Role, map_name: String, target: String) -> MultiSession {
 
 // --- host -------------------------------------------------------------------
 
-pub fn host(app: &AppHandle, map_id: String) -> AppResult<MultiSession> {
+/// `target`: the Labs arena to replace (default: the map's preferred one,
+/// else Underpass). It travels in the invite code, so friends use the same.
+pub fn host(app: &AppHandle, map_id: String, target: Option<String>) -> AppResult<MultiSession> {
     let ts = preflight(true)?;
     let ip: Ipv4Addr = ts
         .self_ipv4
@@ -207,11 +209,13 @@ pub fn host(app: &AppHandle, map_id: String) -> AppResult<MultiSession> {
         .and_then(|ip| ip.parse().ok())
         .ok_or_else(|| AppError::Conflict("no Tailscale IPv4 address on this PC".into()))?;
     let entry = library::get(&map_id)?;
-    let target = entry
-        .preferred_target
-        .clone()
-        .unwrap_or_else(|| crate::maps::model::DEFAULT_TARGET.to_string());
-    let mut session = new_session(Role::Host, entry.name.clone(), target);
+    let wanted = target
+        .or_else(|| entry.preferred_target.clone())
+        .unwrap_or_else(|| DEFAULT_TARGET.to_string());
+    let target = normalize_target(&wanted)
+        .ok_or_else(|| AppError::InvalidInput(format!("unknown Labs arena {wanted}")))?
+        .to_string();
+    let mut session = new_session(Role::Host, entry.name.clone(), target.clone());
     session.map_id = Some(map_id.clone());
     session.address = Some(format!("{ip}:{}", invite::DEFAULT_PORT));
     let id = session.id.clone();
@@ -219,7 +223,7 @@ pub fn host(app: &AppHandle, map_id: String) -> AppResult<MultiSession> {
     let app2 = app.clone();
     let host_name = ts.self_name.clone();
     start(app, session, async move {
-        let Some(target) = install_map(&app2, &id, &map_id, None).await else {
+        let Some(target) = install_map(&app2, &id, &map_id, Some(target)).await else {
             return;
         };
         let code = invite::encode(&Invite {
@@ -252,6 +256,12 @@ pub fn join(app: &AppHandle, code: &str) -> AppResult<MultiSession> {
     let invite = invite::decode(code)?;
     // A tailnet address needs Tailscale here too; a LAN address does not.
     preflight(invite::is_tailnet(invite.host))?;
+    let entry = find_in_library(&invite.map)?.ok_or_else(|| {
+        AppError::NotFound(format!(
+            "map \"{}\" is not in your library — download or import it first",
+            invite.map.name
+        ))
+    })?;
     let mut session = new_session(
         Role::Join,
         invite.map.name.clone(),
@@ -260,15 +270,11 @@ pub fn join(app: &AppHandle, code: &str) -> AppResult<MultiSession> {
     session.address = Some(format!("{}:{}", invite.host, invite.port));
     let command = invite::join_command(invite.host, invite.port);
     session.command = Some(command.clone());
+    session.map_id = Some(entry.id.clone());
     let id = session.id.clone();
     let returned = session.clone();
     let app2 = app.clone();
     start(app, session, async move {
-        let entry = match find_or_download(&app2, &id, &invite.map).await {
-            Ok(e) => e,
-            Err(err) => return end(&app2, &id, Phase::Failed, err.to_string()),
-        };
-        update(&app2, &id, |s| s.map_id = Some(entry.id.clone()));
         if install_map(&app2, &id, &entry.id, Some(invite.map.target.clone()))
             .await
             .is_none()
@@ -296,34 +302,51 @@ fn remote_of(entry: &MapEntry) -> Option<(RemoteSource, String)> {
 
 /// Library match by source id, then by name (hashing every map would read
 /// hundreds of MB; the installed file's hash is compared afterwards).
-/// Downloads from bakkesplugins when missing.
-async fn find_or_download(app: &AppHandle, id: &str, map: &InviteMap) -> AppResult<MapEntry> {
-    let maps = tauri::async_runtime::spawn_blocking(library::list)
-        .await
-        .map_err(|e| AppError::Internal(e.to_string()))??;
+fn find_in_library(map: &InviteMap) -> AppResult<Option<MapEntry>> {
+    let maps = library::list()?;
     let by_remote = |e: &&MapEntry| match (&map.source, &map.remote_id, remote_of(e)) {
         (Some(src), Some(rid), Some((s, r))) => *src == s && *rid == r,
         _ => false,
     };
-    if let Some(e) = maps.iter().find(by_remote) {
-        return Ok(e.clone());
-    }
-    if let Some(e) = maps
-        .iter()
-        .find(|e| e.name.trim().eq_ignore_ascii_case(map.name.trim()))
-    {
-        return Ok(e.clone());
-    }
-    match (&map.source, &map.remote_id) {
-        (Some(RemoteSource::BakkesPlugins), Some(rid)) => {
-            set_phase(app, id, Phase::DownloadingMap);
-            sources::download(app, RemoteSource::BakkesPlugins, rid).await
-        }
-        _ => Err(AppError::NotFound(format!(
-            "map \"{}\" is not in your library — ask the host for the file and import it in Maps",
-            map.name
-        ))),
-    }
+    Ok(maps.iter().find(by_remote).cloned().or_else(|| {
+        maps.iter()
+            .find(|e| e.name.trim().eq_ignore_ascii_case(map.name.trim()))
+            .cloned()
+    }))
+}
+
+/// What the join card shows before anything happens.
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct InviteCheck {
+    pub invite: Invite,
+    /// The matching map of the library, if any.
+    pub library_map_id: Option<String>,
+    pub library_map_name: Option<String>,
+    /// That map is already installed over the invite's arena: nothing to write.
+    pub already_on_arena: bool,
+    /// Missing but downloadable from bakkesplugins (offered, never automatic).
+    pub downloadable: bool,
+}
+
+/// Reads an invite and looks the map up in the library. Blocking.
+pub fn check(code: &str) -> AppResult<InviteCheck> {
+    let invite = invite::decode(code)?;
+    let entry = find_in_library(&invite.map)?;
+    let already_on_arena = match (&entry, maps_session::current()) {
+        (Some(e), Some(s)) => s.map_id == e.id && s.target.eq_ignore_ascii_case(&invite.map.target),
+        _ => false,
+    };
+    let downloadable = entry.is_none()
+        && invite.map.source == Some(RemoteSource::BakkesPlugins)
+        && invite.map.remote_id.is_some();
+    Ok(InviteCheck {
+        library_map_id: entry.as_ref().map(|e| e.id.clone()),
+        library_map_name: entry.map(|e| e.name),
+        already_on_arena,
+        downloadable,
+        invite,
+    })
 }
 
 /// SHA-256 of the map package the write layer installed for `map_id`.

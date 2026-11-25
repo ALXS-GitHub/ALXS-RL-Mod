@@ -6,8 +6,8 @@ use tauri::AppHandle;
 use crate::base::error::{AppError, AppResult};
 use crate::game::watcher;
 use crate::multi::bakkes_cfg::{self, BakkesSetup};
-use crate::multi::invite::{self, Invite};
-use crate::multi::session::{self, MultiSession};
+use crate::multi::invite;
+use crate::multi::session::{self, InviteCheck, MultiSession};
 use crate::multi::tailscale::{self, TailscaleStatus};
 
 async fn blocking<T: Send + 'static>(
@@ -64,15 +64,27 @@ pub async fn multi_bakkes_undo() -> AppResult<BakkesSetup> {
     .await
 }
 
+/// Opens BakkesMod's plugin installer on Rocket Plugin (the user confirms there).
 #[tauri::command]
-pub async fn multi_host(app: AppHandle, map_id: String) -> AppResult<MultiSession> {
-    blocking(move || session::host(&app, map_id)).await
+pub async fn multi_install_rocket_plugin() -> AppResult<()> {
+    blocking(bakkes_cfg::install_rocket_plugin).await
 }
 
-/// Reads an invite code without acting on it (preview before joining).
+/// `target`: Labs arena to replace (`None` = the map's preferred one, else Underpass).
 #[tauri::command]
-pub fn multi_decode(code: String) -> AppResult<Invite> {
-    invite::decode(&code)
+pub async fn multi_host(
+    app: AppHandle,
+    map_id: String,
+    target: Option<String>,
+) -> AppResult<MultiSession> {
+    blocking(move || session::host(&app, map_id, target)).await
+}
+
+/// Reads an invite code and looks its map up in the library, without
+/// acting on it (the join card offers the download if it is missing).
+#[tauri::command]
+pub async fn multi_check(code: String) -> AppResult<InviteCheck> {
+    blocking(move || session::check(&code)).await
 }
 
 #[tauri::command]

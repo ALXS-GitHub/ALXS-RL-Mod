@@ -1,6 +1,7 @@
 import { ShieldAlert, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Page, PageHeader } from "@/components/ui/layout";
+import { GuidePanel } from "./components/GuidePanel";
 import { HostCard, JoinCard } from "./components/PlayCards";
 import { SecurityPanel } from "./components/SecurityPanel";
 import { SessionPanel } from "./components/SessionPanel";
@@ -27,6 +28,7 @@ export function MultiPage() {
         <JoinCard status={status.data} busy={busy} />
         <SetupPanel />
       </div>
+      <GuidePanel />
       <SecurityPanel />
     </Page>
   );

@@ -23,7 +23,10 @@
     "rocketPlugin": {
       "missing": "Pas installé : ajoutez-le depuis le gestionnaire de plugins de BakkesMod.",
       "loaded": "Installé et chargé.",
-      "notLoaded": "Installé mais pas chargé au démarrage (plugins.cfg) : activez-le dans BakkesMod."
+      "notLoaded": "Installé mais pas chargé au démarrage (plugins.cfg) : activez-le dans BakkesMod.",
+      "install": "Installer",
+      "installerOpened": "L'installeur de plugins de BakkesMod est ouvert",
+      "installerHint": "Confirmez l'installation dans sa fenêtre, puis actualisez cette liste."
     },
     "rcon": {
       "label": "Contrôle à distance",
@@ -49,20 +52,32 @@
   },
   "host": {
     "title": "Héberger une partie",
-    "description": "Installe la map, lance le jeu et BakkesMod, ouvre la partie avec Rocket Plugin, puis vous donne un code pour vos amis.",
+    "description": "Choisissez une map et l'arène Labs qu'elle remplace. L'app l'installe (sauf si elle y est déjà), lance le jeu et BakkesMod, ouvre la partie avec Rocket Plugin, puis vous donne un code pour vos amis.",
     "pickMap": "Choisir une map",
     "noMaps": "Votre bibliothèque de maps est vide : ajoutez d'abord une map dans Maps.",
     "target": "Remplace l'arène {{arena}}",
-    "cta": "Héberger"
+    "cta": "Héberger",
+    "map": "Map",
+    "arena": "Arène remplacée",
+    "alreadyThere": "Déjà installée sur {{arena}} : rien à réécrire.",
+    "willInstall": "Sera installée sur l'arène {{arena}} le temps de la partie.",
+    "arenaShared": "L'arène est dans le code d'invitation : l'app de vos amis utilise la même. Si quelqu'un installe la map à la main, dites-lui laquelle."
   },
   "join": {
     "title": "Rejoindre un ami",
-    "description": "Collez le code de l'hôte : l'app installe la même map, lance le jeu et BakkesMod, puis rejoint la partie.",
+    "description": "Collez le code de l'hôte. L'app vérifie que vous avez la même map et vous propose le téléchargement si besoin ; Rejoindre l'installe ensuite sur l'arène de l'hôte, lance le jeu et BakkesMod, puis se connecte.",
     "paste": "Coller",
     "from": "Hébergée par {{host}} ({{address}})",
-    "autoDownload": "Téléchargée depuis bakkesplugins si vous ne l'avez pas.",
-    "needsFile": "Map importée : il vous faut le même fichier dans votre bibliothèque (demandez-le à l'hôte).",
-    "cta": "Rejoindre"
+    "cta": "Rejoindre",
+    "arenaHint": "Arène choisie par l'hôte",
+    "alreadyThere": "Déjà installée sur {{arena}} : rien à réinstaller.",
+    "inLibrary": "Dans votre bibliothèque ({{name}}) : installée sur {{arena}} quand vous rejoignez.",
+    "missingDownload": "Pas dans votre bibliothèque. Elle est sur bakkesplugins : téléchargez-la d'abord.",
+    "missingImport": "Pas dans votre bibliothèque, et l'hôte l'a importée depuis un fichier : demandez-le-lui, puis importez-le dans Maps.",
+    "download": "Télécharger la map",
+    "downloading": "Téléchargement… {{percent}} %",
+    "downloaded": "« {{name}} » ajoutée à votre bibliothèque",
+    "openMaps": "Ouvrir Maps"
   },
   "session": {
     "role": {
@@ -70,7 +85,6 @@
       "join": "Invité"
     },
     "phase": {
-      "downloadingMap": "Téléchargement de la map",
       "installingMap": "Installation de la map",
       "launchingGame": "Lancement du jeu",
       "startingBakkes": "Lancement de BakkesMod",
@@ -108,5 +122,42 @@
     },
     "copy": "Copier la politique",
     "open": "Ouvrir Access controls"
+  },
+  "guide": {
+    "title": "Guide d'installation",
+    "subtitle": "pour vous et vos amis",
+    "steps": {
+      "tailscale": {
+        "title": "Tailscale (chaque joueur)",
+        "link": "Télécharger",
+        "body": "Installez Tailscale et connectez-vous avec un compte perso (Google, Microsoft, GitHub…).\nL'hôte invite les autres depuis la console d'administration : Users → Invite users. Chaque ami accepte avec son propre compte, puis installe Tailscale et s'y connecte.\nL'hôte verrouille le tailnet avec la politique de la section « Restreindre Tailscale au jeu » ci-dessous.\nVérification : chaque PC apparaît dans « Appareils du tailnet » sur cette page, et « tailscale ping <nom du pc> » répond."
+      },
+      "bakkes": {
+        "title": "BakkesMod (chaque joueur)",
+        "link": "Télécharger",
+        "body": "Téléchargez BakkesModSetup.exe depuis la dernière version, installez-le, puis lancez-le une fois : il se met à jour tout seul.\nBakkesMod ne fonctionne que si le jeu tourne sans Easy Anti-Cheat : cette page lance le jeu comme ça pour vous.\nAprès une mise à jour de Rocket League, attendez celle de BakkesMod avant de jouer (sa fenêtre indique qu'il n'est pas à jour en attendant)."
+      },
+      "rocketPlugin": {
+        "title": "Rocket Plugin (chaque joueur)",
+        "link": "Page bakkesplugins",
+        "body": "Cliquez sur Installer à côté de Rocket Plugin dans « Avant de jouer » : l'installeur de plugins de BakkesMod s'ouvre et demande de confirmer.\nSinon, ouvrez la page bakkesplugins du plugin et utilisez son bouton Install.\nEn jeu, BakkesMod (F2) → Plugins indique si Rocket Plugin est activé ; sa propre fenêtre a une touche que vous pouvez régler là."
+      },
+      "app": {
+        "title": "ALXS-RL-Mod (chaque joueur)",
+        "body": "Chaque joueur a besoin de cette app, idéalement dans la même version : elle installe la map, lance tout et transforme le code d'invitation en connexion.\nSur chaque PC, ouvrez cette page une fois : la liste de vérification doit être entièrement verte avant d'héberger ou de rejoindre."
+      },
+      "maps": {
+        "title": "La map",
+        "body": "L'hôte ajoute des maps dans la page Maps (téléchargement bakkesplugins ou import de fichier).\nTout le monde a besoin exactement du même fichier. Maps bakkesplugins : vos amis ont un bouton Télécharger après avoir collé le code. Maps importées : l'hôte envoie le fichier, vos amis l'importent dans Maps.\nL'hôte choisit l'arène Labs que la map remplace. Elle est incluse dans le code d'invitation : l'app de vos amis utilise automatiquement la même arène.\nUne map déjà installée sur cette arène n'est pas réécrite."
+      },
+      "play": {
+        "title": "Jouer",
+        "body": "Hôte : choisissez la map et l'arène, cliquez sur Héberger, attendez « Commande Rocket Plugin envoyée », puis copiez le code d'invitation et envoyez-le.\nAmis : collez le code, téléchargez la map si c'est proposé, puis cliquez sur Rejoindre.\nÀ la fermeture du jeu, l'arène d'origine revient (si c'est activé dans les Réglages)."
+      },
+      "trouble": {
+        "title": "En cas de problème",
+        "body": "« À terminer dans le jeu » : ouvrez la console BakkesMod (F6) et collez la commande affichée.\nVos amis n'arrivent pas à se connecter : l'hôte doit déjà être en partie ; le pare-feu Windows doit autoriser Rocket League sur le type de réseau utilisé par Tailscale ; essayez « tailscale ping ».\n« Content mismatch » : ce n'est pas le même fichier de map des deux côtés — récupérez celui de l'hôte."
+      }
+    }
   }
 }

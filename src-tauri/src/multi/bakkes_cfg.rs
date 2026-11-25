@@ -242,6 +242,34 @@ fn require_dir() -> AppResult<PathBuf> {
     data_dir().ok_or_else(|| AppError::NotFound("BakkesMod folder (%APPDATA%\\bakkesmod)".into()))
 }
 
+/// Rocket Plugin's id on bakkesplugins.com (`/plugin/26`).
+pub const ROCKET_PLUGIN_ID: u32 = 26;
+pub const ROCKET_PLUGIN_PAGE: &str = "https://bakkesplugins.com/plugin/26";
+
+/// The `bakkesmod://install/<id>` link bakkesplugins' "Install" button uses.
+pub(crate) fn install_uri(plugin_id: u32) -> String {
+    format!("bakkesmod://install/{plugin_id}")
+}
+
+/// Hands Rocket Plugin to BakkesMod's own plugin installer (the program
+/// registered for `bakkesmod://` links), which downloads it and asks the
+/// user to confirm. Nothing is downloaded by this app.
+pub fn install_rocket_plugin() -> AppResult<()> {
+    let installer = require_dir()?.join("plugininstaller.exe");
+    if !installer.is_file() {
+        return Err(AppError::FileNotFound(installer.display().to_string()));
+    }
+    let mut cmd = std::process::Command::new(&installer);
+    if let Some(dir) = installer.parent() {
+        cmd.current_dir(dir);
+    }
+    cmd.arg(install_uri(ROCKET_PLUGIN_ID))
+        .spawn()
+        .map_err(|e| AppError::Internal(format!("BakkesMod plugin installer: {e}")))?;
+    tracing::info!("Rocket Plugin handed to BakkesMod's plugin installer");
+    Ok(())
+}
+
 /// Turns RCON on (random password) and whitelists `rp`. Idempotent: an
 /// existing block keeps its password. BakkesMod reads both files when it
 /// loads, so a running BakkesMod only picks this up at the next game start.
@@ -349,6 +377,12 @@ mod tests {
             Some(9003)
         );
         assert_eq!(rcon_port_in("rcon_port \"0\""), None);
+    }
+
+    #[test]
+    fn rocket_plugin_install_link() {
+        assert_eq!(install_uri(ROCKET_PLUGIN_ID), "bakkesmod://install/26");
+        assert!(ROCKET_PLUGIN_PAGE.ends_with(&ROCKET_PLUGIN_ID.to_string()));
     }
 
     #[test]

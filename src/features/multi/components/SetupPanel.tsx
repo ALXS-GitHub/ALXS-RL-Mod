@@ -1,5 +1,5 @@
 import { openUrl } from "@tauri-apps/plugin-opener";
-import { Check, CircleAlert, CircleDashed, ExternalLink, RefreshCw, Users } from "lucide-react";
+import { Check, CircleAlert, CircleDashed, Download, ExternalLink, RefreshCw, Users } from "lucide-react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
@@ -7,10 +7,8 @@ import { Button } from "@/components/ui/button";
 import { ErrorState, Skeleton } from "@/components/ui/feedback";
 import { GlassPanel } from "@/components/ui/glass";
 import { notify } from "@/components/ui/toast";
-import type { MultiStatus } from "../api";
-import { useBakkesSetup, useBakkesUndo, useMultiStatus } from "../queries";
-
-export const TAILSCALE_DOWNLOAD = "https://tailscale.com/download";
+import { BAKKESMOD_DOWNLOAD, type MultiStatus, ROCKET_PLUGIN_PAGE, TAILSCALE_DOWNLOAD } from "../api";
+import { useBakkesSetup, useBakkesUndo, useInstallRocketPlugin, useMultiStatus } from "../queries";
 
 type RowState = "ok" | "warn" | "todo";
 
@@ -56,7 +54,16 @@ export function SetupPanel() {
   const status = useMultiStatus();
   const setup = useBakkesSetup();
   const undo = useBakkesUndo();
+  const installRp = useInstallRocketPlugin();
   const s = status.data;
+  const open = (url: string) => void openUrl(url).catch(notify.error);
+  const installRocketPlugin = () =>
+    installRp.mutate(undefined, {
+      onSuccess: () =>
+        notify.info(t("setup.rocketPlugin.installerOpened"), t("setup.rocketPlugin.installerHint")),
+      // No BakkesMod installer: its page has the same "Install" button.
+      onError: () => open(ROCKET_PLUGIN_PAGE),
+    });
 
   return (
     <GlassPanel className="flex flex-col gap-2 p-4">
@@ -116,6 +123,14 @@ export function SetupPanel() {
                     : t("setup.bakkes.ready")
                   : t("setup.bakkes.noInjector")
             }
+            action={
+              s.bakkes.dataDir ? null : (
+                <Button size="sm" variant="secondary" onClick={() => open(BAKKESMOD_DOWNLOAD)}>
+                  <ExternalLink />
+                  {t("setup.tailscale.download")}
+                </Button>
+              )
+            }
           />
           <Row
             state={s.bakkes.rocketPluginInstalled ? (s.bakkes.rocketPluginLoaded ? "ok" : "warn") : "todo"}
@@ -126,6 +141,19 @@ export function SetupPanel() {
                 : s.bakkes.rocketPluginLoaded
                   ? t("setup.rocketPlugin.loaded")
                   : t("setup.rocketPlugin.notLoaded")
+            }
+            action={
+              s.bakkes.dataDir && !s.bakkes.rocketPluginInstalled ? (
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  loading={installRp.isPending}
+                  onClick={installRocketPlugin}
+                >
+                  <Download />
+                  {t("setup.rocketPlugin.install")}
+                </Button>
+              ) : null
             }
           />
           <Row

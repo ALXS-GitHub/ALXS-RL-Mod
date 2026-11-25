@@ -24,6 +24,9 @@
           "url": "https://tailscale.com/download"
         },
         {
+          "url": "https://github.com/bakkesmodorg/BakkesModInjectorCpp/releases/latest"
+        },
+        {
           "url": "https://login.tailscale.com/admin/acls/file"
         },
         {

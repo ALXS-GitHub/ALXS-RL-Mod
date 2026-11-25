@@ -66,8 +66,21 @@ export const inviteSchema = z.object({
 });
 export type Invite = z.infer<typeof inviteSchema>;
 
+export const inviteCheckSchema = z.object({
+  invite: inviteSchema,
+  libraryMapId: z.string().nullable(),
+  libraryMapName: z.string().nullable(),
+  alreadyOnArena: z.boolean(),
+  downloadable: z.boolean(),
+});
+export type InviteCheck = z.infer<typeof inviteCheckSchema>;
+
+/** Rocket Plugin on bakkesplugins (fallback when the installer cannot start). */
+export const ROCKET_PLUGIN_PAGE = "https://bakkesplugins.com/plugin/26";
+export const BAKKESMOD_DOWNLOAD = "https://github.com/bakkesmodorg/BakkesModInjectorCpp/releases/latest";
+export const TAILSCALE_DOWNLOAD = "https://tailscale.com/download";
+
 export const PHASES = [
-  "downloadingMap",
   "installingMap",
   "launchingGame",
   "startingBakkes",
@@ -101,8 +114,9 @@ export const multiApi = {
   status: () => call("multi_status", {}, multiStatusSchema),
   bakkesSetup: () => call("multi_bakkes_setup", {}, bakkesSetupSchema),
   bakkesUndo: () => call("multi_bakkes_undo", {}, bakkesSetupSchema),
-  host: (mapId: string) => call("multi_host", { mapId }, multiSessionSchema),
-  decode: (code: string) => call("multi_decode", { code }, inviteSchema),
+  installRocketPlugin: () => callVoid("multi_install_rocket_plugin"),
+  host: (mapId: string, target: string) => call("multi_host", { mapId, target }, multiSessionSchema),
+  check: (code: string) => call("multi_check", { code }, inviteCheckSchema),
   join: (code: string) => call("multi_join", { code }, multiSessionSchema),
   session: () => call("multi_session", {}, multiSessionSchema.nullable()),
   cancel: () => callVoid("multi_cancel"),

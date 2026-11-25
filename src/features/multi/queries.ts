@@ -7,6 +7,7 @@ import { multiApi, multiSessionEventSchema } from "./api";
 export const multiKeys = {
   status: ["multi", "status"] as const,
   session: ["multi", "session"] as const,
+  check: ["multi", "check"] as const,
 };
 
 export function useMultiStatus() {
@@ -20,6 +21,7 @@ export function useMultiSession() {
     qc.setQueryData(multiKeys.session, s);
     void qc.invalidateQueries({ queryKey: mapsKeys.all });
     void qc.invalidateQueries({ queryKey: multiKeys.status });
+    void qc.invalidateQueries({ queryKey: multiKeys.check });
   });
   return useQuery({ queryKey: multiKeys.session, queryFn: multiApi.session });
 }
@@ -52,7 +54,15 @@ export function useBakkesUndo() {
 
 export function useHost() {
   const set = useSetSession();
-  return useMutation({ mutationFn: multiApi.host, onSuccess: set, onError: notify.error });
+  return useMutation({
+    mutationFn: ({ mapId, target }: { mapId: string; target: string }) => multiApi.host(mapId, target),
+    onSuccess: set,
+    onError: notify.error,
+  });
+}
+
+export function useInstallRocketPlugin() {
+  return useMutation({ mutationFn: multiApi.installRocketPlugin });
 }
 
 export function useJoin() {
@@ -60,11 +70,12 @@ export function useJoin() {
   return useMutation({ mutationFn: multiApi.join, onSuccess: set, onError: notify.error });
 }
 
-export function useDecodeInvite(code: string) {
+/** Invite + where its map stands in the library (re-checked after a download). */
+export function useInviteCheck(code: string) {
   const trimmed = code.trim();
   return useQuery({
-    queryKey: ["multi", "decode", trimmed],
-    queryFn: () => multiApi.decode(trimmed),
+    queryKey: [...multiKeys.check, trimmed],
+    queryFn: () => multiApi.check(trimmed),
     enabled: trimmed.length > 12,
     retry: false,
   });

@@ -202,8 +202,9 @@ Errors always serialize as `{ kind: string, message: string }`.
 ### modded multiplayer (multi, see `docs/MULTIPLAYER.md`)
 - `multi_status() -> MultiStatus` (`tailscale` from `tailscale status --json`, `bakkes` setup incl. Rocket Plugin + RCON, game state, port 7777)
 - `multi_bakkes_setup() -> BakkesSetup` · `multi_bakkes_undo() -> BakkesSetup` (marked block in BakkesMod's `cfg/autoexec.cfg` + `rp` in `data/rcon_commands.cfg`, reversible)
-- `multi_host(map_id) -> MultiSession` · `multi_join(code) -> MultiSession` (background steps: map → no-EAC game → BakkesMod injector → RCON `rp host`/`rp join`; ends in `commandSent`, `manual` (command shown) or `failed`)
-- `multi_decode(code) -> Invite` · `multi_session() -> Option<MultiSession>` · `multi_cancel()`
+- `multi_install_rocket_plugin()` (runs BakkesMod's `plugininstaller.exe bakkesmod://install/26`; the user confirms there)
+- `multi_host(map_id, target: Option<String>) -> MultiSession` (target = Labs arena chosen by the host, carried in the invite) · `multi_join(code) -> MultiSession` (map must already be in the library: joining never downloads) — background steps: map (skipped when already on that arena) → no-EAC game → BakkesMod injector → RCON `rp host`/`rp join`; ends in `commandSent`, `manual` (command shown) or `failed`
+- `multi_check(code) -> InviteCheck` (invite + library match, `alreadyOnArena`, `downloadable`: the join card offers the bakkesplugins download explicitly through `maps_download`) · `multi_session() -> Option<MultiSession>` · `multi_cancel()`
 - event `multi://session` (`Option<MultiSession>`)
 
 ### marketplace (market)

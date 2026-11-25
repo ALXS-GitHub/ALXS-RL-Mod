@@ -9,19 +9,25 @@ Easy Anti-Cheat** (offline mode), so this never touches online play.
 | Piece | Role | Who installs it |
 |---|---|---|
 | Tailscale | Private network between the players (`100.x.y.z`), no port forwarding | each player |
-| BakkesMod + Rocket Plugin | Rocket Plugin hosts (`open <arena>?…?Lan?Listen`, port 7777) and joins (`start ip:port/?Lan`) | each player |
+| BakkesMod + Rocket Plugin | Rocket Plugin hosts (`open <arena>?…?Lan?Listen`, port 7777) and joins (`start ip:port/?Lan`) | each player; the checklist's Install button runs BakkesMod's `plugininstaller.exe bakkesmod://install/26` (bakkesplugins id 26) |
 | ALXS-RL-Mod | installs the map, starts the game (no EAC) and BakkesMod's injector, sends the Rocket Plugin command | each player |
 
 Every player needs the **same map file** on the **same Labs arena**: the host
-opens the arena's level name (`rp host Labs_Underpass_P`), and our map is
-written over that arena (`maps::session`). The invite code carries the
-arena, the map's SHA-256 and its bakkesplugins id (downloaded automatically
-on the joiner's side when missing).
+picks the arena on the host card, opens its level name
+(`rp host Labs_Underpass_P`), and our map is written over that arena
+(`maps::session`). The invite code carries the arena (friends' apps use it
+automatically), the map's SHA-256 and its bakkesplugins id. Nothing is
+downloaded without a click: the join card (`multi_check`) shows whether the
+map is already on that arena, in the library, downloadable from
+bakkesplugins (Download button) or to be imported by hand, and Join stays
+disabled until the map is in the library. A map already on the right arena
+is never rewritten.
 
 ### Steps (`multi::session`)
 
-1. Map: join resolves it in the library (bakkesplugins id, then name), else
-   downloads it; then `maps::session::activate` (same write layer as Maps).
+1. Map: resolved in the library (bakkesplugins id, then name), then
+   `maps::session::activate` over the chosen arena (same write layer as
+   Maps), skipped when that map is already there.
 2. BakkesMod RCON (`multi::bakkes_cfg`), only while the game is closed:
    - `cfg/autoexec.cfg`: a marked block `rcon_enabled "1"` + a random
      `rcon_password`;
