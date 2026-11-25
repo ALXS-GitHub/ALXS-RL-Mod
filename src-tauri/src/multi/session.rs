@@ -419,18 +419,9 @@ async fn drive(app: AppHandle, id: String, map_id: String, command: String) {
         }
     };
 
-    if !was_running {
-        set_phase(&app, &id, Phase::LaunchingGame);
-        match install::current_install(&app).and_then(|rl| launch::start_no_eac(&rl)) {
-            Ok(launch::NoEacStart::InEpic) => set_phase(&app, &id, Phase::LaunchInEpic),
-            Ok(launch::NoEacStart::Spawned(_)) => {}
-            Err(err) => return end(&app, &id, Phase::Failed, err.to_string()),
-        }
-        // Puts the stock arena back when the game exits (if the user wants that).
-        maps_session::watch_offline_session(app.clone(), map_id);
-    }
-
-    set_phase(&app, &id, Phase::StartingBakkes);
+    // BakkesMod's injector first: it waits for the game and injects as soon
+    // as a no-EAC game is up. No phase of its own while the game is not
+    // running (the user may have to act in Epic meanwhile).
     if !bakkes_cfg::injector_running() {
         match bakkes_cfg::injector_path() {
             Some(path) => {
@@ -440,6 +431,17 @@ async fn drive(app: AppHandle, id: String, map_id: String, command: String) {
             }
             None => tracing::warn!("BakkesMod injector not found"),
         }
+    }
+
+    if !was_running {
+        set_phase(&app, &id, Phase::LaunchingGame);
+        match install::current_install(&app).and_then(|rl| launch::start_no_eac(&rl)) {
+            Ok(launch::NoEacStart::InEpic) => set_phase(&app, &id, Phase::LaunchInEpic),
+            Ok(launch::NoEacStart::Spawned(_)) => {}
+            Err(err) => return end(&app, &id, Phase::Failed, err.to_string()),
+        }
+        // Puts the stock arena back when the game exits (if the user wants that).
+        maps_session::watch_offline_session(app.clone(), map_id);
     }
 
     // A no-EAC game, seen twice in a row (a start can relaunch itself once).
@@ -469,6 +471,8 @@ async fn drive(app: AppHandle, id: String, map_id: String, command: String) {
         }
         tokio::time::sleep(RCON_POLL).await;
     }
+
+    set_phase(&app, &id, Phase::StartingBakkes);
 
     let Some(password) = password else {
         return manual(
