@@ -251,8 +251,9 @@ pub async fn deactivate(app: &AppHandle) -> AppResult<()> {
 pub fn watch_offline_session(app: AppHandle, map_id: String) {
     tauri::async_runtime::spawn(async move {
         let mut rx = watcher::subscribe();
-        // Phase 1: wait up to 3 minutes for the game to appear.
-        let started = tokio::time::timeout(Duration::from_secs(180), async {
+        // Phase 1: wait up to 10 minutes for the game to appear (on Epic the
+        // user starts it from the launcher).
+        let started = tokio::time::timeout(Duration::from_secs(600), async {
             loop {
                 if rx.borrow().running {
                     return;

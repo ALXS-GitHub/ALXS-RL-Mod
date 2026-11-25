@@ -120,7 +120,12 @@ export function LibraryTab({ onImport }: { onImport: () => void }) {
                 onPlay={() =>
                   playOffline.mutate(map.id, {
                     onSuccess: () =>
-                      notify.success(t("toast.launched", { name: map.name }), t("toast.launchedHint")),
+                      notify.success(
+                        t("toast.launched", { name: map.name }),
+                        game?.install?.source === "epic"
+                          ? t("toast.launchedEpicHint")
+                          : t("toast.launchedHint"),
+                      ),
                   })
                 }
                 onInstall={() =>

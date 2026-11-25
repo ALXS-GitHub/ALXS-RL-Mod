@@ -5,7 +5,7 @@ import { call } from "@/lib/ipc";
 
 export const launchResultSchema = z.object({
   withEac: z.boolean(),
-  method: z.enum(["direct", "epicLauncher", "steamLauncher"]),
+  method: z.enum(["direct", "epicLauncher", "steamLauncher", "epicNoEac"]),
   pid: z.number().nullable(),
 });
 export type LaunchResult = z.infer<typeof launchResultSchema>;

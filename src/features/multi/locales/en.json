@@ -91,7 +91,8 @@
       "waitingBakkes": "Waiting for BakkesMod",
       "commandSent": "Rocket Plugin command sent",
       "manual": "Manual step",
-      "failed": "Failed"
+      "failed": "Failed",
+      "launchInEpic": "Start the game from Epic"
     },
     "stopped": {
       "manual": "Finish in the game",
@@ -108,7 +109,11 @@
     "again": "Command (to type in the BakkesMod console if nothing happened)",
     "hostDone": "Your game should be loading. Change the mode or mutators in Rocket Plugin's window if needed; friends can join with the code.",
     "joinDone": "You should be loading into the host's game. If it times out, check the host is in the game and that Tailscale shows them online.",
-    "mismatch": "Your copy of this map is not the host's exact file: the game may refuse to connect (content mismatch). Get the same file from the host."
+    "mismatch": "Your copy of this map is not the host's exact file: the game may refuse to connect (content mismatch). Get the same file from the host.",
+    "epic": {
+      "title": "Start Rocket League from Epic",
+      "hint": "In the Epic Games Launcher, click ⋯ next to Rocket League, then \"Launch without Anti-Cheat\". The app picks up from there (BakkesMod, then Rocket Plugin)."
+    }
   },
   "security": {
     "title": "Lock Tailscale down to the game",
@@ -135,7 +140,7 @@
       "bakkes": {
         "title": "BakkesMod (every player)",
         "link": "Download",
-        "body": "Download BakkesModSetup.exe from the latest release, install it, then start it once: it updates itself.\nBakkesMod only works when the game runs without Easy Anti-Cheat: this page starts the game that way for you.\nAfter a Rocket League update, wait for BakkesMod's own update before playing (its window says it is out of date meanwhile)."
+        "body": "Download BakkesModSetup.exe from the latest release, install it, then start it once: it updates itself.\nBakkesMod only works when the game runs without Easy Anti-Cheat. With Epic, that mode is only started from the Epic Games Launcher: ⋯ next to Rocket League → \"Launch without Anti-Cheat\". The app opens Epic and takes over once the game is running.\nAfter a Rocket League update, wait for BakkesMod's own update before playing (its window says it is out of date meanwhile)."
       },
       "rocketPlugin": {
         "title": "Rocket Plugin (every player)",
@@ -152,7 +157,7 @@
       },
       "play": {
         "title": "Playing",
-        "body": "Host: choose the map and the arena, click Host, wait for \"Rocket Plugin command sent\", then copy the invite code and send it.\nFriends: paste the code, download the map if asked, then click Join.\nWhen the game closes, the stock arena comes back (if enabled in Settings)."
+        "body": "Host: choose the map and the arena, click Host, start the game from Epic with \"Launch without Anti-Cheat\" when asked, wait for \"Rocket Plugin command sent\", then copy the invite code and send it.\nFriends: paste the code, download the map if asked, then click Join and start the game from Epic the same way.\nWhen the game closes, the stock arena comes back (if enabled in Settings)."
       },
       "trouble": {
         "title": "If something goes wrong",

@@ -6,8 +6,9 @@
 //!    nothing is rewritten when that map is already on that arena). Joining
 //!    never downloads: the page offers the download first ([`check`]);
 //! 2. set up BakkesMod's RCON if the game is not running yet;
-//! 3. start the game without EAC, then BakkesMod's injector (the app never
-//!    injects anything itself);
+//! 3. start the game without EAC (Epic: the user picks "Launch without
+//!    Anti-Cheat" in the Epic launcher, see `extras::launch`), then
+//!    BakkesMod's injector (the app never injects anything itself);
 //! 4. wait for BakkesMod's RCON and send `rp host <arena>` / `rp join <ip> <port>`.
 //!
 //! If the RCON never answers, the session ends in `Manual`: the UI shows the
@@ -34,6 +35,8 @@ use crate::multi::{bakkes_cfg, rcon};
 
 pub const EVENT_SESSION: &str = "multi://session";
 
+/// How long the user gets to start the game without EAC (from Epic).
+const GAME_WAIT: Duration = Duration::from_secs(600);
 /// How long the game + BakkesMod get to bring RCON up.
 const RCON_WAIT: Duration = Duration::from_secs(240);
 const RCON_POLL: Duration = Duration::from_secs(3);
@@ -52,6 +55,8 @@ pub enum Role {
 pub enum Phase {
     InstallingMap,
     LaunchingGame,
+    /// Waiting for the user to start the game from Epic without Anti-Cheat.
+    LaunchInEpic,
     StartingBakkes,
     WaitingBakkes,
     /// The Rocket Plugin command was sent: the game should be loading.
@@ -416,9 +421,10 @@ async fn drive(app: AppHandle, id: String, map_id: String, command: String) {
 
     if !was_running {
         set_phase(&app, &id, Phase::LaunchingGame);
-        let launched = install::current_install(&app).and_then(|rl| launch::spawn_no_eac(&rl));
-        if let Err(err) = launched {
-            return end(&app, &id, Phase::Failed, err.to_string());
+        match install::current_install(&app).and_then(|rl| launch::start_no_eac(&rl)) {
+            Ok(launch::NoEacStart::InEpic) => set_phase(&app, &id, Phase::LaunchInEpic),
+            Ok(launch::NoEacStart::Spawned(_)) => {}
+            Err(err) => return end(&app, &id, Phase::Failed, err.to_string()),
         }
         // Puts the stock arena back when the game exits (if the user wants that).
         maps_session::watch_offline_session(app.clone(), map_id);
@@ -436,6 +442,34 @@ async fn drive(app: AppHandle, id: String, map_id: String, command: String) {
         }
     }
 
+    // A no-EAC game, seen twice in a row (a start can relaunch itself once).
+    let deadline = tokio::time::Instant::now() + GAME_WAIT;
+    let mut no_eac_seen = 0;
+    loop {
+        let state = watcher::probe_now();
+        if state.running && state.with_eac {
+            return end(
+                &app,
+                &id,
+                Phase::Failed,
+                "Rocket League runs with Easy Anti-Cheat: close it, then start it with \"Launch without Anti-Cheat\" (Epic: ⋯ next to Rocket League)",
+            );
+        }
+        no_eac_seen = if state.running { no_eac_seen + 1 } else { 0 };
+        if no_eac_seen >= 2 {
+            break;
+        }
+        if tokio::time::Instant::now() >= deadline {
+            return end(
+                &app,
+                &id,
+                Phase::Failed,
+                "Rocket League was not started without Anti-Cheat",
+            );
+        }
+        tokio::time::sleep(RCON_POLL).await;
+    }
+
     let Some(password) = password else {
         return manual(
             &app,
@@ -448,11 +482,9 @@ async fn drive(app: AppHandle, id: String, map_id: String, command: String) {
 
     set_phase(&app, &id, Phase::WaitingBakkes);
     let deadline = tokio::time::Instant::now() + RCON_WAIT;
-    let mut seen_game = was_running;
     loop {
         let state = watcher::probe_now();
-        seen_game |= state.running;
-        if seen_game && !state.running {
+        if !state.running {
             return end(&app, &id, Phase::Failed, "Rocket League was closed");
         }
         if state.running && rcon::reachable(port).await {

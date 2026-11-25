@@ -19,7 +19,8 @@ const STEPS: readonly Phase[] = [
 ];
 
 function stepIndex(phase: Phase): number {
-  return STEPS.indexOf(phase);
+  // Waiting for the user in Epic is still the "start the game" step.
+  return STEPS.indexOf(phase === "launchInEpic" ? "launchingGame" : phase);
 }
 
 function CopyBox({ label, value }: { label: string; value: string }) {
@@ -75,7 +76,10 @@ export function SessionPanel({ session }: { session: MultiSession }) {
         {STEPS.map((step, i) => {
           const isDone = done || i < current;
           const isCurrent = !done && !stopped && i === current;
-          const label = t(`session.phase.${step}`);
+          const label =
+            step === "launchingGame" && session.phase === "launchInEpic"
+              ? t("session.phase.launchInEpic")
+              : t(`session.phase.${step}`);
           return (
             <li
               key={step}
@@ -117,6 +121,16 @@ export function SessionPanel({ session }: { session: MultiSession }) {
               {session.phase === "failed" ? t("session.stopped.failed") : t("session.stopped.manual")}
             </p>
             <p className="mt-0.5">{session.message}</p>
+          </div>
+        </div>
+      ) : null}
+
+      {session.phase === "launchInEpic" ? (
+        <div className="flex items-start gap-2.5 rounded-[8px] border border-info/25 bg-info/[0.06] p-2.5 text-xs text-fg-muted">
+          <CircleAlert className="mt-0.5 size-3.5 shrink-0 text-info" />
+          <div>
+            <p className="font-medium text-fg">{t("session.epic.title")}</p>
+            <p className="mt-0.5">{t("session.epic.hint")}</p>
           </div>
         </div>
       ) : null}

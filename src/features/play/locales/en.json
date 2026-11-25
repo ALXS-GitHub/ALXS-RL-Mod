@@ -29,7 +29,12 @@
       "p1": "Custom maps in the Labs arena",
       "p2": "BakkesMod works in this mode only",
       "p3": "No online matchmaking",
-      "cta": "Launch offline"
+      "cta": "Launch offline",
+      "viaEpic": "Opens the Epic Games Launcher: start the game with \"Launch without Anti-Cheat\" (⋯ next to Rocket League). Custom maps, free play and offline tools."
+    },
+    "epicNoEac": {
+      "title": "Start it from Epic",
+      "hint": "In the Epic Games Launcher, click ⋯ next to Rocket League, then \"Launch without Anti-Cheat\". Epic only allows the no-EAC mode from there."
     }
   }
 }

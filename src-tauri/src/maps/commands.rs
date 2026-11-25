@@ -92,13 +92,14 @@ pub fn maps_session() -> AppResult<Option<MapSession>> {
     Ok(session::current())
 }
 
-/// Installs the map, starts the game without EAC and restores the stock
-/// arena when the game exits (if enabled in settings).
+/// Installs the map, starts the game without EAC (Epic: brings the Epic
+/// launcher forward, the user picks "Launch without Anti-Cheat") and
+/// restores the stock arena when the game exits (if enabled in settings).
 #[tauri::command]
 pub async fn maps_play_offline(app: AppHandle, id: String) -> AppResult<MapSession> {
     let rl = install::current_install(&app)?;
     let session = session::activate(&app, &id, None, true).await?;
-    if let Err(err) = launch::spawn_no_eac(&rl) {
+    if let Err(err) = launch::start_no_eac(&rl) {
         // The map stays installed: the user can start the game manually.
         tracing::warn!(%err, "offline launch failed after activation");
         return Err(err);

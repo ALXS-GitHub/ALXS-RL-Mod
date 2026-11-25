@@ -318,6 +318,17 @@ failures: {feature, message}[], checkedAt: RFC3339 }`, emitted on
 - **Launch with EAC** goes through the store launcher (Epic URI / Steam
   URI) so the game gets its normal authentication; manual installs spawn
   the EAC exe. EAC launch is refused while a custom map is installed.
+- **Launch without EAC on Epic** cannot be automated: started directly,
+  `RocketLeague.exe` has no Epic login, exits and asks Epic to relaunch it,
+  and Epic starts Psyonix's `Launcher.exe` with EAC (its default; `-noeac`
+  selects `RocketLeague.exe`). Epic adds `-noeac` only from its own menu
+  ("Launch without Anti-Cheat", launch option `extraLaunchOption_001`), and
+  its URI refuses extra arguments for Rocket League (`bAllowUriCmdArgs`
+  false). So `extras::launch::start_no_eac` brings the Epic launcher forward
+  and the UI tells the user where to click; Steam / manual installs still
+  spawn the no-EAC exe. `game::watcher` detects EAC from the
+  `RocketLeague_EAC.exe` bootstrap or the `EasyAntiCheat_EOS.exe` service
+  (the protected game itself is named `RocketLeague.exe`).
 - **Lethamyr** is browse-only: its downloads redirect to Google Drive,
   which is not on the allowlist. Downloads come from bakkesplugins; the
   SHA-256 the API publishes (`fileHash`) is that of the map package inside

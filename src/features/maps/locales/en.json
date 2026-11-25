@@ -114,6 +114,7 @@
     "downloaded": "{{name}} added to your library",
     "installedLive": "{{name}} is in place",
     "restoredLive": "Stock arena is back",
-    "liveHint": "Load the Labs arena from Free Play to play it."
+    "liveHint": "Load the Labs arena from Free Play to play it.",
+    "launchedEpicHint": "In the Epic Games Launcher, click ⋯ next to Rocket League, then \"Launch without Anti-Cheat\". The stock arena comes back when you close the game."
   }
 }

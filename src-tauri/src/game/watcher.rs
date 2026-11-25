@@ -68,17 +68,43 @@ pub fn probe_now() -> RunningState {
     probe(&mut sys)
 }
 
-fn probe(sys: &mut System) -> RunningState {
-    sys.refresh_processes_specifics(ProcessesToUpdate::All, true, ProcessRefreshKind::new());
+/// Easy Anti-Cheat's client service: it runs exactly while an EAC-protected
+/// game runs.
+const EAC_SERVICE: &str = "EasyAntiCheat_EOS.exe";
+
+/// Game state from the running processes (`(pid, image name)`).
+///
+/// With EAC, `RocketLeague_EAC.exe` is only a bootstrap: it starts a
+/// protected `RocketLeague.exe` and exits, so the image name alone says
+/// nothing. EAC is detected from the bootstrap or from EAC's service.
+pub(crate) fn classify<'a>(processes: impl IntoIterator<Item = (u32, &'a str)>) -> RunningState {
     let mut state = RunningState::default();
-    for (pid, process) in sys.processes() {
-        let name = process.name().to_string_lossy();
-        if name.eq_ignore_ascii_case(EXE_EAC) || name.eq_ignore_ascii_case(EXE_NO_EAC) {
+    let mut bootstrap = None;
+    let mut eac_service = false;
+    for (pid, name) in processes {
+        if name.eq_ignore_ascii_case(EXE_NO_EAC) {
             state.running = true;
-            state.with_eac |= name.eq_ignore_ascii_case(EXE_EAC);
-            state.pid = Some(pid.as_u32());
+            state.pid = Some(pid);
+        } else if name.eq_ignore_ascii_case(EXE_EAC) {
+            state.running = true;
+            bootstrap = Some(pid);
+        } else if name.eq_ignore_ascii_case(EAC_SERVICE) {
+            eac_service = true;
         }
     }
+    state.with_eac = state.running && (bootstrap.is_some() || eac_service);
+    state.pid = state.pid.or(bootstrap);
+    state
+}
+
+fn probe(sys: &mut System) -> RunningState {
+    sys.refresh_processes_specifics(ProcessesToUpdate::All, true, ProcessRefreshKind::new());
+    let names: Vec<(u32, String)> = sys
+        .processes()
+        .iter()
+        .map(|(pid, p)| (pid.as_u32(), p.name().to_string_lossy().into_owned()))
+        .collect();
+    let mut state = classify(names.iter().map(|(pid, n)| (*pid, n.as_str())));
     if let Some(pid) = state.pid {
         state.foreground = foreground_pid() == Some(pid);
     }
@@ -106,4 +132,30 @@ fn foreground_pid() -> Option<u32> {
 #[cfg(not(windows))]
 fn foreground_pid() -> Option<u32> {
     None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn eac_is_detected_after_the_bootstrap_exits() {
+        // Protected game + EAC service, bootstrap gone.
+        let s = classify([(10, "RocketLeague.exe"), (3, "EasyAntiCheat_EOS.exe")]);
+        assert!(s.running && s.with_eac);
+        assert_eq!(s.pid, Some(10));
+        // Bootstrap still there: the game pid wins.
+        let s = classify([(2, "RocketLeague_EAC.exe"), (10, "RocketLeague.exe")]);
+        assert!(s.with_eac);
+        assert_eq!(s.pid, Some(10));
+    }
+
+    #[test]
+    fn no_eac_and_not_running() {
+        let s = classify([(10, "rocketleague.exe"), (4, "Launcher.exe")]);
+        assert!(s.running && !s.with_eac);
+        // EAC's service alone (another game) is not Rocket League.
+        let s = classify([(3, "EasyAntiCheat_EOS.exe")]);
+        assert!(!s.running && !s.with_eac);
+    }
 }

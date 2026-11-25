@@ -33,8 +33,12 @@ is never rewritten.
      `rcon_password`;
    - `data/rcon_commands.cfg` (whitelist, first word): `rp`.
    "Remove" in the checklist deletes both (the `rp` line only if we added it).
-3. `RocketLeague.exe` (no EAC), then `BakkesMod.exe` if it is not running.
-   The app never injects anything itself.
+3. The game without EAC: on Epic the app brings the Epic launcher forward
+   and the session waits (`launchInEpic`, 10 min max) for the user to pick
+   "Launch without Anti-Cheat" (see ARCHITECTURE.md, "Launch without EAC on
+   Epic"); a game started with EAC ends the session with an explanation.
+   Then `BakkesMod.exe` if it is not running. The app never injects
+   anything itself.
 4. Waits (4 min max) for `ws://127.0.0.1:<rcon_port>` (default 9002), sends
    `rcon_password <pw>` then `rp host <arena>` / `rp join <ip> <port>`.
 5. If RCON never answers (game started before the setup, BakkesMod not

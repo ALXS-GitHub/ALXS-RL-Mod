@@ -29,7 +29,12 @@
       "p1": "Maps custom dans l'arène Labs",
       "p2": "BakkesMod ne fonctionne que dans ce mode",
       "p3": "Pas de matchmaking en ligne",
-      "cta": "Lancer hors ligne"
+      "cta": "Lancer hors ligne",
+      "viaEpic": "Ouvre Epic Games Launcher : lancez le jeu avec « Lancer sans Anti-Cheat » (⋯ à côté de Rocket League). Maps custom, entraînement libre et outils hors ligne."
+    },
+    "epicNoEac": {
+      "title": "Lancez-le depuis Epic",
+      "hint": "Dans Epic Games Launcher, cliquez sur ⋯ à côté de Rocket League, puis « Lancer sans Anti-Cheat ». Epic n'autorise le mode sans EAC que depuis là."
     }
   }
 }

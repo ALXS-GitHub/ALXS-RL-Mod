@@ -91,7 +91,8 @@
       "waitingBakkes": "Attente de BakkesMod",
       "commandSent": "Commande Rocket Plugin envoyée",
       "manual": "Étape manuelle",
-      "failed": "Échec"
+      "failed": "Échec",
+      "launchInEpic": "Lancer le jeu depuis Epic"
     },
     "stopped": {
       "manual": "À terminer dans le jeu",
@@ -108,7 +109,11 @@
     "again": "Commande (à taper dans la console BakkesMod s'il ne s'est rien passé)",
     "hostDone": "Votre partie devrait être en cours de chargement. Changez le mode ou les mutateurs dans la fenêtre de Rocket Plugin si besoin ; vos amis peuvent rejoindre avec le code.",
     "joinDone": "Vous devriez être en train de charger la partie de l'hôte. Si ça expire, vérifiez que l'hôte est bien en partie et que Tailscale l'affiche en ligne.",
-    "mismatch": "Votre copie de cette map n'est pas exactement le fichier de l'hôte : le jeu peut refuser la connexion (content mismatch). Récupérez le même fichier auprès de l'hôte."
+    "mismatch": "Votre copie de cette map n'est pas exactement le fichier de l'hôte : le jeu peut refuser la connexion (content mismatch). Récupérez le même fichier auprès de l'hôte.",
+    "epic": {
+      "title": "Lancez Rocket League depuis Epic",
+      "hint": "Dans Epic Games Launcher, cliquez sur ⋯ à côté de Rocket League, puis « Lancer sans Anti-Cheat ». L'app prend le relais ensuite (BakkesMod, puis Rocket Plugin)."
+    }
   },
   "security": {
     "title": "Restreindre Tailscale au jeu",
@@ -135,7 +140,7 @@
       "bakkes": {
         "title": "BakkesMod (chaque joueur)",
         "link": "Télécharger",
-        "body": "Téléchargez BakkesModSetup.exe depuis la dernière version, installez-le, puis lancez-le une fois : il se met à jour tout seul.\nBakkesMod ne fonctionne que si le jeu tourne sans Easy Anti-Cheat : cette page lance le jeu comme ça pour vous.\nAprès une mise à jour de Rocket League, attendez celle de BakkesMod avant de jouer (sa fenêtre indique qu'il n'est pas à jour en attendant)."
+        "body": "Téléchargez BakkesModSetup.exe depuis la dernière version, installez-le, puis lancez-le une fois : il se met à jour tout seul.\nBakkesMod ne fonctionne que si le jeu tourne sans Easy Anti-Cheat. Avec Epic, ce mode ne se lance que depuis Epic Games Launcher : ⋯ à côté de Rocket League → « Lancer sans Anti-Cheat ». L'app ouvre Epic et prend le relais une fois le jeu lancé.\nAprès une mise à jour de Rocket League, attendez celle de BakkesMod avant de jouer (sa fenêtre indique qu'il n'est pas à jour en attendant)."
       },
       "rocketPlugin": {
         "title": "Rocket Plugin (chaque joueur)",
@@ -152,7 +157,7 @@
       },
       "play": {
         "title": "Jouer",
-        "body": "Hôte : choisissez la map et l'arène, cliquez sur Héberger, attendez « Commande Rocket Plugin envoyée », puis copiez le code d'invitation et envoyez-le.\nAmis : collez le code, téléchargez la map si c'est proposé, puis cliquez sur Rejoindre.\nÀ la fermeture du jeu, l'arène d'origine revient (si c'est activé dans les Réglages)."
+        "body": "Hôte : choisissez la map et l'arène, cliquez sur Héberger, lancez le jeu depuis Epic avec « Lancer sans Anti-Cheat » quand c'est demandé, attendez « Commande Rocket Plugin envoyée », puis copiez le code d'invitation et envoyez-le.\nAmis : collez le code, téléchargez la map si c'est proposé, puis cliquez sur Rejoindre et lancez le jeu depuis Epic de la même façon.\nÀ la fermeture du jeu, l'arène d'origine revient (si c'est activé dans les Réglages)."
       },
       "trouble": {
         "title": "En cas de problème",

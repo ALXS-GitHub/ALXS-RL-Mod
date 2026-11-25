@@ -83,6 +83,7 @@ export const TAILSCALE_DOWNLOAD = "https://tailscale.com/download";
 export const PHASES = [
   "installingMap",
   "launchingGame",
+  "launchInEpic",
   "startingBakkes",
   "waitingBakkes",
   "commandSent",

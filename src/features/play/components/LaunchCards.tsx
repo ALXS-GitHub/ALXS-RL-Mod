@@ -92,6 +92,7 @@ export function LaunchCards() {
   const start = (withEac: boolean) =>
     launch.mutate(withEac, {
       onSuccess: (r) =>
+        r.method !== "epicNoEac" &&
         notify.success(
           r.method === "direct" ? t("launch.started") : t("launch.viaLauncher"),
           withEac ? t("launch.eacHint") : t("launch.offlineHint"),
@@ -124,7 +125,7 @@ export function LaunchCards() {
         icon={Wrench}
         badge={t("launch.offline.badge")}
         title={t("launch.offline.title")}
-        description={t("launch.offline.description")}
+        description={store === "epic" ? t("launch.offline.viaEpic") : t("launch.offline.description")}
         points={[t("launch.offline.p1"), t("launch.offline.p2"), t("launch.offline.p3")]}
         cta={t("launch.offline.cta")}
         disabledReason={common}
