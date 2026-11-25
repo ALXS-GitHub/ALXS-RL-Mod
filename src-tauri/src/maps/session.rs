@@ -149,6 +149,18 @@ pub fn activate_blocking(
     Ok(session)
 }
 
+/// Turns the current "play offline" session into a normal install: the
+/// stock arena is then not put back when the game exits.
+pub fn make_persistent() -> AppResult<()> {
+    match current() {
+        Some(s) if s.offline => set(Some(MapSession {
+            offline: false,
+            ..s
+        })),
+        _ => Ok(()),
+    }
+}
+
 pub async fn activate(
     app: &AppHandle,
     id: &str,

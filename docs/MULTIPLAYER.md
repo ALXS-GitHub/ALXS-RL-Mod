@@ -27,7 +27,10 @@ is never rewritten.
 
 1. Map: resolved in the library (bakkesplugins id, then name), then
    `maps::session::activate` over the chosen arena (same write layer as
-   Maps), skipped when that map is already there.
+   Maps), skipped when that map is already there. It is a normal,
+   persistent install (never the "play offline" mode): the map stays in
+   place and in the active mods panel after the game closes, until the user
+   removes it.
 2. BakkesMod RCON (`multi::bakkes_cfg`), only while the game is closed:
    - `cfg/autoexec.cfg`: a marked block `rcon_enabled "1"` + a random
      `rcon_password`;

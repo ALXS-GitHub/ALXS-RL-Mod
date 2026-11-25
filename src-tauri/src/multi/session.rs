@@ -250,7 +250,7 @@ pub fn host(app: &AppHandle, map_id: String, target: Option<String>) -> AppResul
             s.command = Some(command.clone());
             s.target = target.clone();
         });
-        drive(app2, id, map_id, command).await;
+        drive(app2, id, command).await;
     });
     Ok(returned)
 }
@@ -291,7 +291,7 @@ pub fn join(app: &AppHandle, code: &str) -> AppResult<MultiSession> {
             _ => false,
         };
         update(&app2, &id, |s| s.map_mismatch = mismatch);
-        drive(app2, id, entry.id, command).await;
+        drive(app2, id, command).await;
     });
     Ok(returned)
 }
@@ -363,7 +363,10 @@ fn installed_sha(map_id: &str) -> Option<String> {
         .map(|e| e.written_sha256)
 }
 
-/// Installs the map (unless the same map is already on that arena).
+/// Installs the map (unless the same map is already on that arena) as a
+/// normal, persistent map install: it stays in place (and in the active mods
+/// panel) after the game closes, until the user removes it — never the
+/// "play offline" mode that restores the stock arena on exit.
 /// Returns the arena it replaces, or `None` after ending the session.
 async fn install_map(
     app: &AppHandle,
@@ -377,10 +380,13 @@ async fn install_map(
             .as_deref()
             .is_none_or(|t| t.eq_ignore_ascii_case(&s.target));
         if s.map_id == map_id && same_target {
+            if let Err(err) = maps_session::make_persistent() {
+                tracing::warn!(%err, "could not keep the map installed after the game");
+            }
             return Some(s.target);
         }
     }
-    match maps_session::activate(app, map_id, target, true).await {
+    match maps_session::activate(app, map_id, target, false).await {
         Ok(s) => Some(s.target),
         Err(err) => {
             end(app, id, Phase::Failed, err.to_string());
@@ -401,7 +407,7 @@ fn spawn_injector(path: &PathBuf) -> AppResult<()> {
 }
 
 /// Game → BakkesMod → RCON → command.
-async fn drive(app: AppHandle, id: String, map_id: String, command: String) {
+async fn drive(app: AppHandle, id: String, command: String) {
     let manual = |app: &AppHandle, msg: &str| end(app, &id, Phase::Manual, msg);
 
     // RCON can only be (re)configured before BakkesMod loads.
@@ -440,8 +446,6 @@ async fn drive(app: AppHandle, id: String, map_id: String, command: String) {
             Ok(launch::NoEacStart::Spawned(_)) => {}
             Err(err) => return end(&app, &id, Phase::Failed, err.to_string()),
         }
-        // Puts the stock arena back when the game exits (if the user wants that).
-        maps_session::watch_offline_session(app.clone(), map_id);
     }
 
     // A no-EAC game, seen twice in a row (a start can relaunch itself once).
