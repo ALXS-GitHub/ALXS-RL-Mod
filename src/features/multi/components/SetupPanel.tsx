@@ -160,7 +160,11 @@ export function SetupPanel() {
             state={s.bakkes.rconReady ? "ok" : "todo"}
             label={t("setup.rcon.label")}
             detail={
-              s.bakkes.rconReady ? t("setup.rcon.ready", { port: s.bakkes.rconPort }) : t("setup.rcon.off")
+              !s.bakkes.rconPluginInstalled
+                ? t("setup.rcon.noPlugin")
+                : s.bakkes.rconReady
+                  ? t("setup.rcon.ready", { port: s.bakkes.rconPort })
+                  : t("setup.rcon.off")
             }
             action={
               s.bakkes.dataDir ? (

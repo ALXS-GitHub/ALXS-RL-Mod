@@ -3,7 +3,9 @@
 //!
 //! Two small, reversible edits in `%APPDATA%\bakkesmod\bakkesmod`:
 //! - `cfg/autoexec.cfg` (run by BakkesMod at load, never rewritten by it):
-//!   a marked block turning RCON on with a random password;
+//!   a marked block loading BakkesMod's RCON plugin (`RCONPlugin.dll`, not
+//!   loaded by default: its cvars do not exist until it is) and turning it
+//!   on with a random password;
 //! - `data/rcon_commands.cfg` (RCON whitelist, first word of a command):
 //!   the `rp` line (Rocket Plugin's console command).
 //!
@@ -35,6 +37,8 @@ pub struct BakkesSetup {
     pub rocket_plugin_loaded: bool,
     /// Our RCON block and the `rp` whitelist line are both in place.
     pub rcon_ready: bool,
+    /// `plugins/RCONPlugin.dll` present (ships with BakkesMod).
+    pub rcon_plugin_installed: bool,
     pub rcon_port: u16,
     /// BakkesMod's injector process is running.
     pub injector_running: bool,
@@ -139,6 +143,8 @@ pub(crate) fn with_block(autoexec: &str, password: &str) -> String {
     let mut text = remove_block(autoexec);
     text.push_str(BLOCK_BEGIN);
     text.push_str(eol);
+    text.push_str("plugin load rconplugin");
+    text.push_str(eol);
     text.push_str("rcon_enabled \"1\"");
     text.push_str(eol);
     text.push_str(&format!("rcon_password \"{password}\""));
@@ -233,6 +239,9 @@ pub fn setup() -> BakkesSetup {
         rocket_plugin_installed: installed,
         rocket_plugin_loaded: loaded,
         rcon_ready: rcon_password().is_some(),
+        rcon_plugin_installed: dir
+            .as_ref()
+            .is_some_and(|d| d.join("plugins").join("RCONPlugin.dll").is_file()),
         rcon_port: port,
         injector_running: injector_running(),
     }
@@ -342,7 +351,7 @@ mod tests {
         let original = "bind F9 \"ballspeed\"\r\nsv_soccar_gamespeed 1\r\n";
         let with = with_block(original, "abc123");
         assert!(with.starts_with(original));
-        assert!(with.contains("rcon_enabled \"1\"\r\n"));
+        assert!(with.contains("plugin load rconplugin\r\nrcon_enabled \"1\"\r\n"));
         assert_eq!(block_password(&with).as_deref(), Some("abc123"));
         // Re-applying replaces, never duplicates.
         let again = with_block(&with, "zzz");

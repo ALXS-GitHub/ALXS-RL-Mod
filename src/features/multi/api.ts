@@ -37,6 +37,7 @@ export const bakkesSetupSchema = z.object({
   rocketPluginInstalled: z.boolean(),
   rocketPluginLoaded: z.boolean(),
   rconReady: z.boolean(),
+  rconPluginInstalled: z.boolean(),
   rconPort: z.number(),
   injectorRunning: z.boolean(),
 });

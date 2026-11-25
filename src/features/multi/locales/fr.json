@@ -35,7 +35,8 @@
       "enable": "Activer",
       "undo": "Retirer",
       "done": "Contrôle à distance activé",
-      "restart": "Relancez le jeu pour que BakkesMod le prenne en compte."
+      "restart": "Relancez le jeu pour que BakkesMod le prenne en compte.",
+      "noPlugin": "Le plugin RCON de BakkesMod (RCONPlugin.dll) est absent : réinstallez BakkesMod. En attendant, l'app affiche la commande à taper dans la console BakkesMod."
     },
     "game": {
       "label": "Rocket League",

@@ -35,7 +35,8 @@
       "enable": "Enable",
       "undo": "Remove",
       "done": "Remote control enabled",
-      "restart": "Restart the game so BakkesMod picks it up."
+      "restart": "Restart the game so BakkesMod picks it up.",
+      "noPlugin": "BakkesMod's RCON plugin (RCONPlugin.dll) is missing: reinstall BakkesMod. Until then the app shows the command to type in the BakkesMod console."
     },
     "game": {
       "label": "Rocket League",
