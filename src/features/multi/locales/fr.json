@@ -1,0 +1,112 @@
+{
+  "eyebrow": "Jeu",
+  "title": "Multi moddé",
+  "subtitle": "Jouez sur des maps custom entre amis : hébergez ou rejoignez une partie Rocket Plugin via Tailscale, sans Easy Anti-Cheat.",
+  "offlineNote": "Les parties moddées tournent sans Easy Anti-Cheat (mode hors ligne) : chaque joueur a besoin de Tailscale, de BakkesMod avec Rocket Plugin et de la même map. L'app se contente de lancer les outils que vous avez installés : elle n'injecte jamais rien elle-même.",
+  "setup": {
+    "title": "Avant de jouer",
+    "refresh": "Actualiser",
+    "tailscale": {
+      "running": "Connecté en tant que {{name}} — votre adresse : {{ip}}",
+      "notInstalled": "Pas installé : chaque joueur en a besoin pour joindre les autres.",
+      "serviceDown": "Installé, mais son service ne répond pas — lancez Tailscale.",
+      "needsLogin": "Connectez-vous à Tailscale (icône de la barre des tâches) sur ce PC.",
+      "stopped": "Déconnecté — cliquez sur Connect dans le menu Tailscale.",
+      "download": "Télécharger"
+    },
+    "bakkes": {
+      "missing": "Pas installé : Rocket Plugin tourne dans BakkesMod.",
+      "ready": "Installé — l'app le lance pour vous.",
+      "running": "En cours d'exécution.",
+      "noInjector": "Dossier de données trouvé, mais pas BakkesMod.exe : lancez BakkesMod vous-même."
+    },
+    "rocketPlugin": {
+      "missing": "Pas installé : ajoutez-le depuis le gestionnaire de plugins de BakkesMod.",
+      "loaded": "Installé et chargé.",
+      "notLoaded": "Installé mais pas chargé au démarrage (plugins.cfg) : activez-le dans BakkesMod."
+    },
+    "rcon": {
+      "label": "Contrôle à distance",
+      "ready": "BakkesMod accepte les commandes Rocket Plugin de cette app (port local {{port}}, mot de passe aléatoire).",
+      "off": "Désactivé : l'app affichera la commande à taper dans la console BakkesMod. Activé automatiquement quand vous hébergez ou rejoignez avec le jeu fermé.",
+      "enable": "Activer",
+      "undo": "Retirer",
+      "done": "Contrôle à distance activé",
+      "restart": "Relancez le jeu pour que BakkesMod le prenne en compte."
+    },
+    "game": {
+      "label": "Rocket League",
+      "closed": "Fermé — il sera lancé sans EAC.",
+      "noEac": "Lancé sans EAC.",
+      "eac": "Lancé avec EAC : fermez-le d'abord."
+    },
+    "peers": "Appareils du tailnet ({{count}})",
+    "noPeers": "Aucun autre appareil sur votre tailnet pour l'instant."
+  },
+  "play": {
+    "checking": "Vérification…",
+    "notReady": "Terminez d'abord la liste de vérification"
+  },
+  "host": {
+    "title": "Héberger une partie",
+    "description": "Installe la map, lance le jeu et BakkesMod, ouvre la partie avec Rocket Plugin, puis vous donne un code pour vos amis.",
+    "pickMap": "Choisir une map",
+    "noMaps": "Votre bibliothèque de maps est vide : ajoutez d'abord une map dans Maps.",
+    "target": "Remplace l'arène {{arena}}",
+    "cta": "Héberger"
+  },
+  "join": {
+    "title": "Rejoindre un ami",
+    "description": "Collez le code de l'hôte : l'app installe la même map, lance le jeu et BakkesMod, puis rejoint la partie.",
+    "paste": "Coller",
+    "from": "Hébergée par {{host}} ({{address}})",
+    "autoDownload": "Téléchargée depuis bakkesplugins si vous ne l'avez pas.",
+    "needsFile": "Map importée : il vous faut le même fichier dans votre bibliothèque (demandez-le à l'hôte).",
+    "cta": "Rejoindre"
+  },
+  "session": {
+    "role": {
+      "host": "Hôte",
+      "join": "Invité"
+    },
+    "phase": {
+      "downloadingMap": "Téléchargement de la map",
+      "installingMap": "Installation de la map",
+      "launchingGame": "Lancement du jeu",
+      "startingBakkes": "Lancement de BakkesMod",
+      "waitingBakkes": "Attente de BakkesMod",
+      "commandSent": "Commande Rocket Plugin envoyée",
+      "manual": "Étape manuelle",
+      "failed": "Échec"
+    },
+    "stopped": {
+      "manual": "À terminer dans le jeu",
+      "failed": "La session s'est arrêtée"
+    },
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "copy": "Copier",
+    "copied": "Copié",
+    "invite": "Code d'invitation — envoyez-le à vos amis",
+    "hostAddress": "Vos amis se connectent à {{address}} (UDP).",
+    "joinAddress": "Connexion à {{address}}.",
+    "manual": "Tapez ceci dans la console BakkesMod (F6)",
+    "again": "Commande (à taper dans la console BakkesMod s'il ne s'est rien passé)",
+    "hostDone": "Votre partie devrait être en cours de chargement. Changez le mode ou les mutateurs dans la fenêtre de Rocket Plugin si besoin ; vos amis peuvent rejoindre avec le code.",
+    "joinDone": "Vous devriez être en train de charger la partie de l'hôte. Si ça expire, vérifiez que l'hôte est bien en partie et que Tailscale l'affiche en ligne.",
+    "mismatch": "Votre copie de cette map n'est pas exactement le fichier de l'hôte : le jeu peut refuser la connexion (content mismatch). Récupérez le même fichier auprès de l'hôte."
+  },
+  "security": {
+    "title": "Restreindre Tailscale au jeu",
+    "intro": "Par défaut, chaque appareil d'un tailnet peut joindre tous les ports des autres. Pour jouer, seul le port de Rocket League est nécessaire : remplacez la politique du tailnet pour que rien d'autre ne passe.",
+    "tips": {
+      "acl": "Dans la console d'administration Tailscale (Access controls), remplacez la politique par celle ci-dessous et mettez le login Tailscale de chaque joueur dans group:rl. Seul l'UDP 7777 entre joueurs est autorisé ; tout le reste est refusé.",
+      "noSsh": "\"ssh\": [] supprime Tailscale SSH. Ne lancez jamais tailscale up --ssh sur un PC de jeu.",
+      "noRoutes": "N'annoncez ni exit node ni routes de sous-réseau : vos amis ne voient alors que votre PC, pas votre réseau local.",
+      "firewall": "Quand Windows pose la question pour Rocket League, autorisez-le sur les réseaux privés uniquement.",
+      "cleanup": "Supprimez l'appareil d'un ami (Machines) quand vous ne jouez plus ensemble, et gardez l'approbation des appareils activée."
+    },
+    "copy": "Copier la politique",
+    "open": "Ouvrir Access controls"
+  }
+}

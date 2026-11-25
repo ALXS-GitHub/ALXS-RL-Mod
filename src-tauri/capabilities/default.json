@@ -21,6 +21,12 @@
           "url": "https://lethamyr.com/*"
         },
         {
+          "url": "https://tailscale.com/download"
+        },
+        {
+          "url": "https://login.tailscale.com/admin/acls/file"
+        },
+        {
           "url": "https://bakkesplugins.com/*"
         },
         {

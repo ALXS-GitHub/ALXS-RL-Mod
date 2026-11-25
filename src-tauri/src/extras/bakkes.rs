@@ -1,6 +1,7 @@
 //! Read-only BakkesMod detection. BakkesMod injects into the game, which
 //! EAC forbids: it only works when the game is launched without EAC
-//! (offline). This app never starts or injects it.
+//! (offline). This app never injects anything; only the modded multiplayer
+//! page (`multi`) starts BakkesMod's own injector, on explicit user action.
 
 use std::path::PathBuf;
 

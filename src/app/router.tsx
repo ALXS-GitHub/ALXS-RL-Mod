@@ -36,6 +36,7 @@ const routes = [
   page("/market", () => import("@/features/market/MarketPage"), "MarketPage"),
   page("/maps", () => import("@/features/maps/MapsPage"), "MapsPage"),
   page("/play", () => import("@/features/play/PlayPage"), "PlayPage"),
+  page("/multi", () => import("@/features/multi/MultiPage"), "MultiPage"),
   page("/tracker", () => import("@/features/tracker/TrackerPage"), "TrackerPage"),
   page("/extras", () => import("@/features/extras/ExtrasPage"), "ExtrasPage"),
   page("/settings", () => import("@/features/settings/SettingsPage"), "SettingsPage"),

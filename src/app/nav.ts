@@ -11,6 +11,7 @@ import {
   Settings,
   Sparkles,
   Store,
+  Users,
   Volleyball,
 } from "lucide-react";
 
@@ -61,6 +62,25 @@ export const NAV: readonly NavItem[] = [
     icon: Gamepad2,
     section: "game",
     keywords: ["launch", "lancer", "jouer", "eac", "offline"],
+  },
+  {
+    to: "/multi",
+    labelKey: "nav.multi",
+    icon: Users,
+    section: "game",
+    keywords: [
+      "multiplayer",
+      "multijoueur",
+      "friends",
+      "amis",
+      "lan",
+      "tailscale",
+      "rocket plugin",
+      "host",
+      "join",
+    ],
+    modifiesGame: true,
+    stage: "experimental",
   },
   {
     to: "/presets",

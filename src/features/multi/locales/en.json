@@ -1,0 +1,112 @@
+{
+  "eyebrow": "Game",
+  "title": "Modded multi",
+  "subtitle": "Play custom maps with friends: host or join a Rocket Plugin game over Tailscale, without Easy Anti-Cheat.",
+  "offlineNote": "Modded games run without Easy Anti-Cheat (offline mode): every player needs Tailscale, BakkesMod with Rocket Plugin and the same map. The app only starts the tools you installed: it never injects anything itself.",
+  "setup": {
+    "title": "Before playing",
+    "refresh": "Refresh",
+    "tailscale": {
+      "running": "Connected as {{name}} — your address: {{ip}}",
+      "notInstalled": "Not installed: every player needs it to reach the others.",
+      "serviceDown": "Installed, but its service does not answer — start Tailscale.",
+      "needsLogin": "Sign in to Tailscale (tray icon) on this PC.",
+      "stopped": "Disconnected — click Connect in the Tailscale menu.",
+      "download": "Download"
+    },
+    "bakkes": {
+      "missing": "Not installed: Rocket Plugin runs inside BakkesMod.",
+      "ready": "Installed — the app starts it for you.",
+      "running": "Running.",
+      "noInjector": "Data folder found, but not BakkesMod.exe: start BakkesMod yourself."
+    },
+    "rocketPlugin": {
+      "missing": "Not installed: add it from BakkesMod's plugin manager.",
+      "loaded": "Installed and loaded.",
+      "notLoaded": "Installed but not loaded at start-up (plugins.cfg): enable it in BakkesMod."
+    },
+    "rcon": {
+      "label": "Remote control",
+      "ready": "BakkesMod accepts Rocket Plugin commands from this app (local port {{port}}, random password).",
+      "off": "Off: the app will show the command to type in the BakkesMod console. Enabled automatically when you host or join with the game closed.",
+      "enable": "Enable",
+      "undo": "Remove",
+      "done": "Remote control enabled",
+      "restart": "Restart the game so BakkesMod picks it up."
+    },
+    "game": {
+      "label": "Rocket League",
+      "closed": "Closed — it will be started without EAC.",
+      "noEac": "Running without EAC.",
+      "eac": "Running with EAC: close it first."
+    },
+    "peers": "Tailnet devices ({{count}})",
+    "noPeers": "No other device on your tailnet yet."
+  },
+  "play": {
+    "checking": "Checking…",
+    "notReady": "Finish the checklist first"
+  },
+  "host": {
+    "title": "Host a game",
+    "description": "Installs the map, starts the game and BakkesMod, opens the game on Rocket Plugin, then gives you a code for your friends.",
+    "pickMap": "Choose a map",
+    "noMaps": "Your map library is empty: add a map in Maps first.",
+    "target": "Replaces the {{arena}} arena",
+    "cta": "Host"
+  },
+  "join": {
+    "title": "Join a friend",
+    "description": "Paste the code from the host: the app installs the same map, starts the game and BakkesMod, then joins.",
+    "paste": "Paste",
+    "from": "Hosted by {{host}} ({{address}})",
+    "autoDownload": "Downloaded from bakkesplugins if you do not have it.",
+    "needsFile": "Imported map: you need the same file in your library (ask the host).",
+    "cta": "Join"
+  },
+  "session": {
+    "role": {
+      "host": "Hosting",
+      "join": "Joining"
+    },
+    "phase": {
+      "downloadingMap": "Downloading the map",
+      "installingMap": "Installing the map",
+      "launchingGame": "Starting the game",
+      "startingBakkes": "Starting BakkesMod",
+      "waitingBakkes": "Waiting for BakkesMod",
+      "commandSent": "Rocket Plugin command sent",
+      "manual": "Manual step",
+      "failed": "Failed"
+    },
+    "stopped": {
+      "manual": "Finish in the game",
+      "failed": "The session stopped"
+    },
+    "cancel": "Cancel",
+    "close": "Close",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invite": "Invite code — send it to your friends",
+    "hostAddress": "Friends connect to {{address}} (UDP).",
+    "joinAddress": "Connecting to {{address}}.",
+    "manual": "Type this in the BakkesMod console (F6)",
+    "again": "Command (to type in the BakkesMod console if nothing happened)",
+    "hostDone": "Your game should be loading. Change the mode or mutators in Rocket Plugin's window if needed; friends can join with the code.",
+    "joinDone": "You should be loading into the host's game. If it times out, check the host is in the game and that Tailscale shows them online.",
+    "mismatch": "Your copy of this map is not the host's exact file: the game may refuse to connect (content mismatch). Get the same file from the host."
+  },
+  "security": {
+    "title": "Lock Tailscale down to the game",
+    "intro": "By default every device on a tailnet can reach every port of the others. For gaming you only need Rocket League's port: replace the tailnet policy so nothing else goes through.",
+    "tips": {
+      "acl": "In the Tailscale admin console (Access controls), replace the policy with the one below and put every player's Tailscale login in group:rl. Only UDP 7777 between players is allowed; everything else is denied.",
+      "noSsh": "\"ssh\": [] removes Tailscale SSH. Never run tailscale up --ssh on a gaming PC.",
+      "noRoutes": "Do not advertise an exit node or subnet routes: friends then only see your PC, not your home network.",
+      "firewall": "When Windows asks about Rocket League, allow it on Private networks only.",
+      "cleanup": "Remove a friend's device (Machines) when you stop playing together, and keep device approval on."
+    },
+    "copy": "Copy the policy",
+    "open": "Open Access controls"
+  }
+}

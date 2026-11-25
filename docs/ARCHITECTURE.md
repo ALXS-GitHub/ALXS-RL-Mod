@@ -64,6 +64,7 @@ src-tauri/
   src/stats/             Stats API (ini + websocket), session tracker, overlay, hooks
   src/personal/          personal edition only (`--features personal`): MMR via tracker.gg
   src/extras/            replays, BakkesMod (offline) detection, launch
+  src/multi/             modded multiplayer: Tailscale status, BakkesMod RCON → Rocket Plugin, invite codes
 ```
 
 ## Runtime data
@@ -198,6 +199,13 @@ Errors always serialize as `{ kind: string, message: string }`.
 - `replays_list() -> Vec<ReplayFile>` · `bakkesmod_status() -> BakkesStatus`
 - events `maps://download`, `stats://event`, `tracker://session`
 
+### modded multiplayer (multi, see `docs/MULTIPLAYER.md`)
+- `multi_status() -> MultiStatus` (`tailscale` from `tailscale status --json`, `bakkes` setup incl. Rocket Plugin + RCON, game state, port 7777)
+- `multi_bakkes_setup() -> BakkesSetup` · `multi_bakkes_undo() -> BakkesSetup` (marked block in BakkesMod's `cfg/autoexec.cfg` + `rp` in `data/rcon_commands.cfg`, reversible)
+- `multi_host(map_id) -> MultiSession` · `multi_join(code) -> MultiSession` (background steps: map → no-EAC game → BakkesMod injector → RCON `rp host`/`rp join`; ends in `commandSent`, `manual` (command shown) or `failed`)
+- `multi_decode(code) -> Invite` · `multi_session() -> Option<MultiSession>` · `multi_cancel()`
+- event `multi://session` (`Option<MultiSession>`)
+
 ### marketplace (market)
 - `market_browse(source: alphaConsole | rlDesigner, kind: decal | ball, query?, sort?) -> MarketPage` (sort: downloads | likes | newest | updated | trending, AlphaConsole only; AlphaConsole returns the first 20 results)
 - `market_install(source, kind, id, title, convert: bool) -> InstallReport` — downloads the pack, normalises every manifest to `<library>/<Pack>/<Variant>/Template.json` (variant = car body or ball variant), adds only the variants the library lacks (`skipped` counts the others), converts decal variants to hybrid packs when `convert`. `MarketItem.installedBodies` lists the variants already present.
@@ -226,7 +234,7 @@ Errors always serialize as `{ kind: string, message: string }`.
 | foundation | `base/`, `game/` (minus launch), `lib.rs`, configs | `app/`, `components/`, `lib/`, `stores/`, `styles/`, `features/home`, `features/settings` |
 | engine | `upk/`, `palette/`, `decals/` | `features/palette`, `features/decals` |
 | catalog | `catalog/`, `swap/`, `presets/`, `integrity/` | `features/items`, `features/presets` |
-| play | `maps/`, `stats/`, `extras/` | `features/maps`, `features/play` (launch), `features/tracker` (session, overlay; MMR in `src/personal`, personal edition only), `features/extras` |
+| play | `maps/`, `stats/`, `extras/`, `multi/` | `features/maps`, `features/play` (launch), `features/multi` (modded multiplayer), `features/tracker` (session, overlay; MMR in `src/personal`, personal edition only), `features/extras` |
 
 Slices never edit files owned by another slice. Needed changes to shared
 files (`lib.rs`, `Cargo.toml`, `package.json`, `components/ui`) are reported
@@ -355,6 +363,13 @@ failures: {feature, message}[], checkedAt: RFC3339 }`, emitted on
   from the asset name (FNV-1a, high bit set). Psyonix's numeric product ids
   are not in the local files; the few that matter (bodies, for AlphaConsole
   `BodyID`) are constants in `decals::targets`.
+- **Modded multiplayer** (`multi`, `docs/MULTIPLAYER.md`): custom-map games
+  between friends with BakkesMod's Rocket Plugin over Tailscale, EAC off.
+  The app orchestrates tools the user installed and never injects: it
+  starts BakkesMod's own injector and talks to BakkesMod's RCON on loopback
+  only (same exception as the Stats API websocket: local, not
+  `base::security`). Tailscale is only read (`tailscale status --json`).
+  The page ships a tailnet policy limited to UDP 7777 between players.
 - **MMR** exists only in the personal edition (`docs/PERSONAL_EDITION.md`):
   tracker.gg forbids automated access and has no Rocket League API, so the
   public releases have none. It comes from tracker.gg profiles, loaded in a

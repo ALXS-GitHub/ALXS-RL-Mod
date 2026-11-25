@@ -20,6 +20,7 @@ pub mod swap;
 pub mod extras;
 pub mod maps;
 pub mod market;
+pub mod multi;
 #[cfg(feature = "personal")]
 pub mod personal;
 pub mod stats;
@@ -90,7 +91,7 @@ pub fn run() {
             // Order matters: the game watcher and key ring first, integrity
             // last (it inspects what the other modules restored).
             type Init = fn(&tauri::AppHandle) -> base::AppResult<()>;
-            let inits: [(&str, Init); 12] = [
+            let inits: [(&str, Init); 13] = [
                 ("game", game::init),
                 ("upk", upk::init),
                 ("catalog", catalog::init),
@@ -102,6 +103,7 @@ pub fn run() {
                 ("maps", maps::init),
                 ("stats", stats::init),
                 ("extras", extras::init),
+                ("multi", multi::init),
                 ("integrity", integrity::init),
             ];
             for (name, init) in inits {
@@ -187,6 +189,14 @@ pub fn run() {
             extras::commands::launch_game,
             extras::commands::replays_list,
             extras::commands::bakkesmod_status,
+            multi::commands::multi_status,
+            multi::commands::multi_bakkes_setup,
+            multi::commands::multi_bakkes_undo,
+            multi::commands::multi_host,
+            multi::commands::multi_decode,
+            multi::commands::multi_join,
+            multi::commands::multi_session,
+            multi::commands::multi_cancel,
             stats::commands::stats_status,
             stats::commands::stats_enable,
             stats::commands::stats_disable,

@@ -8,6 +8,7 @@ export const EVENTS = {
   gameStatus: "game://status",
   integrityReport: "integrity://report",
   mapsDownload: "maps://download",
+  multiSession: "multi://session",
   statsEvent: "stats://event",
   trackerSession: "tracker://session",
 } as const;

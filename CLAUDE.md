@@ -34,7 +34,8 @@ between modules (IPC command names, write layer, conventions).
 - `src-tauri/src/{upk,palette,decals}` — cooked package engine and the
   features built on it.
 - `src-tauri/src/{catalog,swap,presets,integrity}` — items side.
-- `src-tauri/src/{maps,stats,extras}` — maps, tracker, launch, misc.
+- `src-tauri/src/{maps,stats,extras,multi}` — maps, tracker, launch, misc,
+  modded multiplayer (Rocket Plugin over Tailscale, `docs/MULTIPLAYER.md`).
 - `src/` — React front-end; one folder per feature in `src/features/`.
 - `docs_rl/` — reverse-engineering notes on game formats (keep, extend).
 - `site/` — GitHub Pages website (`python site/build.py`), `docs/RELEASING.md` — how to ship.
