@@ -99,6 +99,7 @@ pub async fn integrity_restore_stock(app: AppHandle) -> AppResult<CleanReport> {
             Owner::Ball,
             Owner::Maps,
             Owner::Stats,
+            Owner::MapTextures,
         ] {
             let pending = writer::entries_for(owner).map(|e| e.len()).unwrap_or(0);
             if pending == 0 {

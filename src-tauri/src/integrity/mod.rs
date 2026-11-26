@@ -62,6 +62,7 @@ enum Feature {
     Ball,
     Maps,
     Stats,
+    MapTextures,
 }
 
 impl Feature {
@@ -73,6 +74,7 @@ impl Feature {
             Feature::Ball => "ball",
             Feature::Maps => "maps",
             Feature::Stats => "stats",
+            Feature::MapTextures => "mapTextures",
         }
     }
 
@@ -84,6 +86,7 @@ impl Feature {
             Owner::Ball => Feature::Ball,
             Owner::Maps => Feature::Maps,
             Owner::Stats => Feature::Stats,
+            Owner::MapTextures => Feature::MapTextures,
         }
     }
 
@@ -96,16 +99,18 @@ impl Feature {
             Feature::Ball => Some(crate::ball::reapply_after_update(app)),
             Feature::Maps => Some(crate::maps::reapply_after_update(app)),
             Feature::Stats => None,
+            Feature::MapTextures => Some(crate::maps::textures::reapply(app)),
         }
     }
 }
 
-const REBUILDABLE: [Feature; 5] = [
+const REBUILDABLE: [Feature; 6] = [
     Feature::Swap,
     Feature::Palette,
     Feature::Decals,
     Feature::Ball,
     Feature::Maps,
+    Feature::MapTextures,
 ];
 
 struct Assessment {

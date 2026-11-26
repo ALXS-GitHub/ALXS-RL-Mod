@@ -42,9 +42,18 @@ is never rewritten.
    Epic"); a game started with EAC ends the session with an explanation.
    Then `BakkesMod.exe` if it is not running. The app never injects
    anything itself.
-4. Waits (4 min max) for `ws://127.0.0.1:<rcon_port>` (default 9002), sends
+4. Match options (`multi::rp_options`): game mode (`rp gamemode`), players
+   (`rp players`), a Rocket Plugin preset (its `rp mutator` lines are read
+   from `data/RocketPlugin/presets/*.cfg` and replayed, so the user's
+   `rp_preset_path` cvar does not matter) and individual mutators on top.
+   Every mutator category not chosen is sent as `Default`. Bot difficulty,
+   host password and UPnP stay in Rocket Plugin's window. "Start the match
+   myself in Rocket Plugin" sends nothing: the session ends in
+   `hostInRocketPlugin` once the game and BakkesMod are up, and the invite
+   code still carries the map and arena.
+5. Waits (4 min max) for `ws://127.0.0.1:<rcon_port>` (default 9002), sends
    `rcon_password <pw>` then `rp host <arena>` / `rp join <ip> <port>`.
-5. If RCON never answers (game started before the setup, BakkesMod not
+6. If RCON never answers (game started before the setup, BakkesMod not
    injected, protocol change…), the session ends in `manual` and the UI
    shows the command to type in the BakkesMod console (F6).
 

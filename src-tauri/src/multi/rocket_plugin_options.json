@@ -1,0 +1,1054 @@
+{
+ "gameModes": [
+  {
+   "display": "Soccar",
+   "internal": "TAGame.GameInfo_Soccar_TA"
+  },
+  {
+   "display": "Hoops",
+   "internal": "TAGame.GameInfo_Basketball_TA"
+  },
+  {
+   "display": "Snow Day",
+   "internal": "TAGame.GameInfo_Hockey_TA"
+  },
+  {
+   "display": "Rumble",
+   "internal": "TAGame.GameInfo_Items_TA"
+  },
+  {
+   "display": "Dropshot",
+   "internal": "TAGame.GameInfo_Breakout_TA"
+  },
+  {
+   "display": "Heatseeker",
+   "internal": "TAGame.GameInfo_GodBall_TA"
+  },
+  {
+   "display": "Gridiron",
+   "internal": "TAGame.GameInfo_Football_TA"
+  },
+  {
+   "display": "Knockout",
+   "internal": "TAGame.GameInfo_KnockOut_TA"
+  },
+  {
+   "display": "Split Shot",
+   "internal": "TAGame.GameInfo_Territory_TA"
+  },
+  {
+   "display": "Possession Rumble",
+   "internal": "TAGame.GameInfo_Possession_TA"
+  }
+ ],
+ "mutators": [
+  {
+   "category": "FreePlay",
+   "label": "Free Play",
+   "values": [
+    {
+     "display": "Disable Free Play",
+     "internal": ""
+    },
+    {
+     "display": "Enable Free Play",
+     "internal": "FreePlay"
+    }
+   ]
+  },
+  {
+   "category": "GameTimes",
+   "label": "Match Length",
+   "values": [
+    {
+     "display": "5 Minutes",
+     "internal": ""
+    },
+    {
+     "display": "10 Minutes",
+     "internal": "10Minutes"
+    },
+    {
+     "display": "20 Minutes",
+     "internal": "20Minutes"
+    },
+    {
+     "display": "Unlimited",
+     "internal": "UnlimitedTime"
+    }
+   ]
+  },
+  {
+   "category": "GameScores",
+   "label": "Max Score",
+   "values": [
+    {
+     "display": "Unlimited",
+     "internal": ""
+    },
+    {
+     "display": "1 Goal",
+     "internal": "Max1"
+    },
+    {
+     "display": "3 Goals",
+     "internal": "Max3"
+    },
+    {
+     "display": "5 Goals",
+     "internal": "Max5"
+    },
+    {
+     "display": "7 Goals",
+     "internal": "Max7"
+    },
+    {
+     "display": "10 Goals",
+     "internal": "Max10"
+    },
+    {
+     "display": "20 Goals",
+     "internal": "Max20"
+    },
+    {
+     "display": "30 Goals",
+     "internal": "Max30"
+    },
+    {
+     "display": "40 Goals",
+     "internal": "Max40"
+    },
+    {
+     "display": "50 Goals",
+     "internal": "Max50"
+    },
+    {
+     "display": "60 Goals",
+     "internal": "Max60"
+    },
+    {
+     "display": "70 Goals",
+     "internal": "Max70"
+    },
+    {
+     "display": "80 Goals",
+     "internal": "Max80"
+    },
+    {
+     "display": "90 Goals",
+     "internal": "Max90"
+    },
+    {
+     "display": "100 Goals",
+     "internal": "Max100"
+    },
+    {
+     "display": "151 Goals",
+     "internal": "Max151"
+    }
+   ]
+  },
+  {
+   "category": "OvertimeRules",
+   "label": "Overtime",
+   "values": [
+    {
+     "display": "Unlimited",
+     "internal": ""
+    },
+    {
+     "display": "+5 Max, First Score",
+     "internal": "Overtime5MinutesFirstScore"
+    },
+    {
+     "display": "+5 Max, Random Team",
+     "internal": "Overtime5MinutesRandom"
+    }
+   ]
+  },
+  {
+   "category": "MaxTimeRules",
+   "label": "Max Time Limit",
+   "values": [
+    {
+     "display": "Unlimited",
+     "internal": ""
+    },
+    {
+     "display": "1 Minute",
+     "internal": "MaxTime1Minute"
+    },
+    {
+     "display": "2 Minutes",
+     "internal": "MaxTime2Minutes"
+    },
+    {
+     "display": "3 Minutes",
+     "internal": "MaxTime3Minutes"
+    },
+    {
+     "display": "4 Minutes",
+     "internal": "MaxTime4Minutes"
+    },
+    {
+     "display": "5 Minutes",
+     "internal": "MaxTime5Minutes"
+    },
+    {
+     "display": "6 Minutes",
+     "internal": "MaxTime6Minutes"
+    },
+    {
+     "display": "7 Minutes",
+     "internal": "MaxTime7Minutes"
+    },
+    {
+     "display": "8 Minutes",
+     "internal": "MaxTime8Minutes"
+    },
+    {
+     "display": "9 Minutes",
+     "internal": "MaxTime9Minutes"
+    },
+    {
+     "display": "10 Minutes",
+     "internal": "MaxTime10Minutes"
+    },
+    {
+     "display": "11 Minutes",
+     "internal": "MaxTime11Minutes"
+    },
+    {
+     "display": "12 Minutes",
+     "internal": "MaxTime12Minutes"
+    },
+    {
+     "display": "13 Minutes",
+     "internal": "MaxTime13Minutes"
+    },
+    {
+     "display": "14 Minutes",
+     "internal": "MaxTime14Minutes"
+    },
+    {
+     "display": "15 Minutes",
+     "internal": "MaxTime15Minutes"
+    }
+   ]
+  },
+  {
+   "category": "MatchGames",
+   "label": "Series Length",
+   "values": [
+    {
+     "display": "Unlimited",
+     "internal": ""
+    },
+    {
+     "display": "3 Games",
+     "internal": "3Games"
+    },
+    {
+     "display": "5 Games",
+     "internal": "5Games"
+    },
+    {
+     "display": "7 Games",
+     "internal": "7Games"
+    }
+   ]
+  },
+  {
+   "category": "GameSpeed",
+   "label": "Game Speed",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Slo-mo",
+     "internal": "SloMoGameSpeed"
+    },
+    {
+     "display": "Time Warp",
+     "internal": "SloMoDistanceBall"
+    }
+   ]
+  },
+  {
+   "category": "BallMaxSpeed",
+   "label": "Ball Max Speed",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Slow",
+     "internal": "SlowBall"
+    },
+    {
+     "display": "Fast",
+     "internal": "FastBall"
+    },
+    {
+     "display": "Super Fast",
+     "internal": "SuperFastBall"
+    }
+   ]
+  },
+  {
+   "category": "BallType",
+   "label": "Ball Type",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Cube",
+     "internal": "Ball_CubeBall"
+    },
+    {
+     "display": "Puck",
+     "internal": "Ball_Puck"
+    },
+    {
+     "display": "BasketBall",
+     "internal": "Ball_BasketBall"
+    },
+    {
+     "display": "BeachBall",
+     "internal": "Ball_Beachball"
+    },
+    {
+     "display": "Anniversary",
+     "internal": "Ball_Anniversary"
+    },
+    {
+     "display": "HauntedBall",
+     "internal": "Ball_Haunted"
+    },
+    {
+     "display": "Spooky Cube",
+     "internal": "Ball_SpookyCube"
+    },
+    {
+     "display": "Nike Skin",
+     "internal": "Ball_Ekin"
+    },
+    {
+     "display": "Egg",
+     "internal": "Ball_Egg"
+    },
+    {
+     "display": "Player Seeking",
+     "internal": "Ball_Fire"
+    },
+    {
+     "display": "Dropshot",
+     "internal": "Ball_Breakout"
+    },
+    {
+     "display": "Score Absorb",
+     "internal": "Ball_Score"
+    },
+    {
+     "display": "Pizza Puck",
+     "internal": "Ball_PizzaPuck"
+    },
+    {
+     "display": "FIFA Club World Cup Ball",
+     "internal": "Ball_Shoe"
+    },
+    {
+     "display": "Soccer",
+     "internal": "Ball_Strike"
+    },
+    {
+     "display": "Spooky",
+     "internal": "Ball_SpookyBalloon"
+    }
+   ]
+  },
+  {
+   "category": "BallWeight",
+   "label": "Ball Physics",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Light",
+     "internal": "LightBall"
+    },
+    {
+     "display": "Heavy",
+     "internal": "HeavyBall"
+    },
+    {
+     "display": "Super Light",
+     "internal": "SuperLightBall"
+    },
+    {
+     "display": "CurveBall",
+     "internal": "MagnusBall"
+    },
+    {
+     "display": "Beach Ball Curve",
+     "internal": "MagnusBeachBall"
+    },
+    {
+     "display": "Magnus Futball",
+     "internal": "MagnusFutball"
+    },
+    {
+     "display": "Balloon",
+     "internal": "BalloonBall"
+    }
+   ]
+  },
+  {
+   "category": "BallScale",
+   "label": "Ball Size",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Small",
+     "internal": "SmallBall"
+    },
+    {
+     "display": "Medium",
+     "internal": "MediumBall"
+    },
+    {
+     "display": "Large",
+     "internal": "BigBall"
+    },
+    {
+     "display": "Gigantic",
+     "internal": "GiantBall"
+    }
+   ]
+  },
+  {
+   "category": "BallBounciness",
+   "label": "Ball Bounciness",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Low",
+     "internal": "LowBounciness"
+    },
+    {
+     "display": "High",
+     "internal": "HighBounciness"
+    },
+    {
+     "display": "Super High",
+     "internal": "SuperBounciness"
+    }
+   ]
+  },
+  {
+   "category": "BallGravity",
+   "label": "Ball Gravity",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Low",
+     "internal": "LowGravityBall"
+    },
+    {
+     "display": "High",
+     "internal": "HighGravityBall"
+    },
+    {
+     "display": "Super High",
+     "internal": "SuperGravityBall"
+    }
+   ]
+  },
+  {
+   "category": "MultiBall",
+   "label": "Number Of Ball",
+   "values": [
+    {
+     "display": "One",
+     "internal": ""
+    },
+    {
+     "display": "Two",
+     "internal": "TwoBalls"
+    },
+    {
+     "display": "Four",
+     "internal": "FourBalls"
+    },
+    {
+     "display": "Six",
+     "internal": "SixBalls"
+    }
+   ]
+  },
+  {
+   "category": "Boosters",
+   "label": "Boosts Amount",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "No Boost",
+     "internal": "NoBooster"
+    },
+    {
+     "display": "Unlimited",
+     "internal": "UnlimitedBooster"
+    },
+    {
+     "display": "Recharge (slow)",
+     "internal": "SlowRecharge"
+    },
+    {
+     "display": "Recharge (fast)",
+     "internal": "RapidRecharge"
+    }
+   ]
+  },
+  {
+   "category": "Items",
+   "label": "Rumble",
+   "values": [
+    {
+     "display": "Off",
+     "internal": ""
+    },
+    {
+     "display": "On",
+     "internal": "ItemsMode"
+    },
+    {
+     "display": "Slow",
+     "internal": "ItemsModeSlow"
+    },
+    {
+     "display": "Civilized",
+     "internal": "ItemsModeBallManipulators"
+    },
+    {
+     "display": "Destruction Derby",
+     "internal": "ItemsModeCarManipulators"
+    },
+    {
+     "display": "Spring Loaded",
+     "internal": "ItemsModeSprings"
+    },
+    {
+     "display": "Spikes Only",
+     "internal": "ItemsModeSpikes"
+    },
+    {
+     "display": "Spike Rush",
+     "internal": "ItemsModeRugby"
+    },
+    {
+     "display": "Batman Rumble",
+     "internal": "ItemsMode_BM"
+    },
+    {
+     "display": "Haunted Ball Beam",
+     "internal": "ItemsModeHauntedBallBeam"
+    },
+    {
+     "display": "Tactical Rumble",
+     "internal": "ItemsModeSelection"
+    },
+    {
+     "display": "Haymakers Only",
+     "internal": "ItemsModeBoxingGloves"
+    },
+    {
+     "display": "Grappling Hooks Only",
+     "internal": "ItemsModeGrapplingHooks"
+    },
+    {
+     "display": "Boot, Haymaker, Freezer",
+     "internal": "ItemsModeRPS"
+    }
+   ]
+  },
+  {
+   "category": "BoosterStrengths",
+   "label": "Boost Strength",
+   "values": [
+    {
+     "display": "1X",
+     "internal": ""
+    },
+    {
+     "display": "1.5X",
+     "internal": "BoostMultiplier1_5x"
+    },
+    {
+     "display": "2X",
+     "internal": "BoostMultiplier2x"
+    },
+    {
+     "display": "5X",
+     "internal": "BoostMultiplier5x"
+    },
+    {
+     "display": "10X",
+     "internal": "BoostMultiplier10x"
+    }
+   ]
+  },
+  {
+   "category": "Gravity",
+   "label": "Gravity",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Low",
+     "internal": "LowGravity"
+    },
+    {
+     "display": "High",
+     "internal": "HighGravity"
+    },
+    {
+     "display": "Super High",
+     "internal": "SuperGravity"
+    },
+    {
+     "display": "Reverse",
+     "internal": "ReverseGravity"
+    }
+   ]
+  },
+  {
+   "category": "Demolish",
+   "label": "Demolish",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Disabled",
+     "internal": "NoDemolish"
+    },
+    {
+     "display": "Friendly Fire",
+     "internal": "DemolishAll"
+    },
+    {
+     "display": "On Contact",
+     "internal": "AlwaysDemolishOpposing"
+    },
+    {
+     "display": "On Contact (FF)",
+     "internal": "AlwaysDemolish"
+    },
+    {
+     "display": "On Ball Contact",
+     "internal": "TeamDemoBall"
+    },
+    {
+     "display": "On Ball Contact (Silent)",
+     "internal": "TeamDemoBallSilent"
+    },
+    {
+     "display": "On Ball Contact (FF)",
+     "internal": "FFADemoBall"
+    },
+    {
+     "display": "On Ball Contact (FF Silent)",
+     "internal": "FFADemoBallSilent"
+    }
+   ]
+  },
+  {
+   "category": "RespawnTime",
+   "label": "Respawn Time",
+   "values": [
+    {
+     "display": "3 Seconds",
+     "internal": ""
+    },
+    {
+     "display": "2 Seconds",
+     "internal": "TwoSecondsRespawn"
+    },
+    {
+     "display": "1 Second",
+     "internal": "OneSecondsRespawn"
+    },
+    {
+     "display": "Disable Goal Reset",
+     "internal": "DisableGoalDelay"
+    }
+   ]
+  },
+  {
+   "category": "AudioRules",
+   "label": "Audio",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Haunted",
+     "internal": "HauntedAudio"
+    }
+   ]
+  },
+  {
+   "category": "GameEventRules",
+   "label": "Game Event",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Haunted",
+     "internal": "HauntedGameEventRules"
+    },
+    {
+     "display": "Rugby",
+     "internal": "RugbyGameEventRules"
+    }
+   ]
+  },
+  {
+   "category": "TritipModeRules",
+   "label": "Tri Tip Cars",
+   "values": [
+    {
+     "display": "Disabled",
+     "internal": ""
+    },
+    {
+     "display": "Enabled",
+     "internal": "Tritip"
+    }
+   ]
+  },
+  {
+   "category": "CarJumps",
+   "label": "Jumps",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Grounded Only",
+     "internal": "Grounded"
+    },
+    {
+     "display": "2 Double Jumps",
+     "internal": "2DoubleJumps"
+    },
+    {
+     "display": "3 Double Jumps",
+     "internal": "3DoubleJumps"
+    },
+    {
+     "display": "4 Double Jumps",
+     "internal": "4DoubleJumps"
+    },
+    {
+     "display": "Unlimited",
+     "internal": "UnlimitedJumps"
+    },
+    {
+     "display": "None",
+     "internal": "NoJumps"
+    }
+   ]
+  },
+  {
+   "category": "DodgeInputTimer",
+   "label": "Dodge Timer",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "2 seconds",
+     "internal": "DodgeTwoSeconds"
+    },
+    {
+     "display": "3 seconds",
+     "internal": "DodgeThreeSeconds"
+    },
+    {
+     "display": "Unlimited",
+     "internal": "DodgeUnlimitedSeconds"
+    }
+   ]
+  },
+  {
+   "category": "TerritoryRules",
+   "label": "Enforce Territories",
+   "values": [
+    {
+     "display": "Off",
+     "internal": ""
+    },
+    {
+     "display": "On",
+     "internal": "TerritoryEnabled"
+    }
+   ]
+  },
+  {
+   "category": "BreakoutBallLockedIndex",
+   "label": "Locked Damage Phase",
+   "values": [
+    {
+     "display": "None",
+     "internal": ""
+    },
+    {
+     "display": "High",
+     "internal": "BreakoutBallIndex2"
+    }
+   ]
+  },
+  {
+   "category": "GoalScore",
+   "label": "Normal Goal Score",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "0 Points",
+     "internal": "GoalScore0"
+    },
+    {
+     "display": "2 Points",
+     "internal": "GoalScore2"
+    },
+    {
+     "display": "3 Points",
+     "internal": "GoalScore3"
+    },
+    {
+     "display": "5 Points",
+     "internal": "GoalScore5"
+    },
+    {
+     "display": "10 Points",
+     "internal": "GoalScore10"
+    }
+   ]
+  },
+  {
+   "category": "AerialGoalScore",
+   "label": "Aerial Goal Score",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "0 Points",
+     "internal": "AerialGoalScore0"
+    },
+    {
+     "display": "2 Points",
+     "internal": "AerialGoalScore2"
+    },
+    {
+     "display": "3 Points",
+     "internal": "AerialGoalScore3"
+    },
+    {
+     "display": "5 Points",
+     "internal": "AerialGoalScore5"
+    },
+    {
+     "display": "10 Points",
+     "internal": "AerialGoalScore10"
+    }
+   ]
+  },
+  {
+   "category": "AssistScore",
+   "label": "Assist Score",
+   "values": [
+    {
+     "display": "Off",
+     "internal": ""
+    },
+    {
+     "display": "1 Point",
+     "internal": "AssistScore1"
+    },
+    {
+     "display": "2 Points",
+     "internal": "AssistScore2"
+    },
+    {
+     "display": "3 Points",
+     "internal": "AssistScore3"
+    }
+   ]
+  },
+  {
+   "category": "DemolishScore",
+   "label": "Demolish Score",
+   "values": [
+    {
+     "display": "Off",
+     "internal": ""
+    },
+    {
+     "display": "1 Point",
+     "internal": "DemolishScore1"
+    },
+    {
+     "display": "2 Points",
+     "internal": "DemolishScore2"
+    },
+    {
+     "display": "3 Points",
+     "internal": "DemolishScore3"
+    }
+   ]
+  },
+  {
+   "category": "PossessionRules",
+   "label": "Possession Score",
+   "values": [
+    {
+     "display": "Off",
+     "internal": ""
+    },
+    {
+     "display": "1 Second",
+     "internal": "Possession1Second"
+    },
+    {
+     "display": "2 Seconds",
+     "internal": "Possession2Seconds"
+    },
+    {
+     "display": "3 Seconds",
+     "internal": "Possession3Seconds"
+    }
+   ]
+  },
+  {
+   "category": "GoalScoringRules",
+   "label": "Scoring Rules",
+   "values": [
+    {
+     "display": "Default",
+     "internal": ""
+    },
+    {
+     "display": "Disable Goal Scoring",
+     "internal": "DisableGoalScoring"
+    }
+   ]
+  },
+  {
+   "category": "FireBallObstacle",
+   "label": "Spawn Demoball",
+   "values": [
+    {
+     "display": "Off",
+     "internal": ""
+    },
+    {
+     "display": "On",
+     "internal": "FireBallObstacleEnabled"
+    }
+   ]
+  },
+  {
+   "category": "BoostRestriction",
+   "label": "Boost Restriction",
+   "values": [
+    {
+     "display": "None",
+     "internal": ""
+    },
+    {
+     "display": "Aerial Only",
+     "internal": "AerialBoostOnly"
+    }
+   ]
+  },
+  {
+   "category": "InputRestriction",
+   "label": "Input Restriction",
+   "values": [
+    {
+     "display": "None",
+     "internal": ""
+    },
+    {
+     "display": "Backwards Mode",
+     "internal": "BackwardsMode"
+    }
+   ]
+  },
+  {
+   "category": "KeepUpRules",
+   "label": "Keep Up Rules",
+   "values": [
+    {
+     "display": "Off",
+     "internal": ""
+    },
+    {
+     "display": "Enabled (Increment)",
+     "internal": "KeepUpEnabled"
+    },
+    {
+     "display": "Enabled",
+     "internal": "KeepUpStageEnabled"
+    }
+   ]
+  },
+  {
+   "category": "MatchAdmin",
+   "label": "Match Admin",
+   "values": [
+    {
+     "display": "Off",
+     "internal": ""
+    },
+    {
+     "display": "On",
+     "internal": "MatchCreatorAdminEnabled"
+    }
+   ]
+  }
+ ]
+}

@@ -11,6 +11,7 @@ pub mod library;
 pub mod model;
 pub mod session;
 pub mod sources;
+pub mod textures;
 
 use tauri::AppHandle;
 

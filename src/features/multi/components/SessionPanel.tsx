@@ -20,7 +20,9 @@ const STEPS: readonly Phase[] = [
 
 function stepIndex(phase: Phase): number {
   // Waiting for the user in Epic is still the "start the game" step.
-  return STEPS.indexOf(phase === "launchInEpic" ? "launchingGame" : phase);
+  if (phase === "launchInEpic") return STEPS.indexOf("launchingGame");
+  if (phase === "hostInRocketPlugin") return STEPS.indexOf("commandSent");
+  return STEPS.indexOf(phase);
 }
 
 function CopyBox({ label, value }: { label: string; value: string }) {
@@ -54,7 +56,8 @@ export function SessionPanel({ session }: { session: MultiSession }) {
   const cancel = useCancelSession();
   const current = stepIndex(session.phase);
   const stopped = session.phase === "manual" || session.phase === "failed";
-  const done = session.phase === "commandSent";
+  const byHand = session.phase === "hostInRocketPlugin";
+  const done = session.phase === "commandSent" || byHand;
 
   return (
     <GlassPanel className="flex flex-col gap-4 p-4">
@@ -79,7 +82,9 @@ export function SessionPanel({ session }: { session: MultiSession }) {
           const label =
             step === "launchingGame" && session.phase === "launchInEpic"
               ? t("session.phase.launchInEpic")
-              : t(`session.phase.${step}`);
+              : step === "commandSent" && byHand
+                ? t("session.phase.hostInRocketPlugin")
+                : t(`session.phase.${step}`);
           return (
             <li
               key={step}
@@ -135,6 +140,16 @@ export function SessionPanel({ session }: { session: MultiSession }) {
         </div>
       ) : null}
 
+      {byHand ? (
+        <div className="flex items-start gap-2.5 rounded-[8px] border border-info/25 bg-info/[0.06] p-2.5 text-xs text-fg-muted">
+          <CircleAlert className="mt-0.5 size-3.5 shrink-0 text-info" />
+          <div>
+            <p className="font-medium text-fg">{t("session.byHand.title")}</p>
+            <p className="mt-0.5">{t("session.byHand.hint", { arena: targetLabel(session.target) })}</p>
+          </div>
+        </div>
+      ) : null}
+
       {session.mapMismatch ? (
         <div className="flex items-start gap-2.5 rounded-[8px] border border-warning/25 bg-warning/[0.06] p-2.5 text-xs text-fg-muted">
           <CircleAlert className="mt-0.5 size-3.5 shrink-0 text-warning" />
@@ -158,7 +173,7 @@ export function SessionPanel({ session }: { session: MultiSession }) {
           value={session.command}
         />
       ) : null}
-      {done ? (
+      {done && !byHand ? (
         <p className="text-xs text-fg-muted">
           {session.role === "host" ? t("session.hostDone") : t("session.joinDone")}
         </p>

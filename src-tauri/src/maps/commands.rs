@@ -8,7 +8,7 @@ use crate::base::error::{AppError, AppResult};
 use crate::extras::launch;
 use crate::game::install;
 use crate::maps::model::{BrowseResult, MapEntry, MapPatch, MapSession, MapSort, RemoteSource};
-use crate::maps::{library, session, sources};
+use crate::maps::{library, session, sources, textures};
 
 async fn blocking<T: Send + 'static>(
     f: impl FnOnce() -> AppResult<T> + Send + 'static,
@@ -90,6 +90,22 @@ pub async fn maps_deactivate(app: AppHandle) -> AppResult<()> {
 #[tauri::command]
 pub fn maps_session() -> AppResult<Option<MapSession>> {
     Ok(session::current())
+}
+
+#[tauri::command]
+pub async fn maps_textures_status(app: AppHandle) -> AppResult<textures::TexturesStatus> {
+    blocking(move || textures::status(&app)).await
+}
+
+/// Downloads the workshop textures pack (explicit user action only).
+#[tauri::command]
+pub async fn maps_textures_install(app: AppHandle) -> AppResult<textures::TexturesStatus> {
+    textures::install(&app).await
+}
+
+#[tauri::command]
+pub async fn maps_textures_remove(app: AppHandle) -> AppResult<textures::TexturesStatus> {
+    blocking(move || textures::remove(&app)).await
 }
 
 /// Installs the map, starts the game without EAC (Epic: brings the Epic

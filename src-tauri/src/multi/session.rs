@@ -30,6 +30,7 @@ use crate::game::{install, watcher};
 use crate::maps::model::{normalize_target, MapEntry, MapOrigin, RemoteSource, DEFAULT_TARGET};
 use crate::maps::{library, session as maps_session};
 use crate::multi::invite::{self, Invite, InviteMap};
+use crate::multi::rp_options::{self, MatchOptions};
 use crate::multi::tailscale::{self, TailscaleState};
 use crate::multi::{bakkes_cfg, rcon};
 
@@ -61,6 +62,9 @@ pub enum Phase {
     WaitingBakkes,
     /// The Rocket Plugin command was sent: the game should be loading.
     CommandSent,
+    /// Manual hosting: the game and BakkesMod are up, the host starts the
+    /// match from Rocket Plugin's window.
+    HostInRocketPlugin,
     /// Automation stopped: the user types `command` in the BakkesMod console.
     Manual,
     Failed,
@@ -206,7 +210,12 @@ fn new_session(role: Role, map_name: String, target: String) -> MultiSession {
 
 /// `target`: the Labs arena to replace (default: the map's preferred one,
 /// else Underpass). It travels in the invite code, so friends use the same.
-pub fn host(app: &AppHandle, map_id: String, target: Option<String>) -> AppResult<MultiSession> {
+pub fn host(
+    app: &AppHandle,
+    map_id: String,
+    target: Option<String>,
+    options: MatchOptions,
+) -> AppResult<MultiSession> {
     let ts = preflight(true)?;
     let ip: Ipv4Addr = ts
         .self_ipv4
@@ -220,6 +229,12 @@ pub fn host(app: &AppHandle, map_id: String, target: Option<String>) -> AppResul
     let target = normalize_target(&wanted)
         .ok_or_else(|| AppError::InvalidInput(format!("unknown Labs arena {wanted}")))?
         .to_string();
+    // Validated before anything is written.
+    let commands = rp_options::host_commands(
+        &options,
+        invite::level_name(&target),
+        rp_options::read_preset,
+    )?;
     let mut session = new_session(Role::Host, entry.name.clone(), target.clone());
     session.map_id = Some(map_id.clone());
     session.address = Some(format!("{ip}:{}", invite::DEFAULT_PORT));
@@ -244,13 +259,13 @@ pub fn host(app: &AppHandle, map_id: String, target: Option<String>) -> AppResul
                 remote_id: remote_of(&entry).map(|r| r.1),
             },
         });
-        let command = invite::host_command(&target);
         update(&app2, &id, |s| {
             s.invite_code = code.ok();
-            s.command = Some(command.clone());
+            // One console line (BakkesMod runs `;`-separated commands).
+            s.command = (!commands.is_empty()).then(|| commands.join("; "));
             s.target = target.clone();
         });
-        drive(app2, id, command).await;
+        drive(app2, id, commands).await;
     });
     Ok(returned)
 }
@@ -291,7 +306,7 @@ pub fn join(app: &AppHandle, code: &str) -> AppResult<MultiSession> {
             _ => false,
         };
         update(&app2, &id, |s| s.map_mismatch = mismatch);
-        drive(app2, id, command).await;
+        drive(app2, id, vec![command]).await;
     });
     Ok(returned)
 }
@@ -406,8 +421,9 @@ fn spawn_injector(path: &PathBuf) -> AppResult<()> {
     Ok(())
 }
 
-/// Game → BakkesMod → RCON → command.
-async fn drive(app: AppHandle, id: String, command: String) {
+/// Game → BakkesMod → RCON → `commands` (none: manual hosting from Rocket
+/// Plugin's window, no RCON needed).
+async fn drive(app: AppHandle, id: String, commands: Vec<String>) {
     let manual = |app: &AppHandle, msg: &str| end(app, &id, Phase::Manual, msg);
 
     // RCON can only be (re)configured before BakkesMod loads.
@@ -477,6 +493,9 @@ async fn drive(app: AppHandle, id: String, command: String) {
     }
 
     set_phase(&app, &id, Phase::StartingBakkes);
+    if commands.is_empty() {
+        return set_phase(&app, &id, Phase::HostInRocketPlugin);
+    }
 
     let Some(password) = password else {
         return manual(
@@ -507,7 +526,7 @@ async fn drive(app: AppHandle, id: String, command: String) {
         tokio::time::sleep(RCON_POLL).await;
     }
     tokio::time::sleep(MENU_GRACE).await;
-    match rcon::send(port, &password, &[command]).await {
+    match rcon::send(port, &password, &commands).await {
         Ok(()) => set_phase(&app, &id, Phase::CommandSent),
         Err(err) => manual(&app, &err.to_string()),
     }

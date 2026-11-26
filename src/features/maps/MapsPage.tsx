@@ -12,6 +12,7 @@ import { isTauri } from "@/lib/ipc";
 import { BrowseTab } from "./components/BrowseTab";
 import { LibraryTab } from "./components/LibraryTab";
 import { SessionBanner } from "./components/SessionBanner";
+import { TexturesCard } from "./components/TexturesCard";
 import { useImportMaps } from "./queries";
 
 type Tab = "library" | "browse";
@@ -95,6 +96,7 @@ export function MapsPage() {
       />
 
       <SessionBanner />
+      <TexturesCard />
 
       <Tabs value={tab} onValueChange={(v) => setTab(v as Tab)}>
         <TabsList>

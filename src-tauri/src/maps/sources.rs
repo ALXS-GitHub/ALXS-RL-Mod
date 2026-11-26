@@ -35,7 +35,7 @@ const BP_API: &str = "https://bakkesplugins.com/api/rocket-league-maps";
 const BP_SITE: &str = "https://bakkesplugins.com/maps";
 const LETHAMYR_SITE: &str = "https://lethamyr.com";
 const PAGE_SIZE: u32 = 24;
-const MAX_DOWNLOAD_BYTES: u64 = 2 * 1024 * 1024 * 1024;
+pub(crate) const MAX_DOWNLOAD_BYTES: u64 = 2 * 1024 * 1024 * 1024;
 
 // ── bakkesplugins ──────────────────────────────────────────────────────────
 
@@ -359,6 +359,49 @@ pub async fn browse(
             })
         }
     }
+}
+
+/// Latest file of a bakkesplugins upload that is not a playable map (the
+/// workshop textures pack): its URL, already checked against `Purpose::Maps`.
+pub(crate) struct BpFile {
+    pub url: url::Url,
+    pub size: Option<u64>,
+}
+
+pub(crate) async fn latest_bp_file(remote_id: &str) -> AppResult<BpFile> {
+    let mut detail: BpMap = get_json(&format!("{BP_API}/{remote_id}")).await?;
+    let versions = match detail.files.take().filter(|f| !f.is_empty()) {
+        Some(files) => files,
+        None => get_json(&format!("{BP_API}/{remote_id}/versions")).await?,
+    };
+    let version = latest_version(versions)
+        .ok_or_else(|| AppError::NotFound("no downloadable version".into()))?;
+    let url = ensure_allowed(
+        version.edge_url.as_deref().unwrap_or_default(),
+        Purpose::Maps,
+    )?;
+    Ok(BpFile {
+        url,
+        size: version.file_size_bytes,
+    })
+}
+
+/// Progress on `maps://download`, keyed like a bakkesplugins map download.
+pub(crate) fn emit_progress(
+    app: &AppHandle,
+    remote_id: &str,
+    phase: DownloadPhase,
+    downloaded: u64,
+    total: Option<u64>,
+) {
+    emit(
+        app,
+        RemoteSource::BakkesPlugins,
+        remote_id,
+        phase,
+        downloaded,
+        total,
+    );
 }
 
 fn emit(

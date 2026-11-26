@@ -7,6 +7,7 @@ use crate::base::error::{AppError, AppResult};
 use crate::game::watcher;
 use crate::multi::bakkes_cfg::{self, BakkesSetup};
 use crate::multi::invite;
+use crate::multi::rp_options::{self, MatchOptions, RpCatalog};
 use crate::multi::session::{self, InviteCheck, MultiSession};
 use crate::multi::tailscale::{self, TailscaleStatus};
 
@@ -76,8 +77,15 @@ pub async fn multi_host(
     app: AppHandle,
     map_id: String,
     target: Option<String>,
+    options: Option<MatchOptions>,
 ) -> AppResult<MultiSession> {
-    blocking(move || session::host(&app, map_id, target)).await
+    blocking(move || session::host(&app, map_id, target, options.unwrap_or_default())).await
+}
+
+/// Rocket Plugin game modes, mutators and the user's presets.
+#[tauri::command]
+pub async fn multi_rp_options() -> AppResult<RpCatalog> {
+    blocking(|| Ok(rp_options::catalog())).await
 }
 
 /// Reads an invite code and looks its map up in the library, without

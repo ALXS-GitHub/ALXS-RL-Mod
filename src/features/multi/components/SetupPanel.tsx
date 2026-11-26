@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { ErrorState, Skeleton } from "@/components/ui/feedback";
 import { GlassPanel } from "@/components/ui/glass";
 import { notify } from "@/components/ui/toast";
+import { TexturesActions, useTexturesLabel } from "@/features/maps/components/TexturesCard";
+import { useTexturesStatus } from "@/features/maps/queries";
 import { BAKKESMOD_DOWNLOAD, type MultiStatus, ROCKET_PLUGIN_PAGE, TAILSCALE_DOWNLOAD } from "../api";
 import { useBakkesSetup, useBakkesUndo, useInstallRocketPlugin, useMultiStatus } from "../queries";
 
@@ -193,6 +195,7 @@ export function SetupPanel() {
               ) : null
             }
           />
+          <TexturesRow />
           <Row
             state={s.gameRunning ? (s.gameWithEac ? "warn" : "ok") : "ok"}
             label={t("setup.game.label")}
@@ -232,5 +235,21 @@ export function SetupPanel() {
         </div>
       ) : null}
     </GlassPanel>
+  );
+}
+
+/** Workshop textures pack: custom maps need it on every player's PC. */
+function TexturesRow() {
+  const { t } = useTranslation("multi");
+  const { data } = useTexturesStatus();
+  const label = useTexturesLabel();
+  if (!data) return null;
+  return (
+    <Row
+      state={data.installed ? "ok" : "warn"}
+      label={t("setup.textures.label")}
+      detail={data.installed ? label : `${label} ${t("setup.textures.why")}`}
+      action={<TexturesActions compact />}
+    />
   );
 }

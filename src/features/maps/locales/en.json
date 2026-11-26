@@ -116,5 +116,18 @@
     "restoredLive": "Stock arena is back",
     "liveHint": "Load the Labs arena from Free Play to play it.",
     "launchedEpicHint": "In the Epic Games Launcher, click ⋯ next to Rocket League, then \"Launch without Anti-Cheat\". The stock arena comes back when you close the game."
+  },
+  "textures": {
+    "title": "Custom map textures",
+    "ok": "Installed: custom maps show their real textures and skybox.",
+    "partial": "Incomplete ({{present}}/{{total}} files).",
+    "missing": "Not installed.",
+    "why": "Many custom maps need this pack (14 engine files, ~47 MB, from bakkesplugins) or they show missing textures. Everyone playing the map needs it.",
+    "install": "Install the textures",
+    "downloading": "Downloading… {{percent}} %",
+    "installed": "Custom map textures installed",
+    "remove": "Remove",
+    "removed": "Custom map textures removed",
+    "closeGame": "Close the game first"
   }
 }

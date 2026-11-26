@@ -116,5 +116,18 @@
     "restoredLive": "L'arène d'origine est revenue",
     "liveHint": "Charge l'arène Labs depuis l'Entraînement libre pour y jouer.",
     "launchedEpicHint": "Dans Epic Games Launcher, cliquez sur ⋯ à côté de Rocket League, puis « Lancer sans Anti-Cheat ». L'arène d'origine revient quand vous fermez le jeu."
+  },
+  "textures": {
+    "title": "Textures des maps custom",
+    "ok": "Installées : les maps custom affichent leurs vraies textures et leur ciel.",
+    "partial": "Incomplètes ({{present}}/{{total}} fichiers).",
+    "missing": "Pas installées.",
+    "why": "Beaucoup de maps custom ont besoin de ce pack (14 fichiers du moteur, ~47 Mo, depuis bakkesplugins), sinon leurs textures manquent. Chaque joueur de la map en a besoin.",
+    "install": "Installer les textures",
+    "downloading": "Téléchargement… {{percent}} %",
+    "installed": "Textures des maps custom installées",
+    "remove": "Retirer",
+    "removed": "Textures des maps custom retirées",
+    "closeGame": "Fermez d'abord le jeu"
   }
 }

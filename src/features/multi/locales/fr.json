@@ -45,7 +45,11 @@
       "eac": "Lancé avec EAC : fermez-le d'abord."
     },
     "peers": "Appareils du tailnet ({{count}})",
-    "noPeers": "Aucun autre appareil sur votre tailnet pour l'instant."
+    "noPeers": "Aucun autre appareil sur votre tailnet pour l'instant.",
+    "textures": {
+      "label": "Textures des maps custom",
+      "why": "Nécessaires à beaucoup de maps custom, sur le PC de chaque joueur."
+    }
   },
   "play": {
     "checking": "Vérification…",
@@ -93,7 +97,8 @@
       "commandSent": "Commande Rocket Plugin envoyée",
       "manual": "Étape manuelle",
       "failed": "Échec",
-      "launchInEpic": "Lancer le jeu depuis Epic"
+      "launchInEpic": "Lancer le jeu depuis Epic",
+      "hostInRocketPlugin": "Lancer la partie dans Rocket Plugin"
     },
     "stopped": {
       "manual": "À terminer dans le jeu",
@@ -114,6 +119,10 @@
     "epic": {
       "title": "Lancez Rocket League depuis Epic",
       "hint": "Dans Epic Games Launcher, cliquez sur ⋯ à côté de Rocket League, puis « Lancer sans Anti-Cheat ». L'app prend le relais ensuite (BakkesMod, puis Rocket Plugin)."
+    },
+    "byHand": {
+      "title": "Lancez la partie dans Rocket Plugin",
+      "hint": "Ouvrez la fenêtre Rocket Plugin (sa touche se règle dans BakkesMod → Plugins → Rocket Plugin), choisissez l'arène {{arena}} et vos options, puis Host. Envoyez le code d'invitation à vos amis : leur app installe la même map sur la même arène."
     }
   },
   "security": {
@@ -154,7 +163,7 @@
       },
       "maps": {
         "title": "La map",
-        "body": "L'hôte ajoute des maps dans la page Maps (téléchargement bakkesplugins ou import de fichier).\nTout le monde a besoin exactement du même fichier. Maps bakkesplugins : vos amis ont un bouton Télécharger après avoir collé le code. Maps importées : l'hôte envoie le fichier, vos amis l'importent dans Maps.\nL'hôte choisit l'arène Labs que la map remplace. Elle est incluse dans le code d'invitation : l'app de vos amis utilise automatiquement la même arène.\nUne map déjà installée sur cette arène n'est pas réécrite."
+        "body": "L'hôte ajoute des maps dans la page Maps (téléchargement bakkesplugins ou import de fichier).\nTout le monde a besoin exactement du même fichier. Maps bakkesplugins : vos amis ont un bouton Télécharger après avoir collé le code. Maps importées : l'hôte envoie le fichier, vos amis l'importent dans Maps.\nL'hôte choisit l'arène Labs que la map remplace. Elle est incluse dans le code d'invitation : l'app de vos amis utilise automatiquement la même arène.\nUne map déjà installée sur cette arène n'est pas réécrite.\nBeaucoup de maps custom ont aussi besoin du pack de textures des maps custom : installez-le depuis Maps ou depuis « Avant de jouer » (chaque joueur)."
       },
       "play": {
         "title": "Jouer",
@@ -165,5 +174,24 @@
         "body": "« À terminer dans le jeu » : ouvrez la console BakkesMod (F6) et collez la commande affichée.\nVos amis n'arrivent pas à se connecter : l'hôte doit déjà être en partie ; le pare-feu Windows doit autoriser Rocket League sur le type de réseau utilisé par Tailscale ; essayez « tailscale ping ».\n« Content mismatch » : ce n'est pas le même fichier de map des deux côtés — récupérez celui de l'hôte."
       }
     }
+  },
+  "options": {
+    "title": "Options de match",
+    "summaryManual": "Partie lancée depuis la fenêtre Rocket Plugin",
+    "manual": "Lancer la partie moi-même dans Rocket Plugin",
+    "manualHint": "L'app installe la map, lance le jeu et BakkesMod et donne le code d'invitation ; vous choisissez tout dans la fenêtre Rocket Plugin puis cliquez sur Host.",
+    "mode": "Mode",
+    "keepMode": "Mode actuel de Rocket Plugin",
+    "players": "Joueurs",
+    "auto": "Auto",
+    "preset": "Preset",
+    "noPreset": "Aucun",
+    "mutators": "Mutateurs",
+    "reset": "Réinitialiser",
+    "hint": "Les mutateurs non choisis ici reviennent à leur valeur par défaut. Les presets sont ceux de Rocket Plugin ; les mutateurs choisis ici passent par-dessus.",
+    "playersN_one": "{{count}} joueur",
+    "playersN_other": "{{count}} joueurs",
+    "mutatorsN_one": "{{count}} mutateur",
+    "mutatorsN_other": "{{count}} mutateurs"
   }
 }

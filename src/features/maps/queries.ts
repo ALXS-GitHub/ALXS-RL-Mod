@@ -15,12 +15,36 @@ export const mapsKeys = {
   all: ["maps"] as const,
   list: ["maps", "list"] as const,
   session: ["maps", "session"] as const,
+  textures: ["maps", "textures"] as const,
   browse: (source: RemoteSource, query: string, page: number, sort: MapSort) =>
     ["maps", "browse", source, query, page, sort] as const,
 };
 
 export function useMaps() {
   return useQuery({ queryKey: mapsKeys.list, queryFn: mapsApi.list });
+}
+
+export function useTexturesStatus() {
+  return useQuery({ queryKey: mapsKeys.textures, queryFn: mapsApi.texturesStatus });
+}
+
+/** Explicit download of the workshop textures pack. */
+export function useInstallTextures() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: mapsApi.texturesInstall,
+    onSuccess: (s) => qc.setQueryData(mapsKeys.textures, s),
+    onError: notify.error,
+  });
+}
+
+export function useRemoveTextures() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: mapsApi.texturesRemove,
+    onSuccess: (s) => qc.setQueryData(mapsKeys.textures, s),
+    onError: notify.error,
+  });
 }
 
 export function useMapSession() {

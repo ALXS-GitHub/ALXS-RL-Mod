@@ -11,6 +11,7 @@ pub mod bakkes_cfg;
 pub mod commands;
 pub mod invite;
 pub mod rcon;
+pub mod rp_options;
 pub mod session;
 pub mod tailscale;
 

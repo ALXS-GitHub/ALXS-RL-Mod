@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { notify } from "@/components/ui/toast";
 import { mapsKeys } from "@/features/maps/queries";
 import { EVENTS, useTauriEvent } from "@/lib/events";
-import { multiApi, multiSessionEventSchema } from "./api";
+import { type MatchOptions, multiApi, multiSessionEventSchema } from "./api";
 
 export const multiKeys = {
   status: ["multi", "status"] as const,
@@ -55,10 +55,15 @@ export function useBakkesUndo() {
 export function useHost() {
   const set = useSetSession();
   return useMutation({
-    mutationFn: ({ mapId, target }: { mapId: string; target: string }) => multiApi.host(mapId, target),
+    mutationFn: ({ mapId, target, options }: { mapId: string; target: string; options: MatchOptions }) =>
+      multiApi.host(mapId, target, options),
     onSuccess: set,
     onError: notify.error,
   });
+}
+
+export function useRpOptions() {
+  return useQuery({ queryKey: ["multi", "rpOptions"], queryFn: multiApi.rpOptions, staleTime: 60_000 });
 }
 
 export function useInstallRocketPlugin() {

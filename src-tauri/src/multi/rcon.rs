@@ -17,7 +17,7 @@ use crate::base::error::{AppError, AppResult};
 const CONNECT_TIMEOUT: Duration = Duration::from_secs(3);
 const AUTH_TIMEOUT: Duration = Duration::from_secs(3);
 /// Leaves BakkesMod time to run one command before the next.
-const BETWEEN_COMMANDS: Duration = Duration::from_millis(400);
+const BETWEEN_COMMANDS: Duration = Duration::from_millis(120);
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum AuthReply {

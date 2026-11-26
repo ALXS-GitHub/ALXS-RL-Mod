@@ -88,6 +88,7 @@ export const PHASES = [
   "startingBakkes",
   "waitingBakkes",
   "commandSent",
+  "hostInRocketPlugin",
   "manual",
   "failed",
 ] as const;
@@ -112,12 +113,41 @@ export type MultiSession = z.infer<typeof multiSessionSchema>;
 
 export const multiSessionEventSchema = multiSessionSchema.nullable();
 
+const choiceSchema = z.object({ display: z.string(), internal: z.string() });
+export const rpCatalogSchema = z.object({
+  gameModes: z.array(choiceSchema),
+  mutators: z.array(z.object({ category: z.string(), label: z.string(), values: z.array(choiceSchema) })),
+  presets: z.array(z.string()),
+});
+export type RpCatalog = z.infer<typeof rpCatalogSchema>;
+
+/** Mirrors `multi::rp_options::MatchOptions`. */
+export interface MatchOptions {
+  /** Start the match from Rocket Plugin's window (no command sent). */
+  manual: boolean;
+  gameMode: string | null;
+  players: number | null;
+  preset: string | null;
+  /** Category → internal value. */
+  mutators: Record<string, string>;
+}
+
+export const DEFAULT_MATCH_OPTIONS: MatchOptions = {
+  manual: false,
+  gameMode: null,
+  players: null,
+  preset: null,
+  mutators: {},
+};
+
 export const multiApi = {
+  rpOptions: () => call("multi_rp_options", {}, rpCatalogSchema),
   status: () => call("multi_status", {}, multiStatusSchema),
   bakkesSetup: () => call("multi_bakkes_setup", {}, bakkesSetupSchema),
   bakkesUndo: () => call("multi_bakkes_undo", {}, bakkesSetupSchema),
   installRocketPlugin: () => callVoid("multi_install_rocket_plugin"),
-  host: (mapId: string, target: string) => call("multi_host", { mapId, target }, multiSessionSchema),
+  host: (mapId: string, target: string, options: MatchOptions) =>
+    call("multi_host", { mapId, target, options }, multiSessionSchema),
   check: (code: string) => call("multi_check", { code }, inviteCheckSchema),
   join: (code: string) => call("multi_join", { code }, multiSessionSchema),
   session: () => call("multi_session", {}, multiSessionSchema.nullable()),

@@ -14,6 +14,7 @@ import { useDownloadMap, useDownloadProgress, useMapSession, useMaps } from "@/f
 import { toAppError } from "@/lib/errors";
 import type { InviteCheck, MultiStatus } from "../api";
 import { multiKeys, useHost, useInviteCheck, useJoin } from "../queries";
+import { MatchOptionsPanel, useMatchOptions } from "./MatchOptionsPanel";
 import { isReady } from "./SetupPanel";
 
 function Card({
@@ -68,6 +69,7 @@ export function HostCard({ status, busy }: { status: MultiStatus | undefined; bu
   const maps = useMaps();
   const { data: mapSession } = useMapSession();
   const host = useHost();
+  const [options, setOptions] = useMatchOptions();
   const [mapId, setMapId] = useState<string | undefined>(undefined);
   const [arena, setArena] = useState<string | undefined>(undefined);
   const list = maps.data ?? [];
@@ -104,6 +106,7 @@ export function HostCard({ status, busy }: { status: MultiStatus | undefined; bu
               : t("host.willInstall", { arena: targetLabel(target) })}
           </Status>
           <p className="text-xs text-fg-subtle">{t("host.arenaShared")}</p>
+          <MatchOptionsPanel value={options} onChange={setOptions} />
         </>
       ) : (
         <p className="text-xs text-fg-muted">{t("host.noMaps")}</p>
@@ -114,7 +117,7 @@ export function HostCard({ status, busy }: { status: MultiStatus | undefined; bu
           className="w-full"
           disabled={!selected || Boolean(blocked) || busy}
           loading={host.isPending}
-          onClick={() => selected && host.mutate({ mapId: selected.id, target })}
+          onClick={() => selected && host.mutate({ mapId: selected.id, target, options })}
         >
           <Radio />
           {t("host.cta")}

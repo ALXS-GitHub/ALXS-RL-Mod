@@ -128,7 +128,20 @@ export interface MapPatch {
   preferredTarget?: string | null;
 }
 
+/** Workshop textures pack (`maps::textures`). */
+export const TEXTURES_REMOTE_ID = "96";
+export const texturesStatusSchema = z.object({
+  installed: z.boolean(),
+  present: z.number(),
+  total: z.number(),
+  managed: z.boolean(),
+});
+export type TexturesStatus = z.infer<typeof texturesStatusSchema>;
+
 export const mapsApi = {
+  texturesStatus: () => call("maps_textures_status", {}, texturesStatusSchema),
+  texturesInstall: () => call("maps_textures_install", {}, texturesStatusSchema),
+  texturesRemove: () => call("maps_textures_remove", {}, texturesStatusSchema),
   list: () => call("maps_list", {}, z.array(mapEntrySchema)),
   import: (paths: string[]) => call("maps_import", { paths }, z.array(mapEntrySchema)),
   remove: (id: string) => callVoid("maps_delete", { id }),

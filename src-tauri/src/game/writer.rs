@@ -32,6 +32,8 @@ pub enum Owner {
     Maps,
     /// Stats API ini in `TAGame/Config`.
     Stats,
+    /// Workshop textures pack for custom maps (`maps::textures`).
+    MapTextures,
 }
 
 /// How the file reaches the game.
@@ -312,6 +314,7 @@ pub fn restore_everything(app: &AppHandle) -> AppResult<usize> {
         Owner::Ball,
         Owner::Maps,
         Owner::Stats,
+        Owner::MapTextures,
     ] {
         match restore_owner(app, owner, None) {
             Ok(outcomes) => restored += outcomes.len(),
