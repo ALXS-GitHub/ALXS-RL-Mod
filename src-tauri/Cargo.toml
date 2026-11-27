@@ -1,6 +1,6 @@
 [package]
 name = "alxs-rl-mod"
-version = "0.3.4"
+version = "0.3.5"
 description = "Rocket League customisation — file-based, injection-free, local-first"
 authors = ["ALXS"]
 license = "GPL-3.0-or-later"
