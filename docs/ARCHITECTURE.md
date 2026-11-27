@@ -202,7 +202,7 @@ Errors always serialize as `{ kind: string, message: string }`.
 - events `maps://download`, `stats://event`, `tracker://session`
 
 ### modded multiplayer (multi, see `docs/MULTIPLAYER.md`)
-- `multi_status() -> MultiStatus` (`tailscale` from `tailscale status --json`, `bakkes` setup incl. Rocket Plugin + RCON, game state, port 7777)
+- `multi_status() -> MultiStatus` (`tailscale` from `tailscale status --json`, `bakkes` setup incl. Rocket Plugin + RCON, game state, port 7777, `smartAppControl` read from the registry: `off`/`on`/`evaluation`/`unknown`)
 - `multi_bakkes_setup() -> BakkesSetup` · `multi_bakkes_undo() -> BakkesSetup` (marked block in BakkesMod's `cfg/autoexec.cfg` + `rp` in `data/rcon_commands.cfg`, reversible)
 - `multi_presets_list() -> Vec<HostPreset>` · `multi_presets_save(preset: HostPresetInput) -> HostPreset` (`id` set = overwrite) · `multi_presets_delete(id)` — saved host setups (map, arena, match options) in `<data>/multi/host_presets.json`
 - `multi_rp_options() -> RpCatalog` (game modes + mutators bundled from Rocket Plugin's public config in `multi/rocket_plugin_options.json`, plus the user's Rocket Plugin presets)
@@ -210,6 +210,7 @@ Errors always serialize as `{ kind: string, message: string }`.
 - `multi_host(map_id, target: Option<String>, options: Option<MatchOptions>) -> MultiSession` (target = Labs arena chosen by the host, carried in the invite; options = game mode, players, preset, mutators → `rp gamemode/players/mutator` lines before `rp host`, every other mutator reset to Default; `manual` = no command, phase `hostInRocketPlugin`: the host starts the match in Rocket Plugin's window) · `multi_join(code) -> MultiSession` (map must already be in the library: joining never downloads) — background steps: map (skipped when already on that arena) → no-EAC game → BakkesMod injector → RCON `rp host`/`rp join`; ends in `commandSent`, `manual` (command shown) or `failed`
 - `multi_check(code) -> InviteCheck` (invite + library match, `alreadyOnArena`, `downloadable`: the join card offers the bakkesplugins download explicitly through `maps_download`) · `multi_session() -> Option<MultiSession>` · `multi_cancel()`
 - event `multi://session` (`Option<MultiSession>`)
+- `MultiSession.issues: LaunchIssue[]` (`bakkesBlocked { smartAppControl }` / `bakkesMissing` / `bakkesFailed { detail }` / `epicNotOpened`): programs the app could not start; the session goes on and the panel says what to do. BakkesMod: plain spawn, then the shell (elevation) unless Windows' app control refused it (`base::winsec::blocked_by_policy`). Epic: launcher exe, then `com.epicgames.launcher://library`.
 
 ### marketplace (market)
 - `market_browse(source: alphaConsole | rlDesigner, kind: decal | ball, query?, sort?) -> MarketPage` (sort: downloads | likes | newest | updated | trending, AlphaConsole only; AlphaConsole returns the first 20 results)
@@ -386,6 +387,8 @@ failures: {feature, message}[], checkedAt: RFC3339 }`, emitted on
   only (same exception as the Stats API websocket: local, not
   `base::security`). Tailscale is only read (`tailscale status --json`).
   The page ships a tailnet policy limited to UDP 7777 between players.
+  `base::winsec` only reads Windows' app-control state (Smart App Control,
+  policy error codes) so a blocked BakkesMod.exe is explained, never bypassed.
 - **MMR** exists only in the personal edition (`docs/PERSONAL_EDITION.md`):
   tracker.gg forbids automated access and has no Rocket League API, so the
   public releases have none. It comes from tracker.gg profiles, loaded in a

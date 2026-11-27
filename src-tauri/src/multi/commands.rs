@@ -4,6 +4,7 @@ use serde::Serialize;
 use tauri::AppHandle;
 
 use crate::base::error::{AppError, AppResult};
+use crate::base::winsec::{self, SmartAppControl};
 use crate::game::watcher;
 use crate::multi::bakkes_cfg::{self, BakkesSetup};
 use crate::multi::invite;
@@ -28,6 +29,8 @@ pub struct MultiStatus {
     pub game_running: bool,
     pub game_with_eac: bool,
     pub port: u16,
+    /// Smart App Control blocks unsigned programs such as BakkesMod.exe.
+    pub smart_app_control: SmartAppControl,
 }
 
 #[tauri::command]
@@ -40,6 +43,7 @@ pub async fn multi_status() -> AppResult<MultiStatus> {
             game_running: game.running,
             game_with_eac: game.with_eac,
             port: invite::DEFAULT_PORT,
+            smart_app_control: winsec::smart_app_control(),
         })
     })
     .await

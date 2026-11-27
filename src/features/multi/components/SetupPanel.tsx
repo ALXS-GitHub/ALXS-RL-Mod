@@ -58,6 +58,8 @@ export function SetupPanel() {
   const undo = useBakkesUndo();
   const installRp = useInstallRocketPlugin();
   const s = status.data;
+  // Smart App Control refuses BakkesMod.exe (unsigned) unless it already runs.
+  const sacBlocks = !!s && s.smartAppControl === "on" && !s.bakkes.injectorRunning;
   const open = (url: string) => void openUrl(url).catch(notify.error);
   const installRocketPlugin = () =>
     installRp.mutate(undefined, {
@@ -114,16 +116,18 @@ export function SetupPanel() {
             }
           />
           <Row
-            state={s.bakkes.dataDir ? "ok" : "todo"}
+            state={!s.bakkes.dataDir ? "todo" : sacBlocks ? "warn" : "ok"}
             label="BakkesMod"
             detail={
               !s.bakkes.dataDir
                 ? t("setup.bakkes.missing")
-                : s.bakkes.injectorPath
-                  ? s.bakkes.injectorRunning
-                    ? t("setup.bakkes.running")
-                    : t("setup.bakkes.ready")
-                  : t("setup.bakkes.noInjector")
+                : sacBlocks
+                  ? t("setup.bakkes.smartAppControl")
+                  : s.bakkes.injectorPath
+                    ? s.bakkes.injectorRunning
+                      ? t("setup.bakkes.running")
+                      : t("setup.bakkes.ready")
+                    : t("setup.bakkes.noInjector")
             }
             action={
               s.bakkes.dataDir ? null : (

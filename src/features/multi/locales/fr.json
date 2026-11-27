@@ -18,7 +18,8 @@
       "missing": "Pas installé : Rocket Plugin tourne dans BakkesMod.",
       "ready": "Installé — l'app le lance pour vous.",
       "running": "En cours d'exécution.",
-      "noInjector": "Dossier de données trouvé, mais pas BakkesMod.exe : lancez BakkesMod vous-même."
+      "noInjector": "Dossier de données trouvé, mais pas BakkesMod.exe : lancez BakkesMod vous-même.",
+      "smartAppControl": "Le Contrôle intelligent des applications de Windows est activé : il bloquera BakkesMod.exe (non signé). Désactivez-le dans Sécurité Windows › Contrôle d'applications et de navigateurs, ou lancez BakkesMod vous-même si Windows le laisse passer."
     },
     "rocketPlugin": {
       "missing": "Pas installé : ajoutez-le depuis le gestionnaire de plugins de BakkesMod.",
@@ -174,6 +175,15 @@
     "byHand": {
       "title": "Lancez la partie dans Rocket Plugin",
       "hint": "Ouvrez la fenêtre Rocket Plugin (sa touche se règle dans BakkesMod → Plugins → Rocket Plugin), choisissez l'arène {{arena}} et vos options, puis Host. Envoyez le code d'invitation à vos amis : leur app installe la même map sur la même arène."
+    },
+    "issue": {
+      "bakkesTitle": "BakkesMod ne s'est pas lancé",
+      "epicTitle": "Epic Games Launcher ne s'est pas ouvert",
+      "bakkesSmartAppControl": "Le Contrôle intelligent des applications de Windows a bloqué BakkesMod.exe (non signé). Il n'a pas de liste d'exceptions : désactivez-le dans Sécurité Windows › Contrôle d'applications et de navigateurs › Paramètres du Contrôle intelligent des applications, puis relancez la session. Sur certaines versions de Windows, il ne peut plus être réactivé sans réinitialiser Windows.",
+      "bakkesBlocked": "Windows a bloqué BakkesMod.exe (stratégie de contrôle des applications ou antivirus). Autorisez-le, ou lancez BakkesMod vous-même : la session continue dès qu'il s'injecte.",
+      "bakkesMissing": "BakkesMod.exe est introuvable dans ses dossiers habituels. Lancez BakkesMod vous-même : la session continue dès qu'il s'injecte.",
+      "bakkesFailed": "Lancez BakkesMod vous-même : la session continue dès qu'il s'injecte. ({{detail}})",
+      "epicNotOpened": "Ouvrez Epic Games Launcher vous-même, puis ⋯ à côté de Rocket League › « Lancer sans Anti-Cheat »."
     }
   },
   "security": {

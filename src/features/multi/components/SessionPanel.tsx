@@ -6,7 +6,7 @@ import { GlassPanel } from "@/components/ui/glass";
 import { notify } from "@/components/ui/toast";
 import { targetLabel } from "@/features/maps/api";
 import { cn } from "@/lib/cn";
-import type { MultiSession, Phase } from "../api";
+import type { LaunchIssue, MultiSession, Phase } from "../api";
 import { useCancelSession } from "../queries";
 
 /** Automatic steps, in order. */
@@ -46,6 +46,29 @@ function CopyBox({ label, value }: { label: string; value: string }) {
           <Copy />
           {t("session.copy")}
         </Button>
+      </div>
+    </div>
+  );
+}
+
+function IssueBox({ issue }: { issue: LaunchIssue }) {
+  const { t } = useTranslation("multi");
+  const text =
+    issue.kind === "bakkesBlocked"
+      ? issue.smartAppControl
+        ? t("session.issue.bakkesSmartAppControl")
+        : t("session.issue.bakkesBlocked")
+      : issue.kind === "bakkesFailed"
+        ? t("session.issue.bakkesFailed", { detail: issue.detail })
+        : t(`session.issue.${issue.kind}`);
+  return (
+    <div className="flex items-start gap-2.5 rounded-[8px] border border-warning/25 bg-warning/[0.06] p-2.5 text-xs text-fg-muted">
+      <CircleAlert className="mt-0.5 size-3.5 shrink-0 text-warning" />
+      <div>
+        <p className="font-medium text-fg">
+          {issue.kind === "epicNotOpened" ? t("session.issue.epicTitle") : t("session.issue.bakkesTitle")}
+        </p>
+        <p className="mt-0.5">{text}</p>
       </div>
     </div>
   );
@@ -129,6 +152,10 @@ export function SessionPanel({ session }: { session: MultiSession }) {
           </div>
         </div>
       ) : null}
+
+      {session.issues.map((issue) => (
+        <IssueBox key={issue.kind} issue={issue} />
+      ))}
 
       {session.phase === "launchInEpic" ? (
         <div className="flex items-start gap-2.5 rounded-[8px] border border-info/25 bg-info/[0.06] p-2.5 text-xs text-fg-muted">

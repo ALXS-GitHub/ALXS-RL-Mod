@@ -209,7 +209,7 @@ pub async fn maps_play_offline(
 ) -> AppResult<MapSession> {
     let rl = install::current_install(&app)?;
     let session = session::activate(&app, &id, None, true, variant).await?;
-    if let Err(err) = launch::start_no_eac(&rl) {
+    if let Err(err) = launch::start_no_eac(&app, &rl) {
         // The map stays installed: the user can start the game manually.
         tracing::warn!(%err, "offline launch failed after activation");
         return Err(err);

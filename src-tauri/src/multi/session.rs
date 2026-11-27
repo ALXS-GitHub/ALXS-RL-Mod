@@ -15,15 +15,16 @@
 //! command to type in the BakkesMod console instead.
 
 use std::net::Ipv4Addr;
-use std::path::PathBuf;
 use std::sync::{Mutex, RwLock};
 use std::time::Duration;
 
 use chrono::{DateTime, Utc};
 use serde::Serialize;
 use tauri::{AppHandle, Emitter};
+use tauri_plugin_opener::OpenerExt;
 
 use crate::base::error::{AppError, AppResult};
+use crate::base::winsec::{self, SmartAppControl};
 use crate::extras::launch;
 use crate::game::writer::{self, Owner, Placement};
 use crate::game::{install, watcher};
@@ -72,6 +73,26 @@ pub enum Phase {
     Failed,
 }
 
+/// Something the app could not start for the user. The session goes on
+/// (they can start it themselves); the UI says what to do.
+#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase", tag = "kind")]
+pub enum LaunchIssue {
+    /// Windows refused to run BakkesMod.exe (unsigned). `smart_app_control`:
+    /// Smart App Control is on, the usual culprit.
+    #[serde(rename_all = "camelCase")]
+    BakkesBlocked {
+        smart_app_control: bool,
+    },
+    /// BakkesMod.exe is not in any known install folder.
+    BakkesMissing,
+    BakkesFailed {
+        detail: String,
+    },
+    /// Neither the Epic launcher nor its link could be opened.
+    EpicNotOpened,
+}
+
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MultiSession {
@@ -89,6 +110,8 @@ pub struct MultiSession {
     pub command: Option<String>,
     /// Join only: the installed map is not the host's exact file.
     pub map_mismatch: bool,
+    /// Programs the app could not start (shown, the session goes on).
+    pub issues: Vec<LaunchIssue>,
     /// Why the session is `Manual` / `Failed`.
     pub message: Option<String>,
     pub started_at: DateTime<Utc>,
@@ -203,6 +226,7 @@ fn new_session(role: Role, map_name: String, target: String) -> MultiSession {
         invite_code: None,
         command: None,
         map_mismatch: false,
+        issues: Vec::new(),
         message: None,
         started_at: Utc::now(),
     }
@@ -476,15 +500,53 @@ async fn install_map(
     }
 }
 
-fn spawn_injector(path: &PathBuf) -> AppResult<()> {
-    let mut cmd = std::process::Command::new(path);
+fn add_issue(app: &AppHandle, id: &str, issue: LaunchIssue) {
+    tracing::warn!(?issue, "multiplayer launch issue");
+    update(app, id, |s| {
+        if !s.issues.contains(&issue) {
+            s.issues.push(issue);
+        }
+    });
+}
+
+/// Starts BakkesMod's injector. A plain spawn first; if Windows refuses it
+/// for another reason than application control (e.g. "run as administrator"
+/// set on the exe: error 740), retried through the shell, which handles
+/// elevation. Returns the issue to show when it did not start.
+fn start_injector(app: &AppHandle) -> Option<LaunchIssue> {
+    let Some(path) = bakkes_cfg::injector_path() else {
+        return Some(LaunchIssue::BakkesMissing);
+    };
+    let mut cmd = std::process::Command::new(&path);
     if let Some(dir) = path.parent() {
         cmd.current_dir(dir);
     }
-    cmd.spawn()
-        .map_err(|e| AppError::Internal(format!("could not start BakkesMod: {e}")))?;
-    tracing::info!(exe = %path.display(), "BakkesMod started");
-    Ok(())
+    let err = match cmd.spawn() {
+        Ok(_) => {
+            tracing::info!(exe = %path.display(), "BakkesMod started");
+            return None;
+        }
+        Err(err) => err,
+    };
+    if winsec::blocked_by_policy(&err) {
+        return Some(blocked_issue());
+    }
+    tracing::warn!(%err, exe = %path.display(), "BakkesMod spawn failed, retrying through the shell");
+    match app.opener().open_path(path.to_string_lossy(), None::<&str>) {
+        Ok(()) => {
+            tracing::info!(exe = %path.display(), "BakkesMod started through the shell");
+            None
+        }
+        Err(shell_err) => Some(LaunchIssue::BakkesFailed {
+            detail: format!("{err} / {shell_err}"),
+        }),
+    }
+}
+
+fn blocked_issue() -> LaunchIssue {
+    LaunchIssue::BakkesBlocked {
+        smart_app_control: winsec::smart_app_control() == SmartAppControl::On,
+    }
 }
 
 /// Game → BakkesMod → RCON → `commands` (none: manual hosting from Rocket
@@ -511,20 +573,20 @@ async fn drive(app: AppHandle, id: String, commands: Vec<String>) {
     // as a no-EAC game is up. No phase of its own while the game is not
     // running (the user may have to act in Epic meanwhile).
     if !bakkes_cfg::injector_running() {
-        match bakkes_cfg::injector_path() {
-            Some(path) => {
-                if let Err(err) = spawn_injector(&path) {
-                    tracing::warn!(%err, "BakkesMod injector");
-                }
-            }
-            None => tracing::warn!("BakkesMod injector not found"),
+        if let Some(issue) = start_injector(&app) {
+            add_issue(&app, &id, issue);
         }
     }
 
     if !was_running {
         set_phase(&app, &id, Phase::LaunchingGame);
-        match install::current_install(&app).and_then(|rl| launch::start_no_eac(&rl)) {
-            Ok(launch::NoEacStart::InEpic) => set_phase(&app, &id, Phase::LaunchInEpic),
+        match install::current_install(&app).and_then(|rl| launch::start_no_eac(&app, &rl)) {
+            Ok(launch::NoEacStart::InEpic { launcher_opened }) => {
+                if !launcher_opened {
+                    add_issue(&app, &id, LaunchIssue::EpicNotOpened);
+                }
+                set_phase(&app, &id, Phase::LaunchInEpic);
+            }
             Ok(launch::NoEacStart::Spawned(_)) => {}
             Err(err) => return end(&app, &id, Phase::Failed, err.to_string()),
         }

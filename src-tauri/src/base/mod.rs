@@ -10,5 +10,6 @@ pub mod logs;
 pub mod patch;
 pub mod paths;
 pub mod security;
+pub mod winsec;
 
 pub use error::{AppError, AppResult};

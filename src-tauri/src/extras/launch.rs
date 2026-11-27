@@ -21,6 +21,9 @@ use crate::game::install::{InstallSource, RlInstall};
 
 const EPIC_LAUNCH_URI: &str = "com.epicgames.launcher://apps/Sugar?action=launch&silent=true";
 const STEAM_LAUNCH_URI: &str = "steam://rungameid/252950";
+/// Opens the launcher on the library without starting anything (fallback
+/// when its executable cannot be found or started).
+const EPIC_LIBRARY_URI: &str = "com.epicgames.launcher://library";
 
 #[derive(Debug, Clone, Copy, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -36,8 +39,11 @@ pub enum LaunchMethod {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum NoEacStart {
     Spawned(u32),
-    /// Epic was brought forward: the user picks "Launch without Anti-Cheat".
-    InEpic,
+    /// The user picks "Launch without Anti-Cheat" in Epic. `launcher_opened`
+    /// is false when the app could not bring the launcher forward.
+    InEpic {
+        launcher_opened: bool,
+    },
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -55,12 +61,11 @@ fn spawn_no_eac(rl: &RlInstall) -> AppResult<u32> {
 }
 
 /// Starts the game without EAC the only way that works for this install.
-pub fn start_no_eac(rl: &RlInstall) -> AppResult<NoEacStart> {
+pub fn start_no_eac(app: &AppHandle, rl: &RlInstall) -> AppResult<NoEacStart> {
     match rl.source {
-        InstallSource::Epic => {
-            open_epic_launcher();
-            Ok(NoEacStart::InEpic)
-        }
+        InstallSource::Epic => Ok(NoEacStart::InEpic {
+            launcher_opened: open_epic_launcher(app),
+        }),
         InstallSource::Steam | InstallSource::Manual => spawn_no_eac(rl).map(NoEacStart::Spawned),
     }
 }
@@ -94,15 +99,25 @@ fn epic_exe_from_command(command: &str) -> Option<std::path::PathBuf> {
         .filter(|p| p.extension().is_some_and(|e| e.eq_ignore_ascii_case("exe")))
 }
 
-/// Brings the Epic Games Launcher forward (starting it if needed). Best effort.
-fn open_epic_launcher() {
+/// Brings the Epic Games Launcher forward (starting it if needed): its
+/// executable first, else its `com.epicgames.launcher://` link. Returns
+/// whether either worked.
+fn open_epic_launcher(app: &AppHandle) -> bool {
     match epic_launcher_exe().filter(|p| p.is_file()) {
-        Some(exe) => {
-            if let Err(err) = std::process::Command::new(&exe).spawn() {
-                tracing::warn!(%err, "could not open the Epic Games Launcher");
+        Some(exe) => match std::process::Command::new(&exe).spawn() {
+            Ok(_) => return true,
+            Err(err) => {
+                tracing::warn!(%err, exe = %exe.display(), "could not start the Epic Games Launcher")
             }
+        },
+        None => tracing::warn!("Epic Games Launcher executable not found"),
+    }
+    match app.opener().open_url(EPIC_LIBRARY_URI, None::<&str>) {
+        Ok(()) => true,
+        Err(err) => {
+            tracing::warn!(%err, "could not open the Epic Games Launcher link");
+            false
         }
-        None => tracing::warn!("Epic Games Launcher not found"),
     }
 }
 
@@ -153,7 +168,11 @@ pub fn launch(app: &AppHandle, rl: &RlInstall, with_eac: bool) -> AppResult<Laun
             None
         }
         LaunchMethod::EpicNoEac => {
-            open_epic_launcher();
+            if !open_epic_launcher(app) {
+                return Err(AppError::NotFound(
+                    "Epic Games Launcher — open it and start Rocket League with \"Launch without Anti-Cheat\"".into(),
+                ));
+            }
             None
         }
     };

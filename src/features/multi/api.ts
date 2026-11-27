@@ -49,6 +49,7 @@ export const multiStatusSchema = z.object({
   gameRunning: z.boolean(),
   gameWithEac: z.boolean(),
   port: z.number(),
+  smartAppControl: z.enum(["off", "on", "evaluation", "unknown"]),
 });
 export type MultiStatus = z.infer<typeof multiStatusSchema>;
 
@@ -101,6 +102,14 @@ export const PHASES = [
 export const phaseSchema = z.enum(PHASES);
 export type Phase = z.infer<typeof phaseSchema>;
 
+const launchIssueSchema = z.discriminatedUnion("kind", [
+  z.object({ kind: z.literal("bakkesBlocked"), smartAppControl: z.boolean() }),
+  z.object({ kind: z.literal("bakkesMissing") }),
+  z.object({ kind: z.literal("bakkesFailed"), detail: z.string() }),
+  z.object({ kind: z.literal("epicNotOpened") }),
+]);
+export type LaunchIssue = z.infer<typeof launchIssueSchema>;
+
 export const multiSessionSchema = z.object({
   id: z.string(),
   role: z.enum(["host", "join"]),
@@ -112,6 +121,7 @@ export const multiSessionSchema = z.object({
   inviteCode: z.string().nullable(),
   command: z.string().nullable(),
   mapMismatch: z.boolean(),
+  issues: z.array(launchIssueSchema),
   message: z.string().nullable(),
   startedAt: z.string(),
 });
