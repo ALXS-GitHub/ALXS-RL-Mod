@@ -57,6 +57,11 @@ every player. Uncompressed UDK packages only (licensee 0, no chunks).
   45 moved references; every export is byte-identical to the original once
   bulk offsets are neutralised.
 
+Storage: the original package is never modified; each repair is
+`repaired/v<N>.upk` + `repaired/v<N>.json` (fixes, source and result
+SHA-256) in the map folder, so several mapping versions can coexist and the
+user picks the variant (original or vN) per install / host.
+
 ## Building a new mapping version
 
 1. Index the game: `cargo run --release --example asset_probe -- <keys.txt> index <CookedPCConsole> game_index.tsv`
@@ -65,11 +70,6 @@ every player. Uncompressed UDK packages only (licensee 0, no chunks).
 3. `python tools/map_repair_audit.py game_index.tsv <imports_dir> <CookedPCConsole> v`
    lists moved / same / gone references; `… rules` prints the moved ones as
    rules. Review `same` entries by hand (renamed objects).
-Storage: the original package is never modified; each repair is
-`repaired/v<N>.upk` + `repaired/v<N>.json` (fixes, source and result
-SHA-256) in the map folder, so several mapping versions can coexist and the
-user picks the variant (original or vN) per install / host.
-
 4. Copy the previous `src-tauri/src/maps/repair_mappings/vN.json` to
    `v(N+1).json`, add the rules, add it to `repair::mappings()`. Never edit a
    released version: friends with that version must produce the same file.
