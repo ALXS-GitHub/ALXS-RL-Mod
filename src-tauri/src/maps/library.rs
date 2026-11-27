@@ -9,9 +9,9 @@ use chrono::Utc;
 use crate::base::error::{AppError, AppResult};
 use crate::base::{fsx, paths};
 use crate::maps::model::{
-    display_name, migrate_legacy_meta, new_map_id, normalize_target, pick_main_package,
-    repaired_file_name, MapEntry, MapOrigin, MapPatch, RepairInfo, ENTRY_FILE, LEGACY_META_FILE,
-    MAP_EXTENSIONS, REPAIR_FILE,
+    display_name, legacy_repaired_file_name, migrate_legacy_meta, new_map_id, normalize_target,
+    pick_main_package, repaired_info, repaired_package, MapEntry, MapOrigin, MapPatch, RepairInfo,
+    ENTRY_FILE, LEGACY_META_FILE, LEGACY_REPAIR_FILE, MAP_EXTENSIONS, ORIGINAL, REPAIRED_DIR,
 };
 use crate::maps::repair;
 
@@ -153,17 +153,62 @@ fn read_entry(dir: &Path) -> Option<MapEntry> {
             }
         }
     }
-    entry.repair = read_repair(dir, &entry.file_name);
+    if let Some(v) = migrate_single_repair(dir, &entry.file_name) {
+        if entry.preferred_variant == ORIGINAL {
+            entry.preferred_variant = v;
+            let _ = fsx::write_json(&dir.join(ENTRY_FILE), &entry);
+        }
+    }
+    entry.repairs = read_repairs(dir);
+    if !entry.has_variant(entry.preferred_variant) {
+        entry.preferred_variant = ORIGINAL;
+    }
     entry.folder = dir.to_string_lossy().into_owned();
     Some(entry)
 }
 
-/// `repair.json`, only when the repaired package is next to it.
-fn read_repair(dir: &Path, file_name: &str) -> Option<RepairInfo> {
-    if !dir.join(repaired_file_name(file_name)).is_file() {
+/// Repaired copies on disk (`repaired/v<N>.json` with its `.upk`), oldest first.
+fn read_repairs(dir: &Path) -> Vec<RepairInfo> {
+    let Ok(entries) = std::fs::read_dir(dir.join(REPAIRED_DIR)) else {
+        return Vec::new();
+    };
+    let mut out: Vec<RepairInfo> = entries
+        .flatten()
+        .filter_map(|e| {
+            let name = e.file_name().to_string_lossy().into_owned();
+            name.strip_suffix(".json")?
+                .strip_prefix('v')?
+                .parse::<u32>()
+                .ok()?;
+            let info: RepairInfo = serde_json::from_slice(&std::fs::read(e.path()).ok()?).ok()?;
+            dir.join(repaired_package(info.version))
+                .is_file()
+                .then_some(info)
+        })
+        .collect();
+    out.sort_by_key(|r| r.version);
+    out.dedup_by_key(|r| r.version);
+    out
+}
+
+/// v0.3.4 kept one repair as `<file>.repaired` + `repair.json`: move it
+/// into `repaired/`. Returns its version.
+fn migrate_single_repair(dir: &Path, file_name: &str) -> Option<u32> {
+    let old_pkg = dir.join(legacy_repaired_file_name(file_name));
+    let old_info = dir.join(LEGACY_REPAIR_FILE);
+    if !old_pkg.is_file() || !old_info.is_file() {
         return None;
     }
-    serde_json::from_slice(&std::fs::read(dir.join(REPAIR_FILE)).ok()?).ok()
+    let info: RepairInfo = serde_json::from_slice(&std::fs::read(&old_info).ok()?).ok()?;
+    std::fs::create_dir_all(dir.join(REPAIRED_DIR)).ok()?;
+    std::fs::rename(&old_pkg, dir.join(repaired_package(info.version))).ok()?;
+    std::fs::rename(&old_info, dir.join(repaired_info(info.version))).ok()?;
+    tracing::info!(
+        ?dir,
+        version = info.version,
+        "map repair moved to repaired/"
+    );
+    Some(info.version)
 }
 
 pub fn list() -> AppResult<Vec<MapEntry>> {
@@ -226,6 +271,14 @@ pub fn update(id: &str, patch: MapPatch) -> AppResult<MapEntry> {
             ),
             None => None,
         };
+    }
+    if let Some(v) = patch.preferred_variant {
+        if !entry.has_variant(v) {
+            return Err(AppError::InvalidInput(format!(
+                "this map has no copy repaired with mapping v{v}"
+            )));
+        }
+        entry.preferred_variant = v;
     }
     save(&entry)?;
     get(id)
@@ -290,7 +343,8 @@ pub fn finalize_staging(
         preferred_target: None,
         last_played_at: None,
         folder: String::new(),
-        repair: None,
+        repairs: Vec::new(),
+        preferred_variant: ORIGINAL,
     };
     save(&entry)?;
     get(&id)
@@ -495,7 +549,8 @@ pub struct RepairStatus {
     pub supported: bool,
     /// References the requested mapping would fix in the original package.
     pub fixes: Vec<repair::Fix>,
-    pub repaired_with: Option<u32>,
+    /// Mapping versions this map already has a repaired copy for.
+    pub repaired_versions: Vec<u32>,
 }
 
 /// Header of the original package (enough for [`repair::preview`]).
@@ -552,14 +607,15 @@ pub fn repair_status(entry: &MapEntry, version: u32) -> AppResult<RepairStatus> 
         map_id: entry.id.clone(),
         supported,
         fixes,
-        repaired_with: entry.repair.as_ref().map(|r| r.version),
+        repaired_versions: entry.repairs.iter().map(|r| r.version).collect(),
     })
 }
 
-/// Repairs map `id` with mapping `version` (the original stays untouched).
-/// Blocking (reads and hashes the whole package).
+/// Repairs map `id` with mapping `version` into `repaired/v<N>.upk` (the
+/// original and other repaired copies stay) and makes it the default
+/// variant. Blocking (reads and hashes the whole package).
 pub fn repair_map(id: &str, version: u32) -> AppResult<MapEntry> {
-    let entry = get(id)?;
+    let mut entry = get(id)?;
     let mapping = repair::mapping(version)?;
     let dir = PathBuf::from(&entry.folder);
     let original = std::fs::read(dir.join(&entry.file_name))?;
@@ -577,28 +633,29 @@ pub fn repair_map(id: &str, version: u32) -> AppResult<MapEntry> {
         repaired_at: Utc::now(),
     };
     drop(original);
-    fsx::write_atomic(
-        &dir.join(repaired_file_name(&entry.file_name)),
-        &repaired.bytes,
-    )?;
-    fsx::write_json(&dir.join(REPAIR_FILE), &info)?;
+    std::fs::create_dir_all(dir.join(REPAIRED_DIR))?;
+    fsx::write_atomic(&dir.join(repaired_package(version)), &repaired.bytes)?;
+    fsx::write_json(&dir.join(repaired_info(version)), &info)?;
+    entry.preferred_variant = version;
+    save(&entry)?;
     tracing::info!(%id, version, fixes = info.fixes.len(), "map repaired");
     get(id)
 }
 
-/// Back to the original package.
-pub fn undo_repair(id: &str) -> AppResult<MapEntry> {
-    let entry = get(id)?;
+/// Deletes the copy repaired with mapping `version` (the original stays).
+pub fn delete_repair(id: &str, version: u32) -> AppResult<MapEntry> {
+    let mut entry = get(id)?;
     let dir = PathBuf::from(&entry.folder);
-    for f in [
-        repaired_file_name(&entry.file_name),
-        REPAIR_FILE.to_string(),
-    ] {
+    for f in [repaired_package(version), repaired_info(version)] {
         let p = dir.join(f);
         if p.is_file() {
             std::fs::remove_file(p)?;
         }
     }
-    tracing::info!(%id, "map repair removed");
+    if entry.preferred_variant == version {
+        entry.preferred_variant = ORIGINAL;
+        save(&entry)?;
+    }
+    tracing::info!(%id, version, "repaired copy deleted");
     get(id)
 }

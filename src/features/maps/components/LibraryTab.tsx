@@ -49,7 +49,10 @@ export function LibraryTab({ onImport }: { onImport: () => void }) {
   /** Badge against the latest mapping (nothing when there is nothing to do). */
   const repairBadge = (map: MapEntry): "repaired" | "repairable" | "outdated" | null => {
     const fixes = repairStatus?.find((s) => s.mapId === map.id)?.fixes.length ?? 0;
-    if (map.repair) return map.repair.version !== latestMapping && fixes > 0 ? "outdated" : "repaired";
+    if (map.repairs.length) {
+      const hasLatest = map.repairs.some((r) => r.version === latestMapping);
+      return !hasLatest && fixes > 0 ? "outdated" : "repaired";
+    }
     return fixes > 0 ? "repairable" : null;
   };
 
@@ -159,6 +162,7 @@ export function LibraryTab({ onImport }: { onImport: () => void }) {
                 onReveal={() => void revealItemInDir(`${map.folder}\\${map.fileName}`).catch(notify.error)}
                 repair={repairBadge(map)}
                 onRepair={() => setRepairing(map)}
+                onVariant={(v) => update.mutate({ id: map.id, patch: { preferredVariant: v } })}
               />
             </motion.div>
           ))}
@@ -166,7 +170,10 @@ export function LibraryTab({ onImport }: { onImport: () => void }) {
       )}
 
       <EditMapDialog map={editing} onClose={() => setEditing(null)} />
-      <RepairDialog map={repairing} onClose={() => setRepairing(null)} />
+      <RepairDialog
+        map={repairing ? ((maps.data ?? []).find((m) => m.id === repairing.id) ?? repairing) : null}
+        onClose={() => setRepairing(null)}
+      />
 
       <Dialog open={deleting !== null} onOpenChange={(open) => !open && setDeleting(null)}>
         <DialogContent

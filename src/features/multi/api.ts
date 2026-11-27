@@ -77,7 +77,6 @@ export const inviteCheckSchema = z.object({
   repairAction: z.discriminatedUnion("kind", [
     z.object({ kind: z.literal("none") }),
     z.object({ kind: z.literal("repair"), version: z.number() }),
-    z.object({ kind: z.literal("undo") }),
     z.object({ kind: z.literal("unavailable"), version: z.number() }),
   ]),
 });
@@ -154,6 +153,8 @@ export const hostPresetSchema = z.object({
   mapId: z.string(),
   mapName: z.string(),
   target: z.string(),
+  /** 0 = original, N = repaired with mapping vN, null = the map's default. */
+  variant: z.number().nullable().default(null),
   options: matchOptionsSchema,
   savedAt: z.string(),
 });
@@ -165,6 +166,7 @@ export interface HostPresetInput {
   name: string;
   mapId: string;
   target: string;
+  variant: number | null;
   options: MatchOptions;
 }
 
@@ -185,8 +187,8 @@ export const multiApi = {
   bakkesSetup: () => call("multi_bakkes_setup", {}, bakkesSetupSchema),
   bakkesUndo: () => call("multi_bakkes_undo", {}, bakkesSetupSchema),
   installRocketPlugin: () => callVoid("multi_install_rocket_plugin"),
-  host: (mapId: string, target: string, options: MatchOptions) =>
-    call("multi_host", { mapId, target, options }, multiSessionSchema),
+  host: (mapId: string, target: string, variant: number | null, options: MatchOptions) =>
+    call("multi_host", { mapId, target, variant, options }, multiSessionSchema),
   check: (code: string) => call("multi_check", { code }, inviteCheckSchema),
   join: (code: string) => call("multi_join", { code }, multiSessionSchema),
   session: () => call("multi_session", {}, multiSessionSchema.nullable()),

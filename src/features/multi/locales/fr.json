@@ -109,7 +109,11 @@
       "saveNew": "Enregistrer comme nouvelle",
       "namePlaceholder": "ex. PingPong 2v2 sur Underpass"
     },
-    "repairedNote": "Réparée avec le mapping v{{version}} : l'app de vos amis propose la même réparation."
+    "repairedNote": "Réparée avec le mapping v{{version}} : l'app de vos amis propose la même réparation.",
+    "variant": "Version de la map",
+    "variantHint": "L'app de vos amis installe la même",
+    "variantOriginal": "Original",
+    "variantRepaired": "Réparée v{{version}}"
   },
   "join": {
     "title": "Rejoindre un ami",
@@ -126,11 +130,9 @@
     "downloading": "Téléchargement… {{percent}} %",
     "downloaded": "« {{name}} » ajoutée à votre bibliothèque",
     "openMaps": "Ouvrir Maps",
-    "needsRepair": "L'hôte joue cette map réparée avec le mapping v{{version}} : réparez la vôtre de la même façon (fichier identique garanti).",
-    "needsOriginal": "L'hôte joue la version d'origine de cette map : revenez à la vôtre.",
+    "needsRepair": "L'hôte joue cette map réparée avec le mapping v{{version}} : créez la même copie réparée (fichier identique garanti).",
     "repairUnavailable": "L'hôte a réparé cette map avec le mapping v{{version}}, que votre app n'a pas encore : mettez à jour ALXS-RL-Mod.",
     "repair": "Réparer (v{{version}})",
-    "useOriginal": "Utiliser l'original",
     "repairedNote": "Réparée comme celle de l'hôte (v{{version}})."
   },
   "session": {

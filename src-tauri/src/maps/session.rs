@@ -85,8 +85,12 @@ pub fn activate_blocking(
     id: &str,
     target: Option<String>,
     offline: bool,
+    variant: Option<u32>,
 ) -> AppResult<MapSession> {
     let entry = library::get(id)?;
+    let variant = entry
+        .resolve_variant(variant)
+        .map_err(AppError::InvalidInput)?;
     let target_name = target
         .or_else(|| entry.preferred_target.clone())
         .unwrap_or_else(|| DEFAULT_TARGET.to_string());
@@ -102,8 +106,8 @@ pub fn activate_blocking(
     let folder = PathBuf::from(&entry.folder);
     let install_all = || -> AppResult<()> {
         // The write layer takes the bytes in memory; one package at a time.
-        // The repaired copy when the map was repaired (`maps::repair`).
-        let main = folder.join(entry.package_file());
+        // Original package or a repaired copy (`maps::repair`).
+        let main = folder.join(entry.package_file(variant));
         let bytes = std::fs::read(&main).map_err(|e| AppError::from_game_io(e, &main))?;
         writer::install_file(
             app,
@@ -143,10 +147,11 @@ pub fn activate_blocking(
         target: target_name,
         activated_at: Utc::now(),
         offline,
+        variant,
     };
     set(Some(session.clone()))?;
     library::touch_played(&entry.id);
-    tracing::info!(map = %entry.name, target = %session.target, "map activated");
+    tracing::info!(map = %entry.name, target = %session.target, variant, "map activated");
     Ok(session)
 }
 
@@ -167,11 +172,14 @@ pub async fn activate(
     id: &str,
     target: Option<String>,
     offline: bool,
+    variant: Option<u32>,
 ) -> AppResult<MapSession> {
     let (app2, id2) = (app.clone(), id.to_string());
-    tauri::async_runtime::spawn_blocking(move || activate_blocking(&app2, &id2, target, offline))
-        .await
-        .map_err(|e| AppError::Internal(e.to_string()))?
+    tauri::async_runtime::spawn_blocking(move || {
+        activate_blocking(&app2, &id2, target, offline, variant)
+    })
+    .await
+    .map_err(|e| AppError::Internal(e.to_string()))?
 }
 
 /// Puts the stock arena back and closes the session. While the game runs,
@@ -224,7 +232,13 @@ pub fn settle(app: &AppHandle) -> AppResult<()> {
             .any(|e| e.tag == s.map_id && e.placement == Placement::RootReplace);
         if !installed {
             set(None)?;
-            activate_blocking(app, &s.map_id, Some(s.target.clone()), s.offline)?;
+            activate_blocking(
+                app,
+                &s.map_id,
+                Some(s.target.clone()),
+                s.offline,
+                Some(s.variant),
+            )?;
             tracing::info!(map = %s.map_name, "map session moved over the stock arena");
         }
     }
@@ -331,6 +345,7 @@ pub fn reapply(app: &AppHandle) -> AppResult<ReapplyOutcome> {
         &session.map_id,
         Some(session.target.clone()),
         session.offline,
+        Some(session.variant),
     )?;
     Ok(ReapplyOutcome::Reapplied)
 }
@@ -359,6 +374,7 @@ mod tests {
             target: DEFAULT_TARGET.into(),
             activated_at: Utc::now(),
             offline: false,
+            variant: 0,
         }
     }
 

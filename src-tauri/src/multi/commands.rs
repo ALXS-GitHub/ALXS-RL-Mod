@@ -72,15 +72,19 @@ pub async fn multi_install_rocket_plugin() -> AppResult<()> {
     blocking(bakkes_cfg::install_rocket_plugin).await
 }
 
-/// `target`: Labs arena to replace (`None` = the map's preferred one, else Underpass).
+/// `target`: Labs arena to replace (`None` = the map's preferred one, else
+/// Underpass). `variant`: 0 = original, N = copy repaired with mapping vN,
+/// `None` = the map's default.
 #[tauri::command]
 pub async fn multi_host(
     app: AppHandle,
     map_id: String,
     target: Option<String>,
+    variant: Option<u32>,
     options: Option<MatchOptions>,
 ) -> AppResult<MultiSession> {
-    blocking(move || session::host(&app, map_id, target, options.unwrap_or_default())).await
+    blocking(move || session::host(&app, map_id, target, variant, options.unwrap_or_default()))
+        .await
 }
 
 #[tauri::command]

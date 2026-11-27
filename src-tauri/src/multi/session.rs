@@ -27,7 +27,9 @@ use crate::base::error::{AppError, AppResult};
 use crate::extras::launch;
 use crate::game::writer::{self, Owner, Placement};
 use crate::game::{install, watcher};
-use crate::maps::model::{normalize_target, MapEntry, MapOrigin, RemoteSource, DEFAULT_TARGET};
+use crate::maps::model::{
+    normalize_target, MapEntry, MapOrigin, RemoteSource, DEFAULT_TARGET, ORIGINAL,
+};
 use crate::maps::{library, session as maps_session};
 use crate::multi::invite::{self, Invite, InviteMap};
 use crate::multi::rp_options::{self, MatchOptions};
@@ -214,6 +216,7 @@ pub fn host(
     app: &AppHandle,
     map_id: String,
     target: Option<String>,
+    variant: Option<u32>,
     options: MatchOptions,
 ) -> AppResult<MultiSession> {
     let ts = preflight(true)?;
@@ -223,6 +226,10 @@ pub fn host(
         .and_then(|ip| ip.parse().ok())
         .ok_or_else(|| AppError::Conflict("no Tailscale IPv4 address on this PC".into()))?;
     let entry = library::get(&map_id)?;
+    // Original or one of the map's repaired copies; friends use the same.
+    let variant = entry
+        .resolve_variant(variant)
+        .map_err(AppError::InvalidInput)?;
     let wanted = target
         .or_else(|| entry.preferred_target.clone())
         .unwrap_or_else(|| DEFAULT_TARGET.to_string());
@@ -243,7 +250,7 @@ pub fn host(
     let app2 = app.clone();
     let host_name = ts.self_name.clone();
     start(app, session, async move {
-        let Some(target) = install_map(&app2, &id, &map_id, Some(target)).await else {
+        let Some(target) = install_map(&app2, &id, &map_id, Some(target), variant).await else {
             return;
         };
         let code = invite::encode(&Invite {
@@ -257,7 +264,7 @@ pub fn host(
                 sha256: installed_sha(&map_id),
                 source: remote_of(&entry).map(|r| r.0),
                 remote_id: remote_of(&entry).map(|r| r.1),
-                repair_version: entry.repair.as_ref().map(|r| r.version),
+                repair_version: (variant != ORIGINAL).then_some(variant),
             },
         });
         update(&app2, &id, |s| {
@@ -283,13 +290,10 @@ pub fn join(app: &AppHandle, code: &str) -> AppResult<MultiSession> {
             invite.map.name
         ))
     })?;
-    if repair_action(
-        invite.map.repair_version,
-        entry.repair.as_ref().map(|r| r.version),
-    ) != RepairAction::None
-    {
+    let variant = invite.map.repair_version.unwrap_or(ORIGINAL);
+    if repair_action(invite.map.repair_version, &repaired_versions(&entry)) != RepairAction::None {
         return Err(AppError::Conflict(
-            "your copy of the map is not repaired like the host's — repair it first (join card)"
+            "the host plays a repaired copy you do not have yet — repair yours first (join card)"
                 .into(),
         ));
     }
@@ -306,9 +310,15 @@ pub fn join(app: &AppHandle, code: &str) -> AppResult<MultiSession> {
     let returned = session.clone();
     let app2 = app.clone();
     start(app, session, async move {
-        if install_map(&app2, &id, &entry.id, Some(invite.map.target.clone()))
-            .await
-            .is_none()
+        if install_map(
+            &app2,
+            &id,
+            &entry.id,
+            Some(invite.map.target.clone()),
+            variant,
+        )
+        .await
+        .is_none()
         {
             return;
         }
@@ -354,7 +364,8 @@ pub struct InviteCheck {
     /// The matching map of the library, if any.
     pub library_map_id: Option<String>,
     pub library_map_name: Option<String>,
-    /// That map is already installed over the invite's arena: nothing to write.
+    /// That map, in the host's variant, is already installed over the
+    /// invite's arena: nothing to write.
     pub already_on_arena: bool,
     /// Missing but downloadable from bakkesplugins (offered, never automatic).
     pub downloadable: bool,
@@ -362,51 +373,55 @@ pub struct InviteCheck {
     pub repair_action: RepairAction,
 }
 
-/// Joining needs the same file as the host: same repair mapping or none.
+/// Joining needs the same file as the host: the original (always kept) or
+/// the copy repaired with the host's mapping version.
 #[derive(Debug, Clone, Copy, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase", tag = "kind")]
 pub enum RepairAction {
     None,
-    /// Repair (or re-repair) with this mapping version.
+    /// Create the copy repaired with this mapping version.
     Repair {
         version: u32,
     },
-    /// The host plays the original package: remove the repair.
-    Undo,
     /// The host used a mapping this app does not ship: update the app.
     Unavailable {
         version: u32,
     },
 }
 
-pub(crate) fn repair_action(host: Option<u32>, mine: Option<u32>) -> RepairAction {
-    match (host, mine) {
-        (Some(h), Some(m)) if h == m => RepairAction::None,
-        (Some(h), _) if crate::maps::repair::mapping(h).is_err() => {
+pub(crate) fn repair_action(host: Option<u32>, mine: &[u32]) -> RepairAction {
+    match host {
+        None => RepairAction::None,
+        Some(h) if mine.contains(&h) => RepairAction::None,
+        Some(h) if crate::maps::repair::mapping(h).is_err() => {
             RepairAction::Unavailable { version: h }
         }
-        (Some(h), _) => RepairAction::Repair { version: h },
-        (None, Some(_)) => RepairAction::Undo,
-        (None, None) => RepairAction::None,
+        Some(h) => RepairAction::Repair { version: h },
     }
+}
+
+fn repaired_versions(entry: &MapEntry) -> Vec<u32> {
+    entry.repairs.iter().map(|r| r.version).collect()
 }
 
 /// Reads an invite and looks the map up in the library. Blocking.
 pub fn check(code: &str) -> AppResult<InviteCheck> {
     let invite = invite::decode(code)?;
     let entry = find_in_library(&invite.map)?;
+    let host_variant = invite.map.repair_version.unwrap_or(ORIGINAL);
     let already_on_arena = match (&entry, maps_session::current()) {
-        (Some(e), Some(s)) => s.map_id == e.id && s.target.eq_ignore_ascii_case(&invite.map.target),
+        (Some(e), Some(s)) => {
+            s.map_id == e.id
+                && s.variant == host_variant
+                && s.target.eq_ignore_ascii_case(&invite.map.target)
+        }
         _ => false,
     };
     let downloadable = entry.is_none()
         && invite.map.source == Some(RemoteSource::BakkesPlugins)
         && invite.map.remote_id.is_some();
     let repair_action = match &entry {
-        Some(e) => repair_action(
-            invite.map.repair_version,
-            e.repair.as_ref().map(|r| r.version),
-        ),
+        Some(e) => repair_action(invite.map.repair_version, &repaired_versions(e)),
         None => RepairAction::None,
     };
     Ok(InviteCheck {
@@ -438,20 +453,21 @@ async fn install_map(
     id: &str,
     map_id: &str,
     target: Option<String>,
+    variant: u32,
 ) -> Option<String> {
     set_phase(app, id, Phase::InstallingMap);
     if let Some(s) = maps_session::current() {
         let same_target = target
             .as_deref()
             .is_none_or(|t| t.eq_ignore_ascii_case(&s.target));
-        if s.map_id == map_id && same_target {
+        if s.map_id == map_id && same_target && s.variant == variant {
             if let Err(err) = maps_session::make_persistent() {
                 tracing::warn!(%err, "could not keep the map installed after the game");
             }
             return Some(s.target);
         }
     }
-    match maps_session::activate(app, map_id, target, false).await {
+    match maps_session::activate(app, map_id, target, false, Some(variant)).await {
         Ok(s) => Some(s.target),
         Err(err) => {
             end(app, id, Phase::Failed, err.to_string());
@@ -588,15 +604,16 @@ mod tests {
 
     #[test]
     fn repair_actions() {
-        assert_eq!(repair_action(None, None), RepairAction::None);
-        assert_eq!(repair_action(Some(1), Some(1)), RepairAction::None);
+        assert_eq!(repair_action(None, &[]), RepairAction::None);
+        // The original is always kept: nothing to do when the host uses it.
+        assert_eq!(repair_action(None, &[1]), RepairAction::None);
+        assert_eq!(repair_action(Some(1), &[1]), RepairAction::None);
         assert_eq!(
-            repair_action(Some(1), None),
+            repair_action(Some(1), &[]),
             RepairAction::Repair { version: 1 }
         );
-        assert_eq!(repair_action(None, Some(1)), RepairAction::Undo);
         assert_eq!(
-            repair_action(Some(999), None),
+            repair_action(Some(999), &[1]),
             RepairAction::Unavailable { version: 999 }
         );
     }

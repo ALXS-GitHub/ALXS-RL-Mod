@@ -55,8 +55,17 @@ export function useBakkesUndo() {
 export function useHost() {
   const set = useSetSession();
   return useMutation({
-    mutationFn: ({ mapId, target, options }: { mapId: string; target: string; options: MatchOptions }) =>
-      multiApi.host(mapId, target, options),
+    mutationFn: ({
+      mapId,
+      target,
+      variant,
+      options,
+    }: {
+      mapId: string;
+      target: string;
+      variant: number | null;
+      options: MatchOptions;
+    }) => multiApi.host(mapId, target, variant, options),
     onSuccess: set,
     onError: notify.error,
   });

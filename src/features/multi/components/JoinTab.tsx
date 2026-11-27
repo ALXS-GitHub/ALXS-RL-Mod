@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { ClipboardPaste, Download, LogIn, RotateCcw, Wrench } from "lucide-react";
+import { ClipboardPaste, Download, LogIn, Wrench } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +9,7 @@ import { GlassPanel } from "@/components/ui/glass";
 import { Input } from "@/components/ui/input";
 import { notify } from "@/components/ui/toast";
 import { targetLabel } from "@/features/maps/api";
-import { useDownloadMap, useDownloadProgress, useRepairMap, useUndoRepair } from "@/features/maps/queries";
+import { useDownloadMap, useDownloadProgress, useRepairMap } from "@/features/maps/queries";
 import { toAppError } from "@/lib/errors";
 import type { InviteCheck, MultiStatus } from "../api";
 import { multiKeys, useInviteCheck, useJoin } from "../queries";
@@ -23,7 +23,6 @@ function MapState({ check }: { check: InviteCheck }) {
   const navigate = useNavigate();
   const download = useDownloadMap();
   const repair = useRepairMap();
-  const undo = useUndoRepair();
   const progress = useDownloadProgress();
   const { map } = check.invite;
   const arena = targetLabel(map.target);
@@ -39,32 +38,16 @@ function MapState({ check }: { check: InviteCheck }) {
     }
     return (
       <div className="flex flex-col items-start gap-2">
-        <Status ok={false}>
-          {action.kind === "repair"
-            ? t("join.needsRepair", { version: action.version })
-            : t("join.needsOriginal")}
-        </Status>
-        {action.kind === "repair" ? (
-          <Button
-            size="sm"
-            variant="secondary"
-            loading={repair.isPending}
-            onClick={() => repair.mutate({ id, version: action.version }, { onSuccess: onDone })}
-          >
-            <Wrench />
-            {t("join.repair", { version: action.version })}
-          </Button>
-        ) : (
-          <Button
-            size="sm"
-            variant="secondary"
-            loading={undo.isPending}
-            onClick={() => undo.mutate(id, { onSuccess: onDone })}
-          >
-            <RotateCcw />
-            {t("join.useOriginal")}
-          </Button>
-        )}
+        <Status ok={false}>{t("join.needsRepair", { version: action.version })}</Status>
+        <Button
+          size="sm"
+          variant="secondary"
+          loading={repair.isPending}
+          onClick={() => repair.mutate({ id, version: action.version }, { onSuccess: onDone })}
+        >
+          <Wrench />
+          {t("join.repair", { version: action.version })}
+        </Button>
       </div>
     );
   }

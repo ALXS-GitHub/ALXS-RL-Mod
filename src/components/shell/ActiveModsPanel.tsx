@@ -437,7 +437,10 @@ function Content({ onClose }: { onClose: () => void }) {
               lead={<MapArt name={session.mapName} src={sessionPreview} className="size-9" />}
               kicker={t("mods.mapKind")}
               title={session.mapName}
-              detail={t("mods.replaces", { name: targetLabel(session.target) })}
+              detail={
+                t("mods.replaces", { name: targetLabel(session.target) }) +
+                (session.variant ? ` · ${t("mods.repaired", { version: session.variant })}` : "")
+              }
               restoreLabel={t("mods.restoreMap")}
               restoring={deactivateMap.isPending}
               onRestore={() =>

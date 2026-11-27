@@ -136,6 +136,7 @@ function SavePresetDialog({
         name,
         mapId: form.mapId,
         target,
+        variant: form.variant,
         options: form.options,
       },
       {

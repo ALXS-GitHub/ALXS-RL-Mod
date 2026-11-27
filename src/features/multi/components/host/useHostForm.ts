@@ -9,13 +9,21 @@ export interface HostForm {
   options: MatchOptions;
   /** Saved preset this form came from (for "update preset"). */
   presetId: string | null;
+  /** 0 = original, N = repaired with mapping vN, null = the map's default. */
+  variant: number | null;
 }
 
 const STORAGE_KEY = "alxs.multi.hostForm";
 /** Match options saved by the previous version of the host card. */
 const LEGACY_OPTIONS_KEY = "alxs.multi.matchOptions";
 
-const EMPTY: HostForm = { mapId: null, target: null, options: DEFAULT_MATCH_OPTIONS, presetId: null };
+const EMPTY: HostForm = {
+  mapId: null,
+  target: null,
+  options: DEFAULT_MATCH_OPTIONS,
+  presetId: null,
+  variant: null,
+};
 
 function load(): HostForm {
   try {
@@ -47,6 +55,12 @@ export function useHostForm() {
   const patchOptions = (p: Partial<MatchOptions>) =>
     setForm((f) => ({ ...f, options: { ...f.options, ...p } }));
   const applyPreset = (preset: HostPreset) =>
-    setForm({ mapId: preset.mapId, target: preset.target, options: preset.options, presetId: preset.id });
+    setForm({
+      mapId: preset.mapId,
+      target: preset.target,
+      options: preset.options,
+      presetId: preset.id,
+      variant: preset.variant,
+    });
   return { form, patch, patchOptions, applyPreset };
 }

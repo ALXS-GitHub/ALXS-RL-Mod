@@ -189,7 +189,7 @@ pub fn run() {
             maps::commands::maps_repair_mappings,
             maps::commands::maps_repair_status,
             maps::commands::maps_repair,
-            maps::commands::maps_repair_undo,
+            maps::commands::maps_repair_delete,
             maps::commands::maps_textures_status,
             maps::commands::maps_textures_install,
             maps::commands::maps_textures_remove,

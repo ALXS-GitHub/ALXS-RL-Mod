@@ -51,9 +51,13 @@ export function useRepairMap() {
   });
 }
 
-export function useUndoRepair() {
+export function useDeleteRepair() {
   const invalidate = useInvalidateAfterRepair();
-  return useMutation({ mutationFn: mapsApi.repairUndo, onSuccess: invalidate, onError: notify.error });
+  return useMutation({
+    mutationFn: ({ id, version }: { id: string; version: number }) => mapsApi.repairDelete(id, version),
+    onSuccess: invalidate,
+    onError: notify.error,
+  });
 }
 
 export function useTexturesStatus() {
@@ -127,7 +131,11 @@ export function useActivateMap() {
 
 export function usePlayOffline() {
   const invalidate = useInvalidateMaps();
-  return useMutation({ mutationFn: mapsApi.playOffline, onSuccess: invalidate, onError: notify.error });
+  return useMutation({
+    mutationFn: (id: string) => mapsApi.playOffline(id),
+    onSuccess: invalidate,
+    onError: notify.error,
+  });
 }
 
 export function useDeactivateMap() {

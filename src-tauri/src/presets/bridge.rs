@@ -39,7 +39,7 @@ pub async fn apply_decal(app: &AppHandle, decal: Option<&PresetDecal>) -> AppRes
 }
 
 pub async fn apply_map(app: &AppHandle, map_id: &str) -> AppResult<()> {
-    crate::maps::commands::maps_activate(app.clone(), map_id.to_string(), None)
+    crate::maps::commands::maps_activate(app.clone(), map_id.to_string(), None, None)
         .await
         .map(|_| ())
 }

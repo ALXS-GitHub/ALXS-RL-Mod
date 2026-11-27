@@ -128,28 +128,65 @@ pub struct MapEntry {
     /// Absolute folder, filled at read time (never persisted meaningfully).
     #[serde(default)]
     pub folder: String,
-    /// Set when the map was repaired (`maps::repair`); read from
-    /// `repair.json` next to the package, never trusted from `map.json`.
+    /// Repaired copies kept for this map, one per mapping version
+    /// (`repaired/v<N>.upk` + `.json`), oldest first. Read from disk, never
+    /// trusted from `map.json`.
     #[serde(default)]
-    pub repair: Option<RepairInfo>,
+    pub repairs: Vec<RepairInfo>,
+    /// Variant installed by default: 0 = the original package, N = the copy
+    /// repaired with mapping vN.
+    #[serde(default)]
+    pub preferred_variant: u32,
 }
 
+/// Map variant: [`ORIGINAL`] or a repair mapping version.
+pub type Variant = u32;
+pub const ORIGINAL: Variant = 0;
+
 impl MapEntry {
-    /// File installed in the game: the repaired copy when there is one.
-    pub fn package_file(&self) -> String {
-        match &self.repair {
-            Some(_) => repaired_file_name(&self.file_name),
-            None => self.file_name.clone(),
+    pub fn has_variant(&self, variant: Variant) -> bool {
+        variant == ORIGINAL || self.repairs.iter().any(|r| r.version == variant)
+    }
+
+    /// Package of `variant`, relative to the map folder.
+    pub fn package_file(&self, variant: Variant) -> String {
+        if variant == ORIGINAL {
+            self.file_name.clone()
+        } else {
+            repaired_package(variant)
+        }
+    }
+
+    /// `requested` (or the map's default when `None`), checked to exist.
+    pub fn resolve_variant(&self, requested: Option<Variant>) -> Result<Variant, String> {
+        let v = requested.unwrap_or(self.preferred_variant);
+        if self.has_variant(v) {
+            Ok(v)
+        } else if requested.is_none() {
+            Ok(ORIGINAL)
+        } else {
+            Err(format!("this map has no copy repaired with mapping v{v}"))
         }
     }
 }
 
-/// Repaired copy of `file_name`, next to the untouched original.
-pub fn repaired_file_name(file_name: &str) -> String {
-    format!("{file_name}.repaired")
+pub const REPAIRED_DIR: &str = "repaired";
+
+/// `repaired/v<N>.upk` (relative to the map folder).
+pub fn repaired_package(version: u32) -> String {
+    format!("{REPAIRED_DIR}/v{version}.upk")
 }
 
-pub const REPAIR_FILE: &str = "repair.json";
+/// `repaired/v<N>.json` (relative to the map folder).
+pub fn repaired_info(version: u32) -> String {
+    format!("{REPAIRED_DIR}/v{version}.json")
+}
+
+/// Layout of v0.3.4 (single repair): migrated into `repaired/` on read.
+pub fn legacy_repaired_file_name(file_name: &str) -> String {
+    format!("{file_name}.repaired")
+}
+pub const LEGACY_REPAIR_FILE: &str = "repair.json";
 
 /// How a map was repaired (`<map>/repair.json`).
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -174,6 +211,8 @@ pub struct MapPatch {
     pub tags: Option<Vec<String>>,
     #[serde(deserialize_with = "crate::base::patch::nullable")]
     pub preferred_target: Option<Option<String>>,
+    /// Default variant (0 = original, N = repaired with mapping vN).
+    pub preferred_variant: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -185,6 +224,9 @@ pub struct MapSession {
     pub activated_at: DateTime<Utc>,
     /// Started through "play offline": restored automatically when the game exits.
     pub offline: bool,
+    /// Variant installed (0 = original, N = repaired with mapping vN).
+    #[serde(default)]
+    pub variant: u32,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -320,7 +362,8 @@ pub fn migrate_legacy_meta(
             .and_then(|t| normalize_target(&t).map(str::to_string)),
         last_played_at: None,
         folder: String::new(),
-        repair: None,
+        repairs: Vec::new(),
+        preferred_variant: 0,
     })
 }
 

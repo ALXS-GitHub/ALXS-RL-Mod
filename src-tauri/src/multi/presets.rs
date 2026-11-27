@@ -24,6 +24,10 @@ pub struct HostPreset {
     pub map_id: String,
     pub map_name: String,
     pub target: String,
+    /// 0 = original, N = copy repaired with mapping vN, `None` = the map's
+    /// default at hosting time.
+    #[serde(default)]
+    pub variant: Option<u32>,
     #[serde(default)]
     pub options: MatchOptions,
     pub saved_at: DateTime<Utc>,
@@ -37,6 +41,8 @@ pub struct HostPresetInput {
     pub name: String,
     pub map_id: String,
     pub target: String,
+    #[serde(default)]
+    pub variant: Option<u32>,
     #[serde(default)]
     pub options: MatchOptions,
 }
@@ -87,6 +93,10 @@ pub fn save(input: HostPresetInput) -> AppResult<HostPreset> {
         .ok_or_else(|| AppError::InvalidInput(format!("unknown Labs arena {}", input.target)))?
         .to_string();
     let map = library::get(&input.map_id)?;
+    let variant = input
+        .variant
+        .map(|v| map.resolve_variant(Some(v)).map_err(AppError::InvalidInput))
+        .transpose()?;
     let mut presets: Vec<HostPreset> = fsx::read_json_or_default(&file()?)?;
     let preset = HostPreset {
         id: input
@@ -95,6 +105,7 @@ pub fn save(input: HostPresetInput) -> AppResult<HostPreset> {
             .unwrap_or_else(|| uuid::Uuid::new_v4().to_string()),
         name,
         map_id: map.id,
+        variant,
         map_name: map.name,
         target,
         options: input.options,
@@ -126,6 +137,7 @@ mod tests {
             map_id: "m".into(),
             map_name: "Map".into(),
             target: "Labs_Underpass_P.upk".into(),
+            variant: None,
             options: MatchOptions::default(),
             saved_at: Utc::now(),
         }

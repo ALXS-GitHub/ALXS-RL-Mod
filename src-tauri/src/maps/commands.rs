@@ -73,13 +73,16 @@ pub async fn maps_download(
     sources::download(&app, source, &remote_id).await
 }
 
+/// `variant`: 0 = original, N = copy repaired with mapping vN, `None` = the
+/// map's default variant.
 #[tauri::command]
 pub async fn maps_activate(
     app: AppHandle,
     id: String,
     target: Option<String>,
+    variant: Option<u32>,
 ) -> AppResult<MapSession> {
-    session::activate(&app, &id, target, false).await
+    session::activate(&app, &id, target, false, variant).await
 }
 
 #[tauri::command]
@@ -134,9 +137,16 @@ pub async fn maps_repair_status(version: Option<u32>) -> AppResult<Vec<library::
 }
 
 /// After a repair / undo: the installed arena must hold the new file.
-fn reinstall_if_active(app: &AppHandle, id: &str) -> AppResult<()> {
-    if let Some(s) = session::current().filter(|s| s.map_id == id) {
-        session::activate_blocking(app, id, Some(s.target), s.offline).map_err(|err| {
+fn reinstall_if_active(
+    app: &AppHandle,
+    id: &str,
+    only_variant: Option<u32>,
+    variant: Option<u32>,
+) -> AppResult<()> {
+    let active = session::current()
+        .filter(|s| s.map_id == id && only_variant.is_none_or(|v| s.variant == v));
+    if let Some(s) = active {
+        session::activate_blocking(app, id, Some(s.target), s.offline, variant).map_err(|err| {
             AppError::Conflict(format!(
                 "the map was changed but could not be reinstalled now ({err}) — go back to the main menu and install it again"
             ))
@@ -145,25 +155,28 @@ fn reinstall_if_active(app: &AppHandle, id: &str) -> AppResult<()> {
     Ok(())
 }
 
-/// Repairs a map with mapping `version` (default: latest). The original
-/// package stays; thumbnail, name and settings are the map's own.
+/// Repairs a map with mapping `version` (default: latest) into its own copy
+/// and makes it the map's default variant. The original and other repaired
+/// copies stay; thumbnail, name and settings are the map's own. An installed
+/// map switches to the new copy.
 #[tauri::command]
 pub async fn maps_repair(app: AppHandle, id: String, version: Option<u32>) -> AppResult<MapEntry> {
     let version = version.unwrap_or(repair::latest().version);
     blocking(move || {
         let entry = library::repair_map(&id, version)?;
-        reinstall_if_active(&app, &id)?;
+        reinstall_if_active(&app, &id, None, Some(version))?;
         Ok(entry)
     })
     .await
 }
 
-/// Goes back to the map's original package.
+/// Deletes the copy repaired with mapping `version`; an installed copy of
+/// that version is replaced by the original.
 #[tauri::command]
-pub async fn maps_repair_undo(app: AppHandle, id: String) -> AppResult<MapEntry> {
+pub async fn maps_repair_delete(app: AppHandle, id: String, version: u32) -> AppResult<MapEntry> {
     blocking(move || {
-        let entry = library::undo_repair(&id)?;
-        reinstall_if_active(&app, &id)?;
+        let entry = library::delete_repair(&id, version)?;
+        reinstall_if_active(&app, &id, Some(version), Some(crate::maps::model::ORIGINAL))?;
         Ok(entry)
     })
     .await
@@ -189,9 +202,13 @@ pub async fn maps_textures_remove(app: AppHandle) -> AppResult<textures::Texture
 /// launcher forward, the user picks "Launch without Anti-Cheat") and
 /// restores the stock arena when the game exits (if enabled in settings).
 #[tauri::command]
-pub async fn maps_play_offline(app: AppHandle, id: String) -> AppResult<MapSession> {
+pub async fn maps_play_offline(
+    app: AppHandle,
+    id: String,
+    variant: Option<u32>,
+) -> AppResult<MapSession> {
     let rl = install::current_install(&app)?;
-    let session = session::activate(&app, &id, None, true).await?;
+    let session = session::activate(&app, &id, None, true, variant).await?;
     if let Err(err) = launch::start_no_eac(&rl) {
         // The map stays installed: the user can start the game manually.
         tracing::warn!(%err, "offline launch failed after activation");

@@ -65,12 +65,14 @@ console command.
 ## Repaired maps
 
 Map repair (`docs_rl/map_repair.md`) is deterministic: same original file +
-same mapping version = same repaired file. The invite carries the host's
-`repairVersion` (and, as before, the SHA-256 of the installed file). The
-join card compares it with the friend's copy (`multi_check` →
-`repairAction`: none / repair vN / undo / unavailable when the friend's app
-lacks that mapping) and offers the action on click; Join stays disabled
-(and `multi_join` refuses) until both sides match.
+same mapping version = same repaired file. The host picks the map variant
+(original or a repaired copy, default = the map's default; saved in host
+presets); the invite carries it as `repairVersion` (and, as before, the
+SHA-256 of the installed file). The friend's app installs the same variant:
+the original is always there, a missing repaired copy is offered on click
+(`multi_check` → `repairAction`: none / repair vN / unavailable when the
+friend's app lacks that mapping); Join stays disabled (and `multi_join`
+refuses) until the copy exists.
 
 ## Page layout
 

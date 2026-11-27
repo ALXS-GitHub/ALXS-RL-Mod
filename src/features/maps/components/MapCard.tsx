@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass";
+import { Select } from "@/components/ui/select";
 import { Tooltip } from "@/components/ui/tooltip";
 import { cn } from "@/lib/cn";
 import { formatBytes, formatRelative } from "@/lib/format";
@@ -35,6 +36,8 @@ interface MapCardProps {
   /** Repair state against the latest mapping. */
   repair: "repaired" | "repairable" | "outdated" | null;
   onRepair: () => void;
+  /** Change the default variant (0 = original, N = repaired with vN). */
+  onVariant: (variant: number) => void;
 }
 
 function originLabelKey(map: MapEntry): string {
@@ -64,6 +67,7 @@ export function MapCard({
   onReveal,
   repair,
   onRepair,
+  onVariant,
 }: MapCardProps) {
   const { t } = useTranslation("maps");
   const src = localPreview(map.folder, map.previewFile) ?? map.previewUrl;
@@ -89,7 +93,9 @@ export function MapCard({
             >
               <Wrench />
               {repair === "repaired"
-                ? t("repair.badgeRepaired", { version: map.repair?.version ?? "" })
+                ? map.preferredVariant
+                  ? t("repair.badgeRepaired", { version: map.preferredVariant })
+                  : t("repair.badgeOriginal")
                 : repair === "outdated"
                   ? t("repair.badgeOutdated")
                   : t("repair.badgeRepairable")}
@@ -132,6 +138,21 @@ export function MapCard({
               : t("card.added", { when: formatRelative(map.addedAt) })}
           </span>
         </div>
+
+        {map.repairs.length ? (
+          <Select
+            className="h-7 text-xs"
+            value={String(map.preferredVariant)}
+            onValueChange={(v) => onVariant(Number(v))}
+            options={[
+              { value: "0", label: t("repair.original") },
+              ...map.repairs.map((r) => ({
+                value: String(r.version),
+                label: t("repair.repairedLabel", { version: r.version }),
+              })),
+            ]}
+          />
+        ) : null}
 
         <div className="mt-auto flex items-center gap-1.5">
           <Tooltip content={gameRunning ? t("card.installHintLive") : t("card.installHint")}>

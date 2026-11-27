@@ -80,7 +80,7 @@ export const repairStatusSchema = z.object({
   mapId: z.string(),
   supported: z.boolean(),
   fixes: z.array(repairFixSchema),
-  repairedWith: z.number().nullable(),
+  repairedVersions: z.array(z.number()),
 });
 export type RepairStatus = z.infer<typeof repairStatusSchema>;
 
@@ -101,7 +101,10 @@ export const mapEntrySchema = z.object({
   preferredTarget: z.string().nullable(),
   lastPlayedAt: z.string().nullable(),
   folder: z.string(),
-  repair: repairInfoSchema.nullable().optional(),
+  /** Repaired copies kept for this map (one per mapping version). */
+  repairs: z.array(repairInfoSchema).default([]),
+  /** Variant installed by default: 0 = original, N = repaired with mapping vN. */
+  preferredVariant: z.number().default(0),
 });
 export type MapEntry = z.infer<typeof mapEntrySchema>;
 
@@ -111,6 +114,8 @@ export const mapSessionSchema = z.object({
   target: z.string(),
   activatedAt: z.string(),
   offline: z.boolean(),
+  /** 0 = original, N = copy repaired with mapping vN. */
+  variant: z.number().default(0),
 });
 export type MapSession = z.infer<typeof mapSessionSchema>;
 
@@ -158,6 +163,8 @@ export interface MapPatch {
   tags?: string[];
   /** `null` clears the preference. */
   preferredTarget?: string | null;
+  /** Default variant: 0 = original, N = repaired with mapping vN. */
+  preferredVariant?: number;
 }
 
 /** Workshop textures pack (`maps::textures`). */
@@ -175,7 +182,7 @@ export const mapsApi = {
   repairStatus: (version: number | null) =>
     call("maps_repair_status", { version }, z.array(repairStatusSchema)),
   repair: (id: string, version: number | null) => call("maps_repair", { id, version }, mapEntrySchema),
-  repairUndo: (id: string) => call("maps_repair_undo", { id }, mapEntrySchema),
+  repairDelete: (id: string, version: number) => call("maps_repair_delete", { id, version }, mapEntrySchema),
   texturesStatus: () => call("maps_textures_status", {}, texturesStatusSchema),
   texturesInstall: () => call("maps_textures_install", {}, texturesStatusSchema),
   texturesRemove: () => call("maps_textures_remove", {}, texturesStatusSchema),
@@ -187,8 +194,12 @@ export const mapsApi = {
     call("maps_browse", { source, query, page, sort }, browseResultSchema),
   download: (source: RemoteSource, remoteId: string) =>
     call("maps_download", { source, remoteId }, mapEntrySchema),
-  activate: (id: string, target: string | null) => call("maps_activate", { id, target }, mapSessionSchema),
+  activate: (id: string, target: string | null, variant?: number) =>
+    call("maps_activate", { id, target, variant }, mapSessionSchema),
   deactivate: () => callVoid("maps_deactivate"),
   session: () => call("maps_session", {}, mapSessionSchema.nullable()),
-  playOffline: (id: string) => call("maps_play_offline", { id }, mapSessionSchema),
+  playOffline: (id: string, variant?: number) => call("maps_play_offline", { id, variant }, mapSessionSchema),
 };
+
+/** 0 = the original package, N = the copy repaired with mapping vN. */
+export const ORIGINAL_VARIANT = 0;

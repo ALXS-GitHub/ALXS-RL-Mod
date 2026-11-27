@@ -149,7 +149,8 @@
     "presetRestore": "Retirer tout le preset",
     "presetUpdate": "Enregistrer la config actuelle dans ce preset",
     "presetEdit": "Modifier le preset",
-    "swapEdit": "Modifier ce swap"
+    "swapEdit": "Modifier ce swap",
+    "repaired": "réparée v{{version}}"
   },
   "welcome": {
     "title": "Bienvenue dans ALXS-RL-Mod",

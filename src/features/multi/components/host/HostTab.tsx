@@ -63,9 +63,20 @@ export function HostTab({
   const mapIds = useMemo(() => new Set(list.map((m) => m.id)), [list]);
   const selected = list.find((m) => m.id === form.mapId) ?? null;
   const target = form.target ?? selected?.preferredTarget ?? DEFAULT_TARGET;
+  // The form's variant when the map still has it, else the map's default.
+  const variant =
+    form.variant !== null &&
+    selected &&
+    (form.variant === 0 || selected.repairs.some((r) => r.version === form.variant))
+      ? form.variant
+      : (selected?.preferredVariant ?? 0);
   const { options } = form;
   const alreadyThere = Boolean(
-    selected && mapSession && mapSession.mapId === selected.id && mapSession.target === target,
+    selected &&
+      mapSession &&
+      mapSession.mapId === selected.id &&
+      mapSession.target === target &&
+      mapSession.variant === variant,
   );
   const rpPreset = options.preset && catalog?.presets.includes(options.preset) ? options.preset : null;
   const changed = Object.entries(options.mutators);
@@ -130,6 +141,21 @@ export function HostTab({
           <Row label={t("host.arena")} hint={t("host.arenaHint")}>
             <Select value={target} onValueChange={(v) => patch({ target: v })} options={ARENA_OPTIONS} />
           </Row>
+          {selected?.repairs.length ? (
+            <Row label={t("host.variant")} hint={t("host.variantHint")}>
+              <Select
+                value={String(variant)}
+                onValueChange={(v) => patch({ variant: Number(v) })}
+                options={[
+                  { value: "0", label: t("host.variantOriginal") },
+                  ...selected.repairs.map((r) => ({
+                    value: String(r.version),
+                    label: t("host.variantRepaired", { version: r.version }),
+                  })),
+                ]}
+              />
+            </Row>
+          ) : null}
           {selected ? (
             <Status ok={alreadyThere}>
               {alreadyThere
@@ -137,10 +163,8 @@ export function HostTab({
                 : t("host.willInstall", { arena: targetLabel(target) })}
             </Status>
           ) : null}
-          {selected?.repair ? (
-            <p className="text-xs text-fg-subtle">
-              {t("host.repairedNote", { version: selected.repair.version })}
-            </p>
+          {selected && variant > 0 ? (
+            <p className="text-xs text-fg-subtle">{t("host.repairedNote", { version: variant })}</p>
           ) : null}
         </div>
 
@@ -222,7 +246,8 @@ export function HostTab({
           disabled={!selected || Boolean(blocked) || busy}
           loading={host.isPending}
           onClick={() =>
-            selected && host.mutate({ mapId: selected.id, target, options: { ...options, preset: rpPreset } })
+            selected &&
+            host.mutate({ mapId: selected.id, target, variant, options: { ...options, preset: rpPreset } })
           }
         >
           <Radio />
@@ -244,7 +269,7 @@ export function HostTab({
         onOpenChange={setPicking}
         maps={list}
         selectedId={selected?.id ?? null}
-        onPick={(m) => patch({ mapId: m.id, target: null })}
+        onPick={(m) => patch({ mapId: m.id, target: null, variant: null })}
       />
       {catalog ? (
         <MutatorsDialog
