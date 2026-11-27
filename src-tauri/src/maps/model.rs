@@ -128,6 +128,41 @@ pub struct MapEntry {
     /// Absolute folder, filled at read time (never persisted meaningfully).
     #[serde(default)]
     pub folder: String,
+    /// Set when the map was repaired (`maps::repair`); read from
+    /// `repair.json` next to the package, never trusted from `map.json`.
+    #[serde(default)]
+    pub repair: Option<RepairInfo>,
+}
+
+impl MapEntry {
+    /// File installed in the game: the repaired copy when there is one.
+    pub fn package_file(&self) -> String {
+        match &self.repair {
+            Some(_) => repaired_file_name(&self.file_name),
+            None => self.file_name.clone(),
+        }
+    }
+}
+
+/// Repaired copy of `file_name`, next to the untouched original.
+pub fn repaired_file_name(file_name: &str) -> String {
+    format!("{file_name}.repaired")
+}
+
+pub const REPAIR_FILE: &str = "repair.json";
+
+/// How a map was repaired (`<map>/repair.json`).
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct RepairInfo {
+    /// Repair mapping version used.
+    pub version: u32,
+    pub fixes: Vec<crate::maps::repair::Fix>,
+    /// SHA-256 of the original package.
+    pub source_sha256: String,
+    /// SHA-256 of the repaired package (what is installed and shared).
+    pub result_sha256: String,
+    pub repaired_at: DateTime<Utc>,
 }
 
 /// Fields the user can edit. `preferred_target: Some(None)` clears it.
@@ -285,6 +320,7 @@ pub fn migrate_legacy_meta(
             .and_then(|t| normalize_target(&t).map(str::to_string)),
         last_played_at: None,
         folder: String::new(),
+        repair: None,
     })
 }
 

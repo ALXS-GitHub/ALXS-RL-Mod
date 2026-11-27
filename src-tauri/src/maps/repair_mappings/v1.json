@@ -1,0 +1,218 @@
+{
+ "version": 1,
+ "label": "Season 24 (Update 60) – moved arena assets",
+ "released": "2026-11-27",
+ "gameBuild": "++Prime+Update60.1-CL-533021",
+ "rules": [
+  {
+   "from": "ARC_FX.spacestation_assets.Materials.MAT_Metal_Master",
+   "to": "SpaceStation_Assets.Materials.MAT_Metal_Master",
+   "class": "Material"
+  },
+  {
+   "from": "Beach_Night_P.Body_Bush.metal",
+   "to": "BG_BeachNight_GRS.Body_Bush.Metal",
+   "class": "Material"
+  },
+  {
+   "from": "Beach_P.fx_general.Meshes.Sphere01",
+   "to": "FX_General.Meshes.Sphere01",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "BG_Street.antenna_moai.AT_Moai_N",
+   "to": "Antenna_Moai_SF.Antenna_Moai.AT_Moai_N",
+   "class": "Texture2D"
+  },
+  {
+   "from": "BG_Street.antenna_moai.AT_Moai_SM",
+   "to": "Antenna_Moai_SF.Antenna_Moai.AT_Moai_SM",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "BG_Street.attachment_parent_materials.Basic_Mat",
+   "to": "Hat_Shuriken_psp_SF.Attachment_Parent_Materials.Basic_Mat",
+   "class": "Material"
+  },
+  {
+   "from": "BG_Street.beach_oobassets_01.Textures.Beach_Main_N",
+   "to": "Beach_P.Beach_OOBAssets_01.Textures.Beach_Main_N",
+   "class": "Texture2D"
+  },
+  {
+   "from": "BG_Street.beach_oobassets_03.Materials.Beach_Crane_MIC_INST",
+   "to": "Beach_Night_OOB.Beach_OOBAssets_03.Materials.Beach_Crane_MIC_INST",
+   "class": "MaterialInstanceConstant"
+  },
+  {
+   "from": "BG_Street.beach_oobassets_03.Meshes.Beach_Crane_SM",
+   "to": "Beach_Night_OOB.Beach_OOBAssets_03.Meshes.Beach_Crane_SM",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "BG_Street.beach_oobassets_03.Textures.Beach_Crane_D",
+   "to": "Beach_Night_OOB.Beach_OOBAssets_03.Textures.Beach_Crane_D",
+   "class": "Texture2D"
+  },
+  {
+   "from": "BG_Street.beach_vfx.SM.Beach_Single_Egg",
+   "to": "Stadium_10A_OOB.Beach_VFX.SM.Beach_Single_Egg",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "BG_Street.farm_assets.Materials.Farm_Metal_Parent_Mat",
+   "to": "FF_Dusk_OrangeOOB.Farm_Assets.Materials.Farm_Metal_Parent_Mat",
+   "class": "Material"
+  },
+  {
+   "from": "BG_Street.farm_assets.Materials.Farm_MetalCorrugated_MIC",
+   "to": "FF_Dusk_OrangeOOB.Farm_Assets.Materials.Farm_MetalCorrugated_MIC",
+   "class": "MaterialInstanceConstant"
+  },
+  {
+   "from": "BG_Street.farm_assets.Materials.Wood_Parent_Mat",
+   "to": "Woods_Forest_P.Farm_Assets.Materials.Wood_Parent_Mat",
+   "class": "Material"
+  },
+  {
+   "from": "BG_Street.farm_textures.Textures.Farm_MetalBase_D",
+   "to": "wheel_octo_SF.Farm_Textures.Textures.Farm_MetalBase_D",
+   "class": "Texture2D"
+  },
+  {
+   "from": "BG_Street.farm_textures.Textures.Farm_MetalCorrugated_D",
+   "to": "FF_Dusk_OrangeOOB.Farm_Textures.Textures.Farm_MetalCorrugated_D",
+   "class": "Texture2D"
+  },
+  {
+   "from": "BG_Street.farm_textures.Textures.Farm_Wood_6Boards_D",
+   "to": "Woods_Forest_P.Farm_Textures.Textures.Farm_Wood_6Boards_D",
+   "class": "Texture2D"
+  },
+  {
+   "from": "BG_Street.fx_general.Mat.CubeMap_HotSpot_Team2_MIC",
+   "to": "ARC_Standard_Sky.FX_General.Mat.CubeMap_HotSpot_Team2_MIC",
+   "class": "MaterialInstanceConstant"
+  },
+  {
+   "from": "BG_Street.hat_viking_helmet_textures.Hat_Viking_Helmet_Normal",
+   "to": "Hat_Shuriken_psp_SF.Hat_Viking_Helmet_Textures.Hat_Viking_Helmet_Normal",
+   "class": "Texture2D"
+  },
+  {
+   "from": "BG_Street.MapTemplates.Sky.SM_SkySphere",
+   "to": "ShatterShot_VFX.MapTemplates.Sky.SM_SkySphere",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "BG_Street.music_fx.Materials.MAT_TeamEmissive",
+   "to": "Music_Field.Music_FX.Materials.MAT_TeamEmissive",
+   "class": "Material"
+  },
+  {
+   "from": "BG_Street.musicmap_trailer_oob1.Materials.Blockout_Metal_GREYY2_MIC_TRAILER",
+   "to": "Street_P.MusicMap_TRAILER_OOB1.Materials.Blockout_Metal_GREYY2_MIC_TRAILER",
+   "class": "MaterialInstanceConstant"
+  },
+  {
+   "from": "BG_Street.park_assets.Meshes.OOB_SimpleTree",
+   "to": "Park_Bman_OOB.Park_Assets.Meshes.OOB_SimpleTree",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "BG_Street.stadium_assets.Meshes.FieldSpotLights_Team2_Combined",
+   "to": "CS_P.Stadium_Assets.Meshes.FieldSpotLights_Team2_Combined",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "BG_Street.street_assets.HS_Crowd_V4_Mat",
+   "to": "Mall_OOB_P.Street_Assets.HS_Crowd_V4_Mat",
+   "class": "Material"
+  },
+  {
+   "from": "BG_Street.street_assets.HS_Crowd_V4_Team1_MIC",
+   "to": "Mall_OOB_P.Street_Assets.HS_Crowd_V4_Team1_MIC",
+   "class": "MaterialInstanceConstant"
+  },
+  {
+   "from": "BG_Street.street_assets.HS_Crowd_V4_Team2_MIC",
+   "to": "Street_P.Street_Assets.HS_Crowd_V4_Team2_MIC",
+   "class": "MaterialInstanceConstant"
+  },
+  {
+   "from": "BG_Street.street_assets02.SH_Bench_001",
+   "to": "Street_P.Street_Assets02.SH_Bench_001",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "BG_Street.street_assets02.SH_Bleachers_Base",
+   "to": "Street_P.Street_Assets02.SH_Bleachers_Base",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "BG_Street.street_assets02.SH_EggPeople_SM",
+   "to": "Street_P.Street_Assets02.SH_EggPeople_SM",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "BG_Street.street_assets02.SH_LightMetalTrim_MAT",
+   "to": "NeoTokyo_Hax_Signs_P.Street_Assets02.SH_LightMetalTrim_MAT",
+   "class": "Material"
+  },
+  {
+   "from": "BG_Street.street_assets02.SH_SideWalk_Tile_MAT",
+   "to": "HoopsStreet_Art_P.Street_Assets02.SH_SideWalk_Tile_MAT",
+   "class": "Material"
+  },
+  {
+   "from": "BG_Street.street_assets02.SH_Sign_PsyNet",
+   "to": "Street_P.Street_Assets02.SH_Sign_PsyNet",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "BG_Street.street_assets02.SH_Statue_001",
+   "to": "Street_P.Street_Assets02.SH_Statue_001",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "BG_Street.street_assets_s.Materials.Blue_Metal_MAT",
+   "to": "Street_P.Street_Assets_S.Materials.Blue_Metal_MAT",
+   "class": "Material"
+  },
+  {
+   "from": "BG_Street.trainstation_assets.Materials.Urban_Lights_Mat",
+   "to": "HoopsStreet_Art_P.TrainStation_Assets.Materials.Urban_Lights_Mat",
+   "class": "Material"
+  },
+  {
+   "from": "EuroStadium_P.futuretech.Materials.ForceField_Mat",
+   "to": "CHN_Stadium_Cage.FutureTech.Materials.ForceField_Mat",
+   "class": "Material"
+  },
+  {
+   "from": "Labs_OOB_01.proto_world01.SM.SkySphere01",
+   "to": "Proto_World01.SM.SkySphere01",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "Park_Night_P.proto_world01.SM.SkySphere01",
+   "to": "Proto_World01.SM.SkySphere01",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "Park_P.proto_world01.SM.SkySphere01",
+   "to": "Proto_World01.SM.SkySphere01",
+   "class": "StaticMesh"
+  },
+  {
+   "from": "Stadium_P.futuretech.Materials.ForceField_Mat",
+   "to": "CHN_Stadium_Cage.FutureTech.Materials.ForceField_Mat",
+   "class": "Material"
+  },
+  {
+   "from": "UtopiaStadium_P.proto_world01.SM.SkySphere01",
+   "to": "Proto_World01.SM.SkySphere01",
+   "class": "StaticMesh"
+  }
+ ]
+}

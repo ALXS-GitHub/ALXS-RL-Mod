@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { ClipboardPaste, Download, LogIn } from "lucide-react";
+import { ClipboardPaste, Download, LogIn, RotateCcw, Wrench } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +9,7 @@ import { GlassPanel } from "@/components/ui/glass";
 import { Input } from "@/components/ui/input";
 import { notify } from "@/components/ui/toast";
 import { targetLabel } from "@/features/maps/api";
-import { useDownloadMap, useDownloadProgress } from "@/features/maps/queries";
+import { useDownloadMap, useDownloadProgress, useRepairMap, useUndoRepair } from "@/features/maps/queries";
 import { toAppError } from "@/lib/errors";
 import type { InviteCheck, MultiStatus } from "../api";
 import { multiKeys, useInviteCheck, useJoin } from "../queries";
@@ -22,15 +22,58 @@ function MapState({ check }: { check: InviteCheck }) {
   const qc = useQueryClient();
   const navigate = useNavigate();
   const download = useDownloadMap();
+  const repair = useRepairMap();
+  const undo = useUndoRepair();
   const progress = useDownloadProgress();
   const { map } = check.invite;
   const arena = targetLabel(map.target);
   const live = map.remoteId ? progress[`bakkesPlugins:${map.remoteId}`] : undefined;
   const percent = live?.total ? Math.round((live.downloaded / live.total) * 100) : null;
 
-  if (check.alreadyOnArena) return <Status ok>{t("join.alreadyThere", { arena })}</Status>;
+  const action = check.repairAction;
+  if (check.libraryMapId && action.kind !== "none") {
+    const id = check.libraryMapId;
+    const onDone = () => void qc.invalidateQueries({ queryKey: multiKeys.check });
+    if (action.kind === "unavailable") {
+      return <Status ok={false}>{t("join.repairUnavailable", { version: action.version })}</Status>;
+    }
+    return (
+      <div className="flex flex-col items-start gap-2">
+        <Status ok={false}>
+          {action.kind === "repair"
+            ? t("join.needsRepair", { version: action.version })
+            : t("join.needsOriginal")}
+        </Status>
+        {action.kind === "repair" ? (
+          <Button
+            size="sm"
+            variant="secondary"
+            loading={repair.isPending}
+            onClick={() => repair.mutate({ id, version: action.version }, { onSuccess: onDone })}
+          >
+            <Wrench />
+            {t("join.repair", { version: action.version })}
+          </Button>
+        ) : (
+          <Button
+            size="sm"
+            variant="secondary"
+            loading={undo.isPending}
+            onClick={() => undo.mutate(id, { onSuccess: onDone })}
+          >
+            <RotateCcw />
+            {t("join.useOriginal")}
+          </Button>
+        )}
+      </div>
+    );
+  }
+  const repaired = map.repairVersion ? ` ${t("join.repairedNote", { version: map.repairVersion })}` : "";
+  if (check.alreadyOnArena) return <Status ok>{t("join.alreadyThere", { arena }) + repaired}</Status>;
   if (check.libraryMapId) {
-    return <Status ok>{t("join.inLibrary", { name: check.libraryMapName ?? map.name, arena })}</Status>;
+    return (
+      <Status ok>{t("join.inLibrary", { name: check.libraryMapName ?? map.name, arena }) + repaired}</Status>
+    );
   }
   return (
     <div className="flex flex-col items-start gap-2">
@@ -136,7 +179,7 @@ export function JoinTab({
       <Button
         variant="primary"
         className="w-full"
-        disabled={!c?.libraryMapId || Boolean(blocked) || busy}
+        disabled={!c?.libraryMapId || c.repairAction.kind !== "none" || Boolean(blocked) || busy}
         loading={join.isPending}
         onClick={() => join.mutate(code.trim())}
       >

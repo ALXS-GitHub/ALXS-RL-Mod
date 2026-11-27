@@ -1,4 +1,14 @@
-import { ArrowRightLeft, Check, FolderOpen, Gamepad2, Pencil, Repeat, Star, Trash2 } from "lucide-react";
+import {
+  ArrowRightLeft,
+  Check,
+  FolderOpen,
+  Gamepad2,
+  Pencil,
+  Repeat,
+  Star,
+  Trash2,
+  Wrench,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,6 +32,9 @@ interface MapCardProps {
   onEdit: () => void;
   onDelete: () => void;
   onReveal: () => void;
+  /** Repair state against the latest mapping. */
+  repair: "repaired" | "repairable" | "outdated" | null;
+  onRepair: () => void;
 }
 
 function originLabelKey(map: MapEntry): string {
@@ -49,6 +62,8 @@ export function MapCard({
   onEdit,
   onDelete,
   onReveal,
+  repair,
+  onRepair,
 }: MapCardProps) {
   const { t } = useTranslation("maps");
   const src = localPreview(map.folder, map.previewFile) ?? map.previewUrl;
@@ -66,6 +81,20 @@ export function MapCard({
           <Badge tone="neutral" className="bg-black/50">
             {t(originLabelKey(map))}
           </Badge>
+          {repair ? (
+            <Badge
+              tone={repair === "repaired" ? "success" : "warning"}
+              className="bg-black/50"
+              title={repair === "repaired" ? t("repair.badgeRepairedHint") : t("repair.badgeRepairableHint")}
+            >
+              <Wrench />
+              {repair === "repaired"
+                ? t("repair.badgeRepaired", { version: map.repair?.version ?? "" })
+                : repair === "outdated"
+                  ? t("repair.badgeOutdated")
+                  : t("repair.badgeRepairable")}
+            </Badge>
+          ) : null}
         </div>
         <button
           type="button"
@@ -132,6 +161,16 @@ export function MapCard({
                 <Gamepad2 />
               </Button>
             </span>
+          </Tooltip>
+          <Tooltip content={t("repair.action")}>
+            <Button
+              size="icon-sm"
+              variant="ghost"
+              className={cn(repair === "repairable" || repair === "outdated" ? "text-warning" : undefined)}
+              onClick={onRepair}
+            >
+              <Wrench />
+            </Button>
           </Tooltip>
           <Tooltip content={t("card.edit")}>
             <Button size="icon-sm" variant="ghost" onClick={onEdit}>

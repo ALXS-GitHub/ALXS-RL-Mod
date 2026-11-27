@@ -9,9 +9,11 @@ use chrono::Utc;
 use crate::base::error::{AppError, AppResult};
 use crate::base::{fsx, paths};
 use crate::maps::model::{
-    display_name, migrate_legacy_meta, new_map_id, normalize_target, pick_main_package, MapEntry,
-    MapOrigin, MapPatch, ENTRY_FILE, LEGACY_META_FILE, MAP_EXTENSIONS,
+    display_name, migrate_legacy_meta, new_map_id, normalize_target, pick_main_package,
+    repaired_file_name, MapEntry, MapOrigin, MapPatch, RepairInfo, ENTRY_FILE, LEGACY_META_FILE,
+    MAP_EXTENSIONS, REPAIR_FILE,
 };
+use crate::maps::repair;
 
 /// Hard cap on a single extracted package (a map is < 1 GB in practice).
 const MAX_PACKAGE_BYTES: u64 = 2 * 1024 * 1024 * 1024;
@@ -151,8 +153,17 @@ fn read_entry(dir: &Path) -> Option<MapEntry> {
             }
         }
     }
+    entry.repair = read_repair(dir, &entry.file_name);
     entry.folder = dir.to_string_lossy().into_owned();
     Some(entry)
+}
+
+/// `repair.json`, only when the repaired package is next to it.
+fn read_repair(dir: &Path, file_name: &str) -> Option<RepairInfo> {
+    if !dir.join(repaired_file_name(file_name)).is_file() {
+        return None;
+    }
+    serde_json::from_slice(&std::fs::read(dir.join(REPAIR_FILE)).ok()?).ok()
 }
 
 pub fn list() -> AppResult<Vec<MapEntry>> {
@@ -279,6 +290,7 @@ pub fn finalize_staging(
         preferred_target: None,
         last_played_at: None,
         folder: String::new(),
+        repair: None,
     };
     save(&entry)?;
     get(&id)
@@ -470,4 +482,123 @@ fn import_folder_tree(root: &Path) -> AppResult<Vec<MapEntry>> {
         )));
     }
     Ok(created)
+}
+
+// ── repair ──────────────────────────────────────────────────────────────
+
+/// Repair state of one map for a mapping version.
+#[derive(Debug, Clone, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct RepairStatus {
+    pub map_id: String,
+    /// Only uncompressed UDK maps can be repaired.
+    pub supported: bool,
+    /// References the requested mapping would fix in the original package.
+    pub fixes: Vec<repair::Fix>,
+    pub repaired_with: Option<u32>,
+}
+
+/// Header of the original package (enough for [`repair::preview`]).
+fn original_header(entry: &MapEntry) -> AppResult<Vec<u8>> {
+    let path = Path::new(&entry.folder).join(&entry.file_name);
+    let mut f = std::fs::File::open(&path)?;
+    let mut head = vec![0u8; 64 * 1024];
+    let n = f.read(&mut head)?;
+    head.truncate(n);
+    let len = repair::header_len(&head)?;
+    if len > head.len() {
+        let mut rest = vec![0u8; len - head.len()];
+        f.read_exact(&mut rest)?;
+        head.extend(rest);
+    }
+    Ok(head)
+}
+
+type StatusKey = (String, u64, Option<std::time::SystemTime>, u32);
+type StatusCache = std::collections::HashMap<StatusKey, (bool, Vec<repair::Fix>)>;
+static STATUS_CACHE: std::sync::Mutex<Option<StatusCache>> = std::sync::Mutex::new(None);
+
+/// What `version` would fix in `entry` (cached by file size + mtime).
+pub fn repair_status(entry: &MapEntry, version: u32) -> AppResult<RepairStatus> {
+    let mapping = repair::mapping(version)?;
+    let path = Path::new(&entry.folder).join(&entry.file_name);
+    let meta = std::fs::metadata(&path)?;
+    let key: StatusKey = (
+        path.to_string_lossy().into_owned(),
+        meta.len(),
+        meta.modified().ok(),
+        version,
+    );
+    let cached = STATUS_CACHE
+        .lock()
+        .ok()
+        .and_then(|c| c.as_ref().and_then(|m| m.get(&key).cloned()));
+    let (supported, fixes) = match cached {
+        Some(v) => v,
+        None => {
+            let v = match original_header(entry).and_then(|h| repair::preview(&h, mapping)) {
+                Ok(fixes) => (true, fixes),
+                Err(AppError::Unsupported(_)) => (false, Vec::new()),
+                Err(err) => return Err(err),
+            };
+            if let Ok(mut c) = STATUS_CACHE.lock() {
+                c.get_or_insert_with(Default::default)
+                    .insert(key, v.clone());
+            }
+            v
+        }
+    };
+    Ok(RepairStatus {
+        map_id: entry.id.clone(),
+        supported,
+        fixes,
+        repaired_with: entry.repair.as_ref().map(|r| r.version),
+    })
+}
+
+/// Repairs map `id` with mapping `version` (the original stays untouched).
+/// Blocking (reads and hashes the whole package).
+pub fn repair_map(id: &str, version: u32) -> AppResult<MapEntry> {
+    let entry = get(id)?;
+    let mapping = repair::mapping(version)?;
+    let dir = PathBuf::from(&entry.folder);
+    let original = std::fs::read(dir.join(&entry.file_name))?;
+    let repaired = repair::repair(&original, mapping)?;
+    if repaired.fixes.is_empty() {
+        return Err(AppError::Conflict(format!(
+            "nothing to repair in this map with mapping v{version}"
+        )));
+    }
+    let info = RepairInfo {
+        version,
+        fixes: repaired.fixes,
+        source_sha256: fsx::sha256_bytes(&original),
+        result_sha256: fsx::sha256_bytes(&repaired.bytes),
+        repaired_at: Utc::now(),
+    };
+    drop(original);
+    fsx::write_atomic(
+        &dir.join(repaired_file_name(&entry.file_name)),
+        &repaired.bytes,
+    )?;
+    fsx::write_json(&dir.join(REPAIR_FILE), &info)?;
+    tracing::info!(%id, version, fixes = info.fixes.len(), "map repaired");
+    get(id)
+}
+
+/// Back to the original package.
+pub fn undo_repair(id: &str) -> AppResult<MapEntry> {
+    let entry = get(id)?;
+    let dir = PathBuf::from(&entry.folder);
+    for f in [
+        repaired_file_name(&entry.file_name),
+        REPAIR_FILE.to_string(),
+    ] {
+        let p = dir.join(f);
+        if p.is_file() {
+            std::fs::remove_file(p)?;
+        }
+    }
+    tracing::info!(%id, "map repair removed");
+    get(id)
 }

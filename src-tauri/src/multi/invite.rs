@@ -29,6 +29,10 @@ pub struct InviteMap {
     pub sha256: Option<String>,
     pub source: Option<RemoteSource>,
     pub remote_id: Option<String>,
+    /// Repair mapping version the host's map was repaired with (`None` =
+    /// original package). Friends repair theirs the same way: same result.
+    #[serde(default)]
+    pub repair_version: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -131,6 +135,7 @@ mod tests {
                 sha256: Some("a".repeat(64)),
                 source: Some(RemoteSource::BakkesPlugins),
                 remote_id: Some("123".into()),
+                repair_version: Some(1),
             },
         }
     }

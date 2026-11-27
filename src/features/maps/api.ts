@@ -53,6 +53,37 @@ export const mapOriginSchema = z.discriminatedUnion("kind", [
 ]);
 export type MapOrigin = z.infer<typeof mapOriginSchema>;
 
+/** One reference re-pointed by a repair (`maps::repair::Fix`). */
+export const repairFixSchema = z.object({ from: z.string(), to: z.string() });
+export type RepairFix = z.infer<typeof repairFixSchema>;
+
+export const repairInfoSchema = z.object({
+  version: z.number(),
+  fixes: z.array(repairFixSchema),
+  sourceSha256: z.string(),
+  resultSha256: z.string(),
+  repairedAt: z.string(),
+});
+export type RepairInfo = z.infer<typeof repairInfoSchema>;
+
+export const mappingInfoSchema = z.object({
+  version: z.number(),
+  label: z.string(),
+  released: z.string(),
+  gameBuild: z.string(),
+  rules: z.number(),
+  latest: z.boolean(),
+});
+export type MappingInfo = z.infer<typeof mappingInfoSchema>;
+
+export const repairStatusSchema = z.object({
+  mapId: z.string(),
+  supported: z.boolean(),
+  fixes: z.array(repairFixSchema),
+  repairedWith: z.number().nullable(),
+});
+export type RepairStatus = z.infer<typeof repairStatusSchema>;
+
 export const mapEntrySchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -70,6 +101,7 @@ export const mapEntrySchema = z.object({
   preferredTarget: z.string().nullable(),
   lastPlayedAt: z.string().nullable(),
   folder: z.string(),
+  repair: repairInfoSchema.nullable().optional(),
 });
 export type MapEntry = z.infer<typeof mapEntrySchema>;
 
@@ -139,6 +171,11 @@ export const texturesStatusSchema = z.object({
 export type TexturesStatus = z.infer<typeof texturesStatusSchema>;
 
 export const mapsApi = {
+  repairMappings: () => call("maps_repair_mappings", {}, z.array(mappingInfoSchema)),
+  repairStatus: (version: number | null) =>
+    call("maps_repair_status", { version }, z.array(repairStatusSchema)),
+  repair: (id: string, version: number | null) => call("maps_repair", { id, version }, mapEntrySchema),
+  repairUndo: (id: string) => call("maps_repair_undo", { id }, mapEntrySchema),
   texturesStatus: () => call("maps_textures_status", {}, texturesStatusSchema),
   texturesInstall: () => call("maps_textures_install", {}, texturesStatusSchema),
   texturesRemove: () => call("maps_textures_remove", {}, texturesStatusSchema),

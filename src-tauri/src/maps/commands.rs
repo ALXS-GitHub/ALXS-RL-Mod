@@ -8,7 +8,7 @@ use crate::base::error::{AppError, AppResult};
 use crate::extras::launch;
 use crate::game::install;
 use crate::maps::model::{BrowseResult, MapEntry, MapPatch, MapSession, MapSort, RemoteSource};
-use crate::maps::{library, session, sources, textures};
+use crate::maps::{library, repair, session, sources, textures};
 
 async fn blocking<T: Send + 'static>(
     f: impl FnOnce() -> AppResult<T> + Send + 'static,
@@ -90,6 +90,83 @@ pub async fn maps_deactivate(app: AppHandle) -> AppResult<()> {
 #[tauri::command]
 pub fn maps_session() -> AppResult<Option<MapSession>> {
     Ok(session::current())
+}
+
+/// Bundled repair mappings (oldest first; the last one is the default).
+#[derive(Debug, Clone, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct MappingInfo {
+    pub version: u32,
+    pub label: String,
+    pub released: String,
+    pub game_build: String,
+    pub rules: usize,
+    pub latest: bool,
+}
+
+#[tauri::command]
+pub fn maps_repair_mappings() -> AppResult<Vec<MappingInfo>> {
+    let latest = repair::latest().version;
+    Ok(repair::mappings()
+        .iter()
+        .map(|m| MappingInfo {
+            version: m.version,
+            label: m.label.clone(),
+            released: m.released.clone(),
+            game_build: m.game_build.clone(),
+            rules: m.rules.len(),
+            latest: m.version == latest,
+        })
+        .collect())
+}
+
+/// What `version` (default: latest) would fix in every library map.
+#[tauri::command]
+pub async fn maps_repair_status(version: Option<u32>) -> AppResult<Vec<library::RepairStatus>> {
+    let version = version.unwrap_or(repair::latest().version);
+    blocking(move || {
+        library::list()?
+            .iter()
+            .map(|e| library::repair_status(e, version))
+            .collect()
+    })
+    .await
+}
+
+/// After a repair / undo: the installed arena must hold the new file.
+fn reinstall_if_active(app: &AppHandle, id: &str) -> AppResult<()> {
+    if let Some(s) = session::current().filter(|s| s.map_id == id) {
+        session::activate_blocking(app, id, Some(s.target), s.offline).map_err(|err| {
+            AppError::Conflict(format!(
+                "the map was changed but could not be reinstalled now ({err}) — go back to the main menu and install it again"
+            ))
+        })?;
+    }
+    Ok(())
+}
+
+/// Repairs a map with mapping `version` (default: latest). The original
+/// package stays; thumbnail, name and settings are the map's own.
+#[tauri::command]
+pub async fn maps_repair(app: AppHandle, id: String, version: Option<u32>) -> AppResult<MapEntry> {
+    let version = version.unwrap_or(repair::latest().version);
+    blocking(move || {
+        let entry = library::repair_map(&id, version)?;
+        reinstall_if_active(&app, &id)?;
+        Ok(entry)
+    })
+    .await
+}
+
+/// Goes back to the map's original package.
+#[tauri::command]
+pub async fn maps_repair_undo(app: AppHandle, id: String) -> AppResult<MapEntry> {
+    blocking(move || {
+        let entry = library::undo_repair(&id)?;
+        reinstall_if_active(&app, &id)?;
+        Ok(entry)
+    })
+    .await
 }
 
 #[tauri::command]

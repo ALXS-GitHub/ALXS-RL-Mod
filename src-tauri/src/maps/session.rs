@@ -102,7 +102,8 @@ pub fn activate_blocking(
     let folder = PathBuf::from(&entry.folder);
     let install_all = || -> AppResult<()> {
         // The write layer takes the bytes in memory; one package at a time.
-        let main = folder.join(&entry.file_name);
+        // The repaired copy when the map was repaired (`maps::repair`).
+        let main = folder.join(entry.package_file());
         let bytes = std::fs::read(&main).map_err(|e| AppError::from_game_io(e, &main))?;
         writer::install_file(
             app,

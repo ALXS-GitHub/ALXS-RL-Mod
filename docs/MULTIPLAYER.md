@@ -62,6 +62,16 @@ strictly validated (`multi::invite::decode`): the host is an IPv4, the arena
 a known Labs file, the map id alphanumeric — nothing free-form reaches the
 console command.
 
+## Repaired maps
+
+Map repair (`docs_rl/map_repair.md`) is deterministic: same original file +
+same mapping version = same repaired file. The invite carries the host's
+`repairVersion` (and, as before, the SHA-256 of the installed file). The
+join card compares it with the friend's copy (`multi_check` →
+`repairAction`: none / repair vN / undo / unavailable when the friend's app
+lacks that mapping) and offers the action on click; Join stays disabled
+(and `multi_join` refuses) until both sides match.
+
 ## Page layout
 
 Three tabs: **Host** (saved setups bar, map picked from a thumbnail grid,

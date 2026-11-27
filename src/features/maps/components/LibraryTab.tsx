@@ -17,10 +17,13 @@ import {
   useMapSession,
   useMaps,
   usePlayOffline,
+  useRepairMappings,
+  useRepairStatus,
   useUpdateMap,
 } from "../queries";
 import { EditMapDialog } from "./EditMapDialog";
 import { MapCard } from "./MapCard";
+import { RepairDialog } from "./RepairDialog";
 
 type Filter = "all" | "favorites";
 
@@ -38,6 +41,17 @@ export function LibraryTab({ onImport }: { onImport: () => void }) {
   const [filter, setFilter] = useState<Filter>("all");
   const [editing, setEditing] = useState<MapEntry | null>(null);
   const [deleting, setDeleting] = useState<MapEntry | null>(null);
+  const [repairing, setRepairing] = useState<MapEntry | null>(null);
+  const { data: mappings } = useRepairMappings();
+  const { data: repairStatus } = useRepairStatus();
+  const latestMapping = mappings?.find((m) => m.latest)?.version;
+
+  /** Badge against the latest mapping (nothing when there is nothing to do). */
+  const repairBadge = (map: MapEntry): "repaired" | "repairable" | "outdated" | null => {
+    const fixes = repairStatus?.find((s) => s.mapId === map.id)?.fixes.length ?? 0;
+    if (map.repair) return map.repair.version !== latestMapping && fixes > 0 ? "outdated" : "repaired";
+    return fixes > 0 ? "repairable" : null;
+  };
 
   const gameRunning = game?.running.running ?? false;
   const busyId = activate.isPending
@@ -143,6 +157,8 @@ export function LibraryTab({ onImport }: { onImport: () => void }) {
                 onEdit={() => setEditing(map)}
                 onDelete={() => setDeleting(map)}
                 onReveal={() => void revealItemInDir(`${map.folder}\\${map.fileName}`).catch(notify.error)}
+                repair={repairBadge(map)}
+                onRepair={() => setRepairing(map)}
               />
             </motion.div>
           ))}
@@ -150,6 +166,7 @@ export function LibraryTab({ onImport }: { onImport: () => void }) {
       )}
 
       <EditMapDialog map={editing} onClose={() => setEditing(null)} />
+      <RepairDialog map={repairing} onClose={() => setRepairing(null)} />
 
       <Dialog open={deleting !== null} onOpenChange={(open) => !open && setDeleting(null)}>
         <DialogContent

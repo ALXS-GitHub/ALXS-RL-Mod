@@ -108,7 +108,8 @@
       "update": "Update \"{{name}}\"",
       "saveNew": "Save as new",
       "namePlaceholder": "e.g. PingPong 2v2 on Underpass"
-    }
+    },
+    "repairedNote": "Repaired with mapping v{{version}}: your friends' app offers the same repair."
   },
   "join": {
     "title": "Join a friend",
@@ -124,7 +125,13 @@
     "download": "Download the map",
     "downloading": "Downloading… {{percent}} %",
     "downloaded": "\"{{name}}\" added to your library",
-    "openMaps": "Open Maps"
+    "openMaps": "Open Maps",
+    "needsRepair": "The host plays this map repaired with mapping v{{version}}: repair yours the same way (same file guaranteed).",
+    "needsOriginal": "The host plays the original version of this map: go back to yours.",
+    "repairUnavailable": "The host repaired this map with mapping v{{version}}, which your app does not have yet: update ALXS-RL-Mod.",
+    "repair": "Repair (v{{version}})",
+    "useOriginal": "Use the original",
+    "repairedNote": "Repaired like the host's (v{{version}})."
   },
   "session": {
     "role": {

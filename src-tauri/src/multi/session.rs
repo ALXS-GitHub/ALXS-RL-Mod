@@ -257,6 +257,7 @@ pub fn host(
                 sha256: installed_sha(&map_id),
                 source: remote_of(&entry).map(|r| r.0),
                 remote_id: remote_of(&entry).map(|r| r.1),
+                repair_version: entry.repair.as_ref().map(|r| r.version),
             },
         });
         update(&app2, &id, |s| {
@@ -282,6 +283,16 @@ pub fn join(app: &AppHandle, code: &str) -> AppResult<MultiSession> {
             invite.map.name
         ))
     })?;
+    if repair_action(
+        invite.map.repair_version,
+        entry.repair.as_ref().map(|r| r.version),
+    ) != RepairAction::None
+    {
+        return Err(AppError::Conflict(
+            "your copy of the map is not repaired like the host's — repair it first (join card)"
+                .into(),
+        ));
+    }
     let mut session = new_session(
         Role::Join,
         invite.map.name.clone(),
@@ -347,6 +358,37 @@ pub struct InviteCheck {
     pub already_on_arena: bool,
     /// Missing but downloadable from bakkesplugins (offered, never automatic).
     pub downloadable: bool,
+    /// What the library map needs to match the host's repair state.
+    pub repair_action: RepairAction,
+}
+
+/// Joining needs the same file as the host: same repair mapping or none.
+#[derive(Debug, Clone, Copy, Serialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase", tag = "kind")]
+pub enum RepairAction {
+    None,
+    /// Repair (or re-repair) with this mapping version.
+    Repair {
+        version: u32,
+    },
+    /// The host plays the original package: remove the repair.
+    Undo,
+    /// The host used a mapping this app does not ship: update the app.
+    Unavailable {
+        version: u32,
+    },
+}
+
+pub(crate) fn repair_action(host: Option<u32>, mine: Option<u32>) -> RepairAction {
+    match (host, mine) {
+        (Some(h), Some(m)) if h == m => RepairAction::None,
+        (Some(h), _) if crate::maps::repair::mapping(h).is_err() => {
+            RepairAction::Unavailable { version: h }
+        }
+        (Some(h), _) => RepairAction::Repair { version: h },
+        (None, Some(_)) => RepairAction::Undo,
+        (None, None) => RepairAction::None,
+    }
 }
 
 /// Reads an invite and looks the map up in the library. Blocking.
@@ -360,7 +402,15 @@ pub fn check(code: &str) -> AppResult<InviteCheck> {
     let downloadable = entry.is_none()
         && invite.map.source == Some(RemoteSource::BakkesPlugins)
         && invite.map.remote_id.is_some();
+    let repair_action = match &entry {
+        Some(e) => repair_action(
+            invite.map.repair_version,
+            e.repair.as_ref().map(|r| r.version),
+        ),
+        None => RepairAction::None,
+    };
     Ok(InviteCheck {
+        repair_action,
         library_map_id: entry.as_ref().map(|e| e.id.clone()),
         library_map_name: entry.map(|e| e.name),
         already_on_arena,
@@ -529,5 +579,25 @@ async fn drive(app: AppHandle, id: String, commands: Vec<String>) {
     match rcon::send(port, &password, &commands).await {
         Ok(()) => set_phase(&app, &id, Phase::CommandSent),
         Err(err) => manual(&app, &err.to_string()),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn repair_actions() {
+        assert_eq!(repair_action(None, None), RepairAction::None);
+        assert_eq!(repair_action(Some(1), Some(1)), RepairAction::None);
+        assert_eq!(
+            repair_action(Some(1), None),
+            RepairAction::Repair { version: 1 }
+        );
+        assert_eq!(repair_action(None, Some(1)), RepairAction::Undo);
+        assert_eq!(
+            repair_action(Some(999), None),
+            RepairAction::Unavailable { version: 999 }
+        );
     }
 }

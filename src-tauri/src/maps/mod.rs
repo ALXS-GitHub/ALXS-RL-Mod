@@ -9,6 +9,7 @@
 pub mod commands;
 pub mod library;
 pub mod model;
+pub mod repair;
 pub mod session;
 pub mod sources;
 pub mod textures;

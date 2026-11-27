@@ -137,6 +137,11 @@ export function HostTab({
                 : t("host.willInstall", { arena: targetLabel(target) })}
             </Status>
           ) : null}
+          {selected?.repair ? (
+            <p className="text-xs text-fg-subtle">
+              {t("host.repairedNote", { version: selected.repair.version })}
+            </p>
+          ) : null}
         </div>
 
         <div className="flex flex-col gap-3 border-line border-t pt-4">

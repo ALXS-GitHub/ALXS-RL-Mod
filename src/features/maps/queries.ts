@@ -16,12 +16,44 @@ export const mapsKeys = {
   list: ["maps", "list"] as const,
   session: ["maps", "session"] as const,
   textures: ["maps", "textures"] as const,
+  repairStatus: (version: number | null) => ["maps", "repairStatus", version] as const,
   browse: (source: RemoteSource, query: string, page: number, sort: MapSort) =>
     ["maps", "browse", source, query, page, sort] as const,
 };
 
 export function useMaps() {
   return useQuery({ queryKey: mapsKeys.list, queryFn: mapsApi.list });
+}
+
+export function useRepairMappings() {
+  return useQuery({ queryKey: ["mapsRepairMappings"], queryFn: mapsApi.repairMappings, staleTime: Infinity });
+}
+
+/** What mapping `version` (null = latest) would fix in every library map. */
+export function useRepairStatus(version: number | null = null) {
+  return useQuery({ queryKey: mapsKeys.repairStatus(version), queryFn: () => mapsApi.repairStatus(version) });
+}
+
+function useInvalidateAfterRepair() {
+  const qc = useQueryClient();
+  return () => {
+    void qc.invalidateQueries({ queryKey: mapsKeys.all });
+    void qc.invalidateQueries({ queryKey: ["multi", "check"] });
+  };
+}
+
+export function useRepairMap() {
+  const invalidate = useInvalidateAfterRepair();
+  return useMutation({
+    mutationFn: ({ id, version }: { id: string; version: number | null }) => mapsApi.repair(id, version),
+    onSuccess: invalidate,
+    onError: notify.error,
+  });
+}
+
+export function useUndoRepair() {
+  const invalidate = useInvalidateAfterRepair();
+  return useMutation({ mutationFn: mapsApi.repairUndo, onSuccess: invalidate, onError: notify.error });
 }
 
 export function useTexturesStatus() {

@@ -63,6 +63,7 @@ export const inviteSchema = z.object({
     sha256: z.string().nullable(),
     source: remoteSourceSchema.nullable(),
     remoteId: z.string().nullable(),
+    repairVersion: z.number().nullable().optional(),
   }),
 });
 export type Invite = z.infer<typeof inviteSchema>;
@@ -73,6 +74,12 @@ export const inviteCheckSchema = z.object({
   libraryMapName: z.string().nullable(),
   alreadyOnArena: z.boolean(),
   downloadable: z.boolean(),
+  repairAction: z.discriminatedUnion("kind", [
+    z.object({ kind: z.literal("none") }),
+    z.object({ kind: z.literal("repair"), version: z.number() }),
+    z.object({ kind: z.literal("undo") }),
+    z.object({ kind: z.literal("unavailable"), version: z.number() }),
+  ]),
 });
 export type InviteCheck = z.infer<typeof inviteCheckSchema>;
 
