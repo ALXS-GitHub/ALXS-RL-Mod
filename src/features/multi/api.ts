@@ -132,6 +132,35 @@ export interface MatchOptions {
   mutators: Record<string, string>;
 }
 
+export const matchOptionsSchema = z.object({
+  manual: z.boolean(),
+  gameMode: z.string().nullable(),
+  players: z.number().nullable(),
+  preset: z.string().nullable(),
+  mutators: z.record(z.string(), z.string()),
+});
+
+/** Saved host setup (`multi::presets::HostPreset`). */
+export const hostPresetSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  mapId: z.string(),
+  mapName: z.string(),
+  target: z.string(),
+  options: matchOptionsSchema,
+  savedAt: z.string(),
+});
+export type HostPreset = z.infer<typeof hostPresetSchema>;
+
+export interface HostPresetInput {
+  /** Set = overwrite that preset. */
+  id: string | null;
+  name: string;
+  mapId: string;
+  target: string;
+  options: MatchOptions;
+}
+
 export const DEFAULT_MATCH_OPTIONS: MatchOptions = {
   manual: false,
   gameMode: null,
@@ -142,6 +171,9 @@ export const DEFAULT_MATCH_OPTIONS: MatchOptions = {
 
 export const multiApi = {
   rpOptions: () => call("multi_rp_options", {}, rpCatalogSchema),
+  presetsList: () => call("multi_presets_list", {}, z.array(hostPresetSchema)),
+  presetsSave: (preset: HostPresetInput) => call("multi_presets_save", { preset }, hostPresetSchema),
+  presetsDelete: (id: string) => callVoid("multi_presets_delete", { id }),
   status: () => call("multi_status", {}, multiStatusSchema),
   bakkesSetup: () => call("multi_bakkes_setup", {}, bakkesSetupSchema),
   bakkesUndo: () => call("multi_bakkes_undo", {}, bakkesSetupSchema),

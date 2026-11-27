@@ -62,6 +62,16 @@ strictly validated (`multi::invite::decode`): the host is an IPv4, the arena
 a known Labs file, the map id alphanumeric — nothing free-form reaches the
 console command.
 
+## Page layout
+
+Three tabs: **Host** (saved setups bar, map picked from a thumbnail grid,
+arena, match options with a categorised mutators dialog, Host button),
+**Join** (invite code, map state with the explicit download, Join) and
+**Infos** (the "Before playing" checklist, installation guide, Tailscale
+policy). Saved setups ("host presets", `multi::presets`) store the map, the
+arena replaced and the match options; the form itself is remembered in
+`localStorage` between sessions.
+
 ## Unverified (test in game)
 
 - BakkesMod's RCON handshake (`authyes` / `authno`) and whether

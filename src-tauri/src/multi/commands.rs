@@ -7,6 +7,7 @@ use crate::base::error::{AppError, AppResult};
 use crate::game::watcher;
 use crate::multi::bakkes_cfg::{self, BakkesSetup};
 use crate::multi::invite;
+use crate::multi::presets::{self, HostPreset, HostPresetInput};
 use crate::multi::rp_options::{self, MatchOptions, RpCatalog};
 use crate::multi::session::{self, InviteCheck, MultiSession};
 use crate::multi::tailscale::{self, TailscaleStatus};
@@ -80,6 +81,22 @@ pub async fn multi_host(
     options: Option<MatchOptions>,
 ) -> AppResult<MultiSession> {
     blocking(move || session::host(&app, map_id, target, options.unwrap_or_default())).await
+}
+
+#[tauri::command]
+pub async fn multi_presets_list() -> AppResult<Vec<HostPreset>> {
+    blocking(presets::list).await
+}
+
+/// Saves a host setup (`id` set = overwrite it).
+#[tauri::command]
+pub async fn multi_presets_save(preset: HostPresetInput) -> AppResult<HostPreset> {
+    blocking(move || presets::save(preset)).await
+}
+
+#[tauri::command]
+pub async fn multi_presets_delete(id: String) -> AppResult<()> {
+    blocking(move || presets::delete(&id)).await
 }
 
 /// Rocket Plugin game modes, mutators and the user's presets.

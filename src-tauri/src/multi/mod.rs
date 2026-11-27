@@ -10,6 +10,7 @@
 pub mod bakkes_cfg;
 pub mod commands;
 pub mod invite;
+pub mod presets;
 pub mod rcon;
 pub mod rp_options;
 pub mod session;

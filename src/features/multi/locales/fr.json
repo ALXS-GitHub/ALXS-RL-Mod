@@ -62,11 +62,53 @@
     "noMaps": "Votre bibliothèque de maps est vide : ajoutez d'abord une map dans Maps.",
     "target": "Remplace l'arène {{arena}}",
     "cta": "Héberger",
-    "map": "Map",
     "arena": "Arène remplacée",
     "alreadyThere": "Déjà installée sur {{arena}} : rien à réécrire.",
     "willInstall": "Sera installée sur l'arène {{arena}} le temps de la partie.",
-    "arenaShared": "L'arène est dans le code d'invitation : l'app de vos amis utilise la même. Si quelqu'un installe la map à la main, dites-lui laquelle."
+    "arenaShared": "L'arène est dans le code d'invitation : l'app de vos amis utilise la même. Si quelqu'un installe la map à la main, dites-lui laquelle.",
+    "sections": {
+      "map": "Map",
+      "match": "Partie"
+    },
+    "changeMap": "Changer",
+    "arenaHint": "Arène Labs remplacée par votre map",
+    "picker": {
+      "title": "Choisir une map",
+      "description": "Votre bibliothèque de maps. Cliquez sur une map pour la choisir.",
+      "search": "Rechercher une map",
+      "empty": "Aucune map ne correspond."
+    },
+    "mutators": {
+      "title": "Mutateurs",
+      "description": "Comme en match privé : ce qui reste sur Par défaut garde la valeur du jeu.",
+      "reset": "Tout réinitialiser",
+      "done": "Terminé",
+      "default": "Par défaut",
+      "edit": "Modifier",
+      "open": "Choisir les mutateurs",
+      "groups": {
+        "match": "Match",
+        "ball": "Balle",
+        "boost": "Boost & objets",
+        "game": "Arène & voitures",
+        "scoring": "Points",
+        "special": "Modes spéciaux"
+      }
+    },
+    "presets": {
+      "title": "Configurations enregistrées",
+      "save": "Enregistrer",
+      "empty": "Enregistrez la map, l'arène et les options de match pour relancer la même partie en un clic.",
+      "mapMissing": "La map « {{name}} » n'est plus dans votre bibliothèque",
+      "delete": "Supprimer",
+      "confirmDelete": "Cliquez encore pour supprimer",
+      "saved": "Configuration « {{name}} » enregistrée",
+      "saveTitle": "Enregistrer cette configuration",
+      "saveDescription": "Map, arène remplacée et options de match.",
+      "update": "Mettre à jour « {{name}} »",
+      "saveNew": "Enregistrer comme nouvelle",
+      "namePlaceholder": "ex. PingPong 2v2 sur Underpass"
+    }
   },
   "join": {
     "title": "Rejoindre un ami",
@@ -176,8 +218,6 @@
     }
   },
   "options": {
-    "title": "Options de match",
-    "summaryManual": "Partie lancée depuis la fenêtre Rocket Plugin",
     "manual": "Lancer la partie moi-même dans Rocket Plugin",
     "manualHint": "L'app installe la map, lance le jeu et BakkesMod et donne le code d'invitation ; vous choisissez tout dans la fenêtre Rocket Plugin puis cliquez sur Host.",
     "mode": "Mode",
@@ -187,11 +227,12 @@
     "preset": "Preset",
     "noPreset": "Aucun",
     "mutators": "Mutateurs",
-    "reset": "Réinitialiser",
     "hint": "Les mutateurs non choisis ici reviennent à leur valeur par défaut. Les presets sont ceux de Rocket Plugin ; les mutateurs choisis ici passent par-dessus.",
-    "playersN_one": "{{count}} joueur",
-    "playersN_other": "{{count}} joueurs",
-    "mutatorsN_one": "{{count}} mutateur",
-    "mutatorsN_other": "{{count}} mutateurs"
+    "presetHint": "Un de vos presets Rocket Plugin"
+  },
+  "tabs": {
+    "host": "Héberger",
+    "join": "Rejoindre",
+    "infos": "Infos"
   }
 }

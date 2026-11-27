@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { notify } from "@/components/ui/toast";
 import { mapsKeys } from "@/features/maps/queries";
 import { EVENTS, useTauriEvent } from "@/lib/events";
-import { type MatchOptions, multiApi, multiSessionEventSchema } from "./api";
+import { type HostPresetInput, type MatchOptions, multiApi, multiSessionEventSchema } from "./api";
 
 export const multiKeys = {
   status: ["multi", "status"] as const,
@@ -58,6 +58,30 @@ export function useHost() {
     mutationFn: ({ mapId, target, options }: { mapId: string; target: string; options: MatchOptions }) =>
       multiApi.host(mapId, target, options),
     onSuccess: set,
+    onError: notify.error,
+  });
+}
+
+export const hostPresetsKey = ["multi", "hostPresets"] as const;
+
+export function useHostPresets() {
+  return useQuery({ queryKey: hostPresetsKey, queryFn: multiApi.presetsList });
+}
+
+export function useSaveHostPreset() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (p: HostPresetInput) => multiApi.presetsSave(p),
+    onSuccess: () => qc.invalidateQueries({ queryKey: hostPresetsKey }),
+    onError: notify.error,
+  });
+}
+
+export function useDeleteHostPreset() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: multiApi.presetsDelete,
+    onSuccess: () => qc.invalidateQueries({ queryKey: hostPresetsKey }),
     onError: notify.error,
   });
 }

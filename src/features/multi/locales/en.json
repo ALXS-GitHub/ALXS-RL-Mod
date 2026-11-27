@@ -62,11 +62,53 @@
     "noMaps": "Your map library is empty: add a map in Maps first.",
     "target": "Replaces the {{arena}} arena",
     "cta": "Host",
-    "map": "Map",
     "arena": "Arena replaced",
     "alreadyThere": "Already installed over {{arena}}: nothing to rewrite.",
     "willInstall": "Will be installed over the {{arena}} arena while you play.",
-    "arenaShared": "The arena is in the invite code: your friends' app uses the same one. If someone installs the map by hand, tell them which arena."
+    "arenaShared": "The arena is in the invite code: your friends' app uses the same one. If someone installs the map by hand, tell them which arena.",
+    "sections": {
+      "map": "Map",
+      "match": "Match"
+    },
+    "changeMap": "Change",
+    "arenaHint": "Labs arena your map replaces",
+    "picker": {
+      "title": "Choose a map",
+      "description": "Your map library. Click a map to pick it.",
+      "search": "Search a map",
+      "empty": "No map matches."
+    },
+    "mutators": {
+      "title": "Mutators",
+      "description": "Like a private match: anything left on Default keeps the game's default.",
+      "reset": "Reset all",
+      "done": "Done",
+      "default": "Default",
+      "edit": "Edit",
+      "open": "Choose mutators",
+      "groups": {
+        "match": "Match",
+        "ball": "Ball",
+        "boost": "Boost & items",
+        "game": "Arena & cars",
+        "scoring": "Scoring",
+        "special": "Special modes"
+      }
+    },
+    "presets": {
+      "title": "Saved setups",
+      "save": "Save",
+      "empty": "Save the map, the arena and the match options as a setup to start the same game again in one click.",
+      "mapMissing": "Map \"{{name}}\" is no longer in your library",
+      "delete": "Delete",
+      "confirmDelete": "Click again to delete",
+      "saved": "Setup \"{{name}}\" saved",
+      "saveTitle": "Save this setup",
+      "saveDescription": "Map, arena replaced and match options.",
+      "update": "Update \"{{name}}\"",
+      "saveNew": "Save as new",
+      "namePlaceholder": "e.g. PingPong 2v2 on Underpass"
+    }
   },
   "join": {
     "title": "Join a friend",
@@ -176,8 +218,6 @@
     }
   },
   "options": {
-    "title": "Match options",
-    "summaryManual": "Started from Rocket Plugin's window",
     "manual": "Start the match myself in Rocket Plugin",
     "manualHint": "The app installs the map, starts the game and BakkesMod and gives the invite code; you pick everything in Rocket Plugin's window and click Host.",
     "mode": "Mode",
@@ -187,11 +227,12 @@
     "preset": "Preset",
     "noPreset": "None",
     "mutators": "Mutators",
-    "reset": "Reset",
     "hint": "Mutators not set here go back to their default. Presets are your Rocket Plugin presets; mutators set here override them.",
-    "playersN_one": "{{count}} player",
-    "playersN_other": "{{count}} players",
-    "mutatorsN_one": "{{count}} mutator",
-    "mutatorsN_other": "{{count}} mutators"
+    "presetHint": "One of your Rocket Plugin presets"
+  },
+  "tabs": {
+    "host": "Host",
+    "join": "Join",
+    "infos": "Infos"
   }
 }

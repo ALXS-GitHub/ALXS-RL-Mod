@@ -20,9 +20,9 @@ const STEPS = [
 ] as const;
 
 /** Step-by-step setup for every player, folded by default. */
-export function GuidePanel() {
+export function GuidePanel({ defaultOpen = false }: { defaultOpen?: boolean }) {
   const { t } = useTranslation("multi");
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
 
   return (
     <GlassPanel className="flex flex-col gap-3 p-4">
