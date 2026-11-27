@@ -54,7 +54,9 @@ Rocket League chiffre une partie de ses packages. Pour lire et échanger des ite
 les clés AES de ces packages, une clé base64 par ligne, dans un fichier `keys.txt`.
 **L'app ne fournit pas ces clés.** En un clic (écran d'accueil, *Items* ou *Réglages →
 Fichiers du jeu*), elle télécharge la liste tenue par la communauté de modding,
-[Toga-Files](https://github.com/ShinyEmii/Toga-Files), vérifie chaque ligne et la fusionne
+[Toga-Files](https://github.com/ShinyEmii/Toga-Files) (clés des packages) et
+[RL-UPKSuite](https://github.com/Martinii89/RL-UPKSuite) (qui a aussi la clé de la liste
+d'items d'où vient le catalogue), vérifie chaque ligne et la fusionne
 avec les clés que tu as déjà (aucune n'est jamais supprimée). Tu peux aussi importer ton
 propre `keys.txt`. Après une mise à jour du jeu, la page *Items* propose de mettre les clés à
 jour quand de nouveaux items ne sont pas lisibles.

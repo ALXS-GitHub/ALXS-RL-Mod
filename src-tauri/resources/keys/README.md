@@ -6,8 +6,11 @@ list (`keys.txt`, one base64 key per line) to rename packages (item swaps)
 and to read textures (thumbnails, custom decals).
 
 `keys.txt` is **not committed** (see `.gitignore`) and never shipped. Users
-get it from the app: *Download* fetches the community list (`aes.txt` of
-<https://github.com/ShinyEmii/Toga-Files>), *Import* takes their own file.
+get it from the app: *Download* fetches the community lists (`aes.txt` of
+<https://github.com/ShinyEmii/Toga-Files>, package keys, and `Core/keys.txt` of
+<https://github.com/Martinii89/RL-UPKSuite>, which also holds the key of the
+`Coalesced_*.bin` localisation archive the catalog is read from), *Import*
+takes their own file.
 Both are validated and merged (existing keys are kept). The app looks for it,
 in order:
 

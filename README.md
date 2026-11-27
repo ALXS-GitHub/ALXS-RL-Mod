@@ -71,7 +71,9 @@ Rocket League encrypts part of its packages. Reading and swapping items needs th
 of those packages, one base64 key per line, in a `keys.txt` file. **The app does not ship
 these keys.** In one click (welcome screen, *Items* or *Settings → Game files*) it downloads
 the list maintained by the modding community,
-[Toga-Files](https://github.com/ShinyEmii/Toga-Files), checks every line and merges it
+[Toga-Files](https://github.com/ShinyEmii/Toga-Files) (package keys) and
+[RL-UPKSuite](https://github.com/Martinii89/RL-UPKSuite) (it also holds the key of the item
+list the catalog is read from), checks every line and merges it
 with the keys you already have (none is ever removed). You can also import your own
 `keys.txt`. After a game update, the *Items* page suggests updating the keys when new items
 can't be read.

@@ -260,8 +260,19 @@ export function ItemsPage() {
         <div className="flex items-center gap-3 rounded-lg border border-warning/25 bg-warning/[0.06] px-3.5 py-2.5">
           <FileKey2 className="size-4 shrink-0 text-warning" />
           <div className="min-w-0 flex-1">
-            <p className="text-[13px] font-medium">{t("noKeys.title")}</p>
-            <p className="text-xs text-fg-muted">{t("noKeys.description")}</p>
+            {keys.data?.present ? (
+              <>
+                <p className="text-[13px] font-medium">{t("noKeys.incompleteTitle")}</p>
+                <p className="text-xs text-fg-muted">
+                  {t("noKeys.incompleteDescription", { count: keys.data.count })}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-[13px] font-medium">{t("noKeys.title")}</p>
+                <p className="text-xs text-fg-muted">{t("noKeys.description")}</p>
+              </>
+            )}
           </div>
           <Button
             variant="secondary"

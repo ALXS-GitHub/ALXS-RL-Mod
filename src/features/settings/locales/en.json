@@ -27,7 +27,7 @@
     "dropInHint": "Merged with the keys you already have (copied to the app's data folder).",
     "import": "Import my file",
     "download": "Community keys",
-    "downloadHint": "Downloads the key list maintained by the modding community (Toga-Files on GitHub). Every line is checked, then merged with your keys: none is ever removed.",
+    "downloadHint": "Downloads the key list maintained by the modding community (Toga-Files and RL-UPKSuite on GitHub). Every line is checked, then merged with your keys: none is ever removed.",
     "downloadAction": "Download / update",
     "source": "See the list"
   },

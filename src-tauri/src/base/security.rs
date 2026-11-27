@@ -24,7 +24,7 @@ pub enum Purpose {
     Browse,
     /// Marketplace listings and downloads (decal and ball packs).
     Market,
-    /// Community AES key list (`upk::keys::COMMUNITY_URL`).
+    /// Community AES key list (`upk::keys::COMMUNITY_URLS`).
     Keys,
 }
 

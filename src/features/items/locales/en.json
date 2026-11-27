@@ -121,7 +121,9 @@
     "title": "The item list needs your keys.txt",
     "description": "Rocket League encrypts the files that list its items. Download the community key list (checked, then merged) or import your own keys.txt.",
     "import": "Import my file",
-    "download": "Download keys"
+    "download": "Download keys",
+    "incompleteTitle": "Your keys don't open the item list",
+    "incompleteDescription": "You have {{count}} keys, but none opens the file that lists the items (Coalesced_INT.bin). Download the keys again (two community lists, merged) or import a complete keys.txt."
   },
   "color": {
     "label": "Colour",

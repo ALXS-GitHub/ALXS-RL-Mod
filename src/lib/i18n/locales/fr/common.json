@@ -170,7 +170,7 @@
       "title": "Clés des packages (keys.txt)",
       "subtitle": "Nécessaires aux swaps d'items, aux decals custom et à la balle.",
       "why": "Rocket League chiffre une partie de ses fichiers de packages. Pour lire et échanger des items, l'app a besoin des clés AES listées dans un fichier keys.txt (une clé par ligne).",
-      "where": "L'app ne fournit pas ces clés. Télécharge-les en un clic : la liste tenue par la communauté de modding Rocket League (Toga-Files) est vérifiée ligne par ligne, puis fusionnée avec tes clés. Tu peux aussi importer ton propre keys.txt.",
+      "where": "L'app ne fournit pas ces clés. Télécharge-les en un clic : la liste tenue par la communauté de modding Rocket League (Toga-Files, RL-UPKSuite) est vérifiée ligne par ligne, puis fusionnée avec tes clés. Tu peux aussi importer ton propre keys.txt.",
       "updates": "Les mises à jour du jeu ajoutent de nouvelles clés : quand de nouveaux items ne sont pas lisibles, la page Items propose de les mettre à jour. Les maps, palettes et le tracker marchent sans clés.",
       "import": "Importer mon fichier",
       "pick": "Choisis ton keys.txt",

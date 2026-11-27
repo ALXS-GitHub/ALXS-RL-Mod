@@ -2,7 +2,7 @@
 //!
 //! Keys are the public community list (`keys.txt`, one base64 key per line).
 //! The app never ships them: the user downloads the community list
-//! ([`COMMUNITY_URL`], on explicit action) or imports a file; both are
+//! ([`COMMUNITY_URLS`], on explicit action) or imports a file; both are
 //! validated and merged into the drop-in file. The ring is loaded from, in order,
 //! 1. `%LOCALAPPDATA%\ALXS-RL-Mod\keys.txt` (user drop-in, wins),
 //! 2. the bundled resource `keys/keys.txt` (if a release ever ships one),
@@ -23,13 +23,20 @@ use crate::base::{fsx, paths, AppError, AppResult};
 
 pub type AesKey = [u8; 32];
 
-/// Community key list: `aes.txt` of the Toga-Files repo, updated after each
-/// game patch (one base64 key per line, same format as `keys.txt`).
-pub const COMMUNITY_URL: &str =
-    "https://raw.githubusercontent.com/ShinyEmii/Toga-Files/master/aes.txt";
+/// Community key lists, downloaded together and merged (one base64 key per
+/// line, same format as `keys.txt`):
+/// - `aes.txt` of the Toga-Files repo: every package key, updated after each
+///   game patch;
+/// - `Core/keys.txt` of RL-UPKSuite: older, but it holds the key of the
+///   localisation archive (`Coalesced_*.bin`) the catalog is read from, which
+///   Toga-Files does not list (packages only).
+pub const COMMUNITY_URLS: &[&str] = &[
+    "https://raw.githubusercontent.com/ShinyEmii/Toga-Files/master/aes.txt",
+    "https://raw.githubusercontent.com/Martinii89/RL-UPKSuite/master/Core/keys.txt",
+];
 /// Where the user can see the list before downloading it.
 pub const COMMUNITY_PAGE: &str = "https://github.com/ShinyEmii/Toga-Files";
-/// The real list is ~50 KB (1 100 keys); anything far larger is not it.
+/// The real lists are ~50 KB (1 100 keys); anything far larger is not one.
 const MAX_LIST_BYTES: usize = 1024 * 1024;
 const MAX_KEYS: usize = 20_000;
 
@@ -143,12 +150,35 @@ fn store(app: &AppHandle, incoming: &[AesKey]) -> AppResult<(usize, usize)> {
     Ok((added, total))
 }
 
-/// Downloads the community list ([`COMMUNITY_URL`]) and validates it with
-/// [`parse_strict`].
+/// Downloads every community list ([`COMMUNITY_URLS`]), each validated with
+/// [`parse_strict`], and merges them. One list failing is logged and
+/// skipped; all of them failing returns the first error.
 pub async fn download_community() -> AppResult<Vec<AesKey>> {
-    security::ensure_allowed(COMMUNITY_URL, Purpose::Keys)?;
+    let mut merged: Vec<AesKey> = Vec::new();
+    let mut first_err = None;
+    let mut ok = 0;
+    for url in COMMUNITY_URLS {
+        match download_list(url).await {
+            Ok(keys) => {
+                ok += 1;
+                merged = merge(&merged, &keys).0;
+            }
+            Err(err) => {
+                tracing::warn!(%err, url, "community key list skipped");
+                first_err.get_or_insert(err);
+            }
+        }
+    }
+    match (ok, first_err) {
+        (0, Some(err)) => Err(err),
+        _ => Ok(merged),
+    }
+}
+
+async fn download_list(url: &str) -> AppResult<Vec<AesKey>> {
+    security::ensure_allowed(url, Purpose::Keys)?;
     let res = security::http_client(Purpose::Keys)?
-        .get(COMMUNITY_URL)
+        .get(url)
         .send()
         .await?
         .error_for_status()?;
@@ -166,7 +196,7 @@ pub async fn download_community() -> AppResult<Vec<AesKey>> {
     let text = std::str::from_utf8(&bytes)
         .map_err(|_| AppError::InvalidInput("key list is not text".into()))?;
     parse_strict(text)
-        .map_err(|e| AppError::InvalidInput(format!("community key list refused: {e}")))
+        .map_err(|e| AppError::InvalidInput(format!("community key list {url} refused: {e}")))
 }
 
 /// Merges downloaded keys (see [`download_community`]) into the ring and

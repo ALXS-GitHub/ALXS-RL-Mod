@@ -27,7 +27,7 @@
     "dropInHint": "Fusionné avec les clés que tu as déjà (copié dans le dossier de données de l'app).",
     "import": "Importer mon fichier",
     "download": "Clés de la communauté",
-    "downloadHint": "Télécharge la liste de clés tenue par la communauté de modding (Toga-Files sur GitHub). Chaque ligne est vérifiée, puis fusionnée avec tes clés : aucune n'est jamais supprimée.",
+    "downloadHint": "Télécharge la liste de clés tenue par la communauté de modding (Toga-Files et RL-UPKSuite sur GitHub). Chaque ligne est vérifiée, puis fusionnée avec tes clés : aucune n'est jamais supprimée.",
     "downloadAction": "Télécharger / mettre à jour",
     "source": "Voir la liste"
   },

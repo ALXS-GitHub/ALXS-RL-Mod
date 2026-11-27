@@ -121,7 +121,9 @@
     "title": "La liste des items a besoin de ton keys.txt",
     "description": "Rocket League chiffre les fichiers qui listent ses items. Télécharge la liste de clés de la communauté (vérifiée, puis fusionnée) ou importe ton propre keys.txt.",
     "import": "Importer mon fichier",
-    "download": "Télécharger les clés"
+    "download": "Télécharger les clés",
+    "incompleteTitle": "Tes clés n'ouvrent pas la liste des items",
+    "incompleteDescription": "Tu as {{count}} clés, mais aucune n'ouvre le fichier qui liste les items (Coalesced_INT.bin). Retélécharge les clés (deux listes de la communauté, fusionnées) ou importe un keys.txt complet."
   },
   "color": {
     "label": "Couleur",
